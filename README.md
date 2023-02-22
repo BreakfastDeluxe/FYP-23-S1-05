@@ -41,3 +41,13 @@ Language: Python, CSS, HTML, mySQL
 2. "3 dots" > pull/push > Pull from... > origin(select this!)
 3. select origin/main
 4. select sync changes
+
+###### start your terminal in VScode - to run python commands for django server management
+1. In VScode, look at top left hand corner ribbons
+2. Terminal>New Terminal
+3. Check that the terminal path is correct "YOURSTORAGEPATH\FYP-23-S1-05"
+
+###### django runserver - Start the webserver on your local machine for UI testing
+1. Navigate your CMDline to YOURSTORAGEPATH/FYP-23-S1-05/fypMain
+2. my manage.py runserver
+3. Access your devserver at http://127.0.0.1:8000/
