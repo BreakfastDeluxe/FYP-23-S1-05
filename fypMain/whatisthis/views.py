@@ -19,10 +19,13 @@ def index(request):
 def home(request):
     return render(request, "home.html")
 
+def login(request):
+    return render(request, "login.html")
+
 class SignUp(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
-    template_name = "templates/signup.html"
+    template_name = "signup.html"
 
 def upload_image(request):
 
