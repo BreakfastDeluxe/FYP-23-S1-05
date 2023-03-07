@@ -52,3 +52,8 @@ Language: Python, CSS, HTML, mySQL
 1. Navigate your CMDline to YOURSTORAGEPATH/FYP-23-S1-05/fypMain
 2. my manage.py runserver
 3. Access your devserver at http://127.0.0.1:8000/
+
+###### Things to run in CMDline to install required dependencies
+1. opencv-python
+2. numpy
+3. 
