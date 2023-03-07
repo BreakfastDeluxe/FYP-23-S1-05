@@ -22,6 +22,9 @@ def home(request):
 def login(request):
     return render(request, "login.html")
 
+def menu(request):
+    return render(request, "menu.html")
+
 class SignUp(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
