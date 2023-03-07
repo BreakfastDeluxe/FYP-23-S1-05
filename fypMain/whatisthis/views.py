@@ -27,7 +27,7 @@ def menu(request):
 
 class SignUp(CreateView):
     form_class = UserCreationForm
-    success_url = reverse_lazy("login")
+    success_url = reverse_lazy("login")#redirect to login after sucessful signup
     template_name = "signup.html"
 
 def upload_image(request):
