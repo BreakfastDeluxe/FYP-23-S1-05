@@ -17,7 +17,7 @@ def index(request):
     return render(request, 'index.html')
 
 def home(request):
-    return render(request, "whatisthis/home.html")
+    return render(request, "home.html")
 
 class SignUp(CreateView):
     form_class = UserCreationForm
