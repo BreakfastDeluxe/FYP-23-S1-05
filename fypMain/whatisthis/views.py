@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.contrib.auth.forms import UserCreationForm
+#from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -29,6 +31,19 @@ class SignUp(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")#redirect to login after sucessful signup
     template_name = "signup.html"
+
+@login_required
+def user(request):
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, 'Your account was updated successfully')
+            return redirect(to='user')
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+    return render(request, 'user.html', {'user_form': user_form})
 
 def upload_image(request):
 
