@@ -16,7 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from .views import * #import all functions from views.py
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('', home, name = "home"),
+    path("signup/", views.SignUp.as_view(), name="signup"),
+    path('upload_image', upload_image, name='upload_image'),
+    path('display_image', display_image, name = 'display_image'),
 ]
