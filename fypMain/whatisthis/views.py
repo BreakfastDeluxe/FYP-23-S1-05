@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.contrib.auth.forms import UserCreationForm
+#from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
 from django.views.generic.edit import CreateView
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -19,16 +22,37 @@ def index(request):
 def home(request):
     return render(request, "home.html")
 
-def login(request):
-    return render(request, "login.html")
+class Login(LoginView):
+    form_class = LoginForm
+    template_name = "login.html"
+    def form_valid(self, form):
+       
+        remember_me = form.cleaned_data['remember_me']  # get remember me data from cleaned_data of form
+        if not remember_me:
+            self.request.session.set_expiry(0)  # if remember me is 
+            self.request.session.modified = True
+        return super(Login, self).form_valid(form)
 
 def menu(request):
     return render(request, "menu.html")
 
 class SignUp(CreateView):
     form_class = UserCreationForm
-    success_url = reverse_lazy("login")#redirect to login after sucessful signup
+    success_url = reverse_lazy("login")
     template_name = "signup.html"
+
+@login_required
+def user(request):
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, 'Your account was updated successfully')
+            return redirect(to='user')
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+    return render(request, 'user.html', {'user_form': user_form})
 
 def upload_image(request):
 

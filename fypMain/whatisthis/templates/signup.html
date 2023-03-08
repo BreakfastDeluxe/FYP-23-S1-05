@@ -9,7 +9,10 @@
             <h2>Sign up</h2>
             <form method="post">
               {% csrf_token %}
-              {{ form.as_p }}
+              <p> Username:{{ form.username }}</p>
+              <p> Email:{{ form.email }}</p>
+              <p> Password:{{ form.password1 }}</p>
+              <p> Confirm Password:{{ form.password2 }}</p>
               <button type="submit">Sign Up</button>
             </form>
         </div>

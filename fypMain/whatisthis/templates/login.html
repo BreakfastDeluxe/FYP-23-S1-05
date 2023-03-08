@@ -6,6 +6,14 @@
     <body>
         <div>
             <h1> LOGIN FORM HERE </h1>
+            <h2>Login</h2>
+            <form method="post">
+              {% csrf_token %}
+              <p> Username:{{ form.username }}</p>
+              <p> Password:{{ form.password }}</p>
+              <p> Remember Me:{{ form.remember_me }}</p>
+              <button type="submit">Login</button>
+            </form>
         </div>
     </body>
 </html>

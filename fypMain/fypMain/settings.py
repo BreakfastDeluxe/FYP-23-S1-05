@@ -124,4 +124,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "menu" #redirects to menu page on login
-LOGOUT_REDIRECT_URL = "home" #redirects to home page on logout
+LOGOUT_REDIRECT_URL = "/" #redirects to home page on logout
