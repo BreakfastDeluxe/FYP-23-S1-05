@@ -2,4 +2,17 @@
     <!-- this page is page included in upload_image after a user as uploaded an image, display button(upload)
     also display blur message (if blur, display text saying that image is not clear, cant give a good description)
     then display the generated caption and a button to play the audio file -->
+    <head>
+        <title> DisplayImage </title>
+    </head>
+    <body>
+        <div>
+            <h1> Welcome to WiT System </h1>
+        </div>
+        <div class="col-md-4">
+            <img src="{{ image }}" class="img-responsive" style="width: 100%; float: left; margin-right: 10px;" />
+            {{blur}}
+        </div>
+        <a class="btn btn-primary" href="menu">Menu</a>
+    </body>
 </html>

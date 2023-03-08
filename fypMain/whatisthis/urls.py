@@ -18,6 +18,8 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from . import views
 from .views import * #import all functions from views.py
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     #path('', views.index, name='index'),
@@ -27,5 +29,7 @@ urlpatterns = [
     path('upload_image', upload_image, name='upload_image'),
     path('display_image', display_image, name = 'display_image'),
     path('menu', menu, name='menu'),
-    path('logout', auth_views.LogoutView.as_view(), name='logout'),
+    path('logout', auth_views.LogoutView.as_view(), name='logout')
 ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

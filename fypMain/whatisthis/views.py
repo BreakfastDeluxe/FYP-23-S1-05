@@ -54,21 +54,30 @@ def user(request):
         user_form = UpdateUserForm(instance=request.user)
     return render(request, 'user.html', {'user_form': user_form})
 
+
 def upload_image(request):
 
-    if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
-
+    if request.method == 'POST':  
+        form = ImageForm(request.POST, request.FILES)  
         if form.is_valid():
             author = form.save(commit=False)
             author.created_by = request.user
             author.save()
-            form.save_m2m()
-            return redirect('display_image')
-    else:
-        form = ImageForm()
-    return render(request, 'upload_image.html', {'form': form})
-
+            form.save_m2m()  
+            form.save()  
+            # Getting the current instance object to display in the template  
+            id = request.user  # get current userid
+            # Images = Image.objects.filter(created_by_id=id)#retrieve all image objects, filtered by current userid
+            # getting latest uploaded Image by id attribute
+            Images = Image.objects.latest('id')
+            file = Images.upload_Image.url
+            blur_value = blur_check(Images.upload_Image.url) 
+              
+            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_value})  
+    else:  
+        form = ImageForm()  
+  
+    return render(request, 'upload_image.html', {'form': form}) 
 def display_image(request):
 
     if request.method == 'GET':
@@ -78,9 +87,10 @@ def display_image(request):
         # Images = Image.objects.filter(created_by_id=id)#retrieve all image objects, filtered by current userid
         # getting latest uploaded Image by id attribute
         Images = Image.objects.latest('id')
+        file = Images.upload_Image.url
         blur_value = blur_check(Images.upload_Image.url)
         # send template and model to renderer
-        return render(request, 'display_image.html', {'image': Images, 'blur' : blur_value})
+        return render(request, 'display_image.html', {'image': file, 'blur' : blur_value})
 
 #HELPER FUNCTIONS
 
