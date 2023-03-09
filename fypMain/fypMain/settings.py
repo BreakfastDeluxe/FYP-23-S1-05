@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-3c#gy9bh%it$(xrd_4_z%6avv0^!f8e2sw4kc(2=im@$myjim8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'whatisthis'
 ]
 
@@ -125,3 +127,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "menu" #redirects to menu page on login
 LOGOUT_REDIRECT_URL = "/" #redirects to home page on logout
+
+# MEDIA_ROOT is for server path to store files in the computer. MEDIA_URL is the reference URL for the browser to access the files over Http.
+ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
+def location(f):
+    return os.path.join(ROOT_DIR, f)
+MEDIA_ROOT = location('media/')
+MEDIA_URL = '/media/'  

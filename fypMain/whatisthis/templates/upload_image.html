@@ -6,12 +6,21 @@
         <title>Upload_image</title>
     </head>
     <body>
-        <form method = "post" enctype="multipart/form-data">
-            <!-- crsf token used for security features for form data-->
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Upload</button>
-        </form>
+            {% block content %}  
+        <form method="post" enctype="multipart/form-data">  
+            {% csrf_token %}  
+            {{ form.as_p }}  
+            <button type="submit">Upload</button>  
+        </form>  
+        <!-- if an image was uploaded, display it and the blur check result -->
+        {% if image %}  
+            <h3>Succesfully uploaded</h3>  
+            <p><img src="{{ image}}" alt="connect" style="max-height:300px"></p>  
+            {{blur}}
+            <a class="btn btn-primary" href="menu">Menu</a>
+        {% endif %}  
+    
+    {% endblock content %}  
     </body>
 
     </html>
