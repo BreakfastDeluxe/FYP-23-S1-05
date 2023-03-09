@@ -1,13 +1,81 @@
+{% load static %} 
 <html>
     <!-- this page is the main landing page for all users, display buttons(login, signup)-->
     <head>
         <title> Home </title>
+        <style>
+            body {
+                background: url('{% static './home-bg.jpg' %}'); 
+                background-size: contain; 
+                background-position: center;
+                background-repeat: no-repeat;
+
+
+            }
+
+            .background {
+                max-width: 100%;
+            }
+
+            .bubble img {
+                max-width: 45%; 
+                opacity: 40%; 
+                height: auto;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                transform:translateY(20%);
+                z-index: -1;
+                position: relative;
+            }
+
+            .buttons {
+                justify-content:center;
+                text-align:center;
+            }
+
+            .wrapper-grid {
+                display: grid; 
+                align-items: center;
+                max-width: 100%;
+            }
+            
+            .bubble, .title {
+                grid-column: 1; 
+                grid-row: 1; 
+
+            }
+
+            .title img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                justify-content: center;
+                max-width: 30%;
+                height: auto;
+
+            }
+        </style>
     </head>
     <body>
-        <div>
-            <h1> Welcome to WiT System </h1>
+        <div class="background">
+            <div class="wrapper-grid">
+                <div class="bubble">
+                    <img src="{% static "bubble.png" %}">
+                </div>
+    
+                <div class="title">
+                    <img src="{% static "title.png" %}">
+                </div>
+
+                <div class="subtitle">
+                    Start detecting objects around you! 
+                </div>
+            </div>
+            <div class="buttons">
+                <a class="btn btn-primary" href="login">LOGIN</a> <br/>
+                <a class="btn btn-primary" href="signup">CREATE ACCOUNT</a>
+            </div>
         </div>
-        <a class="btn btn-primary" href="login">LOGIN</a>
-        <a class="btn btn-primary" href="signup">CREATE ACCOUNT</a>
     </body>
     </html>
