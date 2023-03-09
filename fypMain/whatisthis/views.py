@@ -14,6 +14,7 @@ import cv2
 import argparse
 import glob
 import numpy as np
+import requests
 
 # Create your views here.
 def index(request):
@@ -71,13 +72,15 @@ def upload_image(request):
             # getting latest uploaded Image by id attribute
             Images = Image.objects.latest('id')
             file = Images.upload_Image.url
-            blur_value = blur_check(Images.upload_Image.url) 
+            blur_value = blur_check(Images.upload_Image.url)
+            keywords = generate_keywords(file) 
               
-            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_value})  
+            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_value, 'keywords':keywords})  
     else:  
         form = ImageForm()  
   
     return render(request, 'upload_image.html', {'form': form}) 
+
 def display_image(request):
 
     if request.method == 'GET':
@@ -120,10 +123,34 @@ def generate_caption():
         caption = None
         return caption
     
-#ML implementation to generate keywords
-def generate_keywords():
-        keywords = None
-        return keywords
+#API implementation to generate keywords
+def generate_keywords(file):
+    # Read the image
+    file = '.'+file #look one folder above to ./media/images
+    print(file)#debug print out filename
+    
+    client_id = 'aYCcWMVTisX1yqoSYKfGPgke'
+    client_secret = '16BexRsEz3gI7vcJ7SbssuXVxYTabAMTF6mybzSK3GlaAqah'
+    params = {'url': 'http://image.everypixel.com/2014.12/67439828186edc79b9be81a4dedea8b03c09a12825b_b.jpg', 'num_keywords': 10}
+    keywords = requests.get('https://api.everypixel.com/v1/keywords', params=params, auth=(client_id, client_secret)).json()
+    imageName = file
+    with open(imageName,'rb') as image:
+        data = {'data': image}
+        keywords = requests.post('https://api.everypixel.com/v1/keywords', files=data, auth=(client_id, client_secret)).json()
+
+    classified_keywords = ""
+    print(keywords)#debug print out dictionary of keyword:confidence
+
+    for i in keywords['keywords']:
+        classified_keywords += "\n"
+        if i['score'] > 0.8: #filter keywords by high confidence
+            classified_keywords += i['keyword']
+            #print(i['keyword'])
+
+    print(classified_keywords)#debug print out high confidency keywords
+    
+    keywords = classified_keywords
+    return keywords
     
 #API implementation to generate caption TTS audio
 def generate_audio():
