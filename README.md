@@ -60,3 +60,4 @@ Language: Python, CSS, HTML, mySQL
 4. django-extensions
 5. requests
 6. gTTS
+7. iPython
