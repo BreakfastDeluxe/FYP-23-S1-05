@@ -59,3 +59,4 @@ Language: Python, CSS, HTML, mySQL
 3. Pillow
 4. django-extensions
 5. requests
+6. gTTS
