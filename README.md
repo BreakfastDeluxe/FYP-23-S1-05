@@ -58,3 +58,4 @@ Language: Python, CSS, HTML, mySQL
 2. numpy
 3. Pillow
 4. django-extensions
+5. requests
