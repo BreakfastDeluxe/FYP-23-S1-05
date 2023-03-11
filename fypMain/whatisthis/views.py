@@ -5,6 +5,8 @@ from django.contrib.auth.views import LoginView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
 
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -50,6 +52,16 @@ class SignUp(CreateView):
     success_url = reverse_lazy("login")
     template_name = "signup.html"
 
+def signup(request):
+    if request.method == 'POST':
+        sign_form = UserCreationForm(request.POST, instance=request.signup)
+
+        if sign_form.is_valid():
+            sign_form.save()
+            name = sign_form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' + name) 
+            return redirect(to='login')
+
 
 @login_required
 def user(request):
@@ -64,6 +76,10 @@ def user(request):
         user_form = UpdateUserForm(instance=request.user)
     return render(request, 'user.html', {'user_form': user_form})
 
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'change_password.html'
+    success_message = "Successfully Changed Your Password"
+    success_url = reverse_lazy('home')
 
 def upload_image(request):
 

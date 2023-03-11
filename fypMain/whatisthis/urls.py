@@ -29,6 +29,8 @@ urlpatterns = [
     path('upload_image', upload_image, name='upload_image'),
     path('display_image', display_image, name = 'display_image'),
     path('menu', menu, name='menu'),
+    path('user', user, name='user'),
+    path('password-change/', ChangePasswordView.as_view(), name='password_change'),
     path('logout', auth_views.LogoutView.as_view(), name='logout')
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
