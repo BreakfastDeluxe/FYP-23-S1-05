@@ -49,11 +49,14 @@ Language: Python, CSS, HTML, mySQL
 3. Check that the terminal path is correct "YOURSTORAGEPATH\FYP-23-S1-05"
 
 ###### django runserver - Start the webserver on your local machine for UI testing
+Having issues with this section? Check your dependencies (see next section)
 1. Navigate your CMDline to YOURSTORAGEPATH/FYP-23-S1-05/fypMain
 2. py manage.py runserver
 3. Access your devserver at http://127.0.0.1:8000/
 
 ###### Things to run in CMDline to install required dependencies
+You can also run: pip install -r requirements.txt to autoinstall required dependencies (may not always be updated!)
+
 1. opencv-python
 2. numpy
 3. Pillow
