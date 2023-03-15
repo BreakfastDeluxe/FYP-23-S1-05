@@ -8,5 +8,5 @@ from django.contrib.auth.models import User
 class Image(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     upload_Image = models.ImageField(upload_to='images/')
-    caption = None
-    keywords = None
+    caption = models.CharField(max_length = 255, blank=True, null=True)
+    keywords = models.CharField(max_length = 255, blank=True, null=True)
