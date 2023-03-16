@@ -8,16 +8,22 @@
         <title> Login </title>
 
         <style>
+            * {
+                justify-content: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
             
             body {
                 background: url('{% static 'background.png' %}');
-                background-size: 100%; 
-                background-position: center;
+                background-size: cover; 
+                background-position: center center;
                 background-repeat: no-repeat;
             }
 
             .user_card {
                 height: 600px; 
+                width: 600px;
                 margin-top: auto;
                 margin-bottom: auto; 
                 background: #FFD185; 
@@ -27,8 +33,9 @@
                 flex-direction: column; 
                 padding: 100px; 
                 border-style: solid;
-                border-radius: 20px;
+                border-radius: 30px;
                 outline: 3px #707070;
+                box-shadow: inset 20px 20px rgb(141 82 3 / 13%);
             }
 
             #id_username, #id_password {
@@ -38,8 +45,25 @@
                 background: #FFBA5C;
                 width: 250px;
                 height: 45px;
-
+                font-family: "lores-12", sans-serif;
+                font-weight: 700;
+                font-style: normal; 
+                text-transform: uppercase;
+                font-size: 20px;
+                letter-spacing: -0.5px;
             }
+
+            .mb-3 {
+                padding: 10px;
+            }
+
+            ::placeholder {
+                padding-left: 10px;
+                margin-left: auto;
+                margin-right: auto;
+                opacity: 1; /* Firefox */
+            }
+
 
             #form-title {
                 font-family: "lores-12", sans-serif;
@@ -49,7 +73,7 @@
                 font-size: 45px;
                 text-transform: uppercase;
                 position: relative; 
-                top: -70px;
+                letter-spacing: -2px;
             }
 
             #form-subtitle {
@@ -59,22 +83,47 @@
                 font-weight: 400;
                 font-style: normal;
                 position: relative; 
-                top: -40px;
+                font-size: 18px;
             }
 
 
-            #id_password {
-                padding-top:20px;
+            .btn.login_btn {
+                border: 3px #707070;
+                background-color: #00A6FF;
+                width: 250px;
+                border-style: solid;
+                border-radius: 30px;
+                color: white;
+                font-family: "lores-12", sans-serif;
+                font-weight: 700;
+                font-style: normal; 
+                font-size: 20px;
+                margin-bottom: 10px;
             }
 
-            .input-group {
-                padding:10px;
+            #form-forget {
+                padding: 10px 0px 0px;
+                margin: 0;
             }
 
-            #form_container {
-                position: relative; 
-                top:-10px;
+            #form-forget, #form-account,.form-check-inline {
+                font-family: "futura-pt", sans-serif;
+                font-weight: 400;
+                font-style: normal;
             }
+
+
+            .btn.create_btn {
+                border-style: solid; 
+                background: #707070;
+                font-family: "lores-12", sans-serif;
+                font-weight: 700;
+                font-style: normal;
+                font-size: 15px;
+                width: 200px;
+                color: white;
+            }
+
 
 
         </style>
@@ -82,6 +131,7 @@
     <body>
 
         <body>
+            {% csrf_token %}
             <div class="container h-100">
                 <div class="d-flex justify-content-center h-100">
                     <div class="user_card">
@@ -104,12 +154,25 @@
                                 </div>
                                 
                                 <div class="form-check form-check-inline">
-                                    {{ form.remember_me }} Remember me 
+                                    {{ form.remember_me }} Remember my account
                                   </div>
         
                                     <div class="d-flex justify-content-center mt-3 login_container">
                                          <input class="btn login_btn" type="submit" value="Login">
-                                       </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center form-link">
+                                        <p id="form-forget">Forgot your password?</p>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-center form-link">
+                                        <p id="form-account">Don't have an account?</p>
+                                    </div>
+                                    <div class="d-flex justify-content-center create_container">
+                                        <a href="{% url 'signup' %}" class="btn create_btn">Create Account</a>
+                                    </div>
+
+                                    
                             </form>
                         </div>
                 
@@ -123,5 +186,8 @@
     // set placeholder values in input fields 
     // Query input fields 
     
-    var form_fields = document.getElementsByTagName
+    var form_fields = document.getElementsByTagName('input'); 
+    form_fields[1].placeholder = "Username";
+    form_fields[2].placeholder = "Password";
+
 </script>
