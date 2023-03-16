@@ -59,3 +59,16 @@ class BlurTestCase(TestCase):
         blur_value2 = blur_check(imageTest_image_2.upload_Image.url)
         print('Is Blur 2: ' + blur_value2)
         self.assertIsNotNone(blur_value2)
+        
+class KeywordGenerationTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345!a')
+        login = self.client.login(username='testuser', password='12345!a')
+        Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage1.jpg')
+        Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage2.jpg')  
+        
+    def test_image_keywording(self):
+        imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
+        keywords = generate_keywords(imageTest_image_1.upload_Image.url)
+        print('Keywords: ' + keywords)
+        self.assertIsNotNone(keywords)
