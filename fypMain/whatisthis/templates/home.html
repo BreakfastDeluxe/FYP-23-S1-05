@@ -11,7 +11,7 @@
         <style>
 
             body {
-                background: url('{% static 'home-bg.jpg' %}'); 
+                background: url('{% static "home-bg.jpg" %}'); 
                 background-size: 100% 100%;
                 min-height: 100vh;
                 background-position: center center;
@@ -57,9 +57,29 @@
 
             .button-container { /*bring div to front*/ 
                 z-index:1; 
+                position: relative; 
+                bottom: 8vh;
             }
 
             .btn.login_btn, .btn.create_btn {
+                border: 3px #707070;
+                color: #00A6FF;
+                border-style: solid;
+                border-radius: 30px;
+                background-color: #FFBA5C;
+                font-family: "lores-12", sans-serif;
+                font-weight: 700;
+                font-style: normal; 
+                font-size: 20px;
+                width: 200px;
+                height: 50px;
+                color: #00A6FF;
+                text-decoration: none;
+                margin-left: auto;
+                margin-right:auto;
+            }
+
+            .btn.login_btn:active, .btn.create_btn:active { /*onclick button design remaines*/
                 border: 3px #707070;
                 color: #00A6FF;
                 border-style: solid;
@@ -81,23 +101,19 @@
                 font-size:18px;
             }
 
-
-
             @media (max-width: 768px) {
                 .body {
                     min-height: 10vh;
                 }
             }
 
-
-
         </style>
     </head>
     <body>
         <div class="wrapper-container"> <!-- wrap elements -->
             <div class="d-flex justify-content-center align-items-center items">
-                <img src="{% static "bubble.png" %}">
-                 <img src="{% static "title.png" %}"><br/>
+                <img src="{% static 'bubble.png' %}">
+                 <img src="{% static 'title.png' %}"><br/>
                     <p class="subtitle">Start detecting objects around you! </p>
             </div>
                 <div class="d-flex flex-column justify-content-center button-container">
