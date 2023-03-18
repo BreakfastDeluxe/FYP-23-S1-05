@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 
 from django.http import HttpResponse
@@ -76,10 +76,15 @@ def user(request):
         user_form = UpdateUserForm(instance=request.user)
     return render(request, 'user.html', {'user_form': user_form})
 
-class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
-    template_name = 'change_password.html'
-    success_message = "Successfully Changed Your Password"
-    success_url = reverse_lazy('home')
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'password_reset.html'
+    email_template_name = 'password_reset_email.html'
+    subject_template_name = 'password_reset_subject.txt'
+    success_message = "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+    success_url = reverse_lazy('login')
 
 def upload_image(request):
 

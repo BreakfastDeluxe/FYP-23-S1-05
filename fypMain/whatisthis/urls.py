@@ -20,6 +20,7 @@ from . import views
 from .views import * #import all functions from views.py
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import ResetPasswordView
 
 urlpatterns = [
     #path('', views.index, name='index'),
@@ -30,7 +31,13 @@ urlpatterns = [
     path('display_image', display_image, name = 'display_image'),
     path('menu', menu, name='menu'),
     path('user', user, name='user'),
-    path('password-change/', ChangePasswordView.as_view(), name='password_change'),
+    path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
+    path('password-reset-confirm/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),
+         name='password_reset_confirm'),
+    path('password-reset-complete/',
+         auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),
+         name='password_reset_complete'),
     path('logout', auth_views.LogoutView.as_view(), name='logout')
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
