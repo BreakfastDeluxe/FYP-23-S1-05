@@ -1,15 +1,17 @@
-<html>
+{% extends "base.html" %}
+{% block title %} Home Page {% endblock title%}
+{% block content %}
     <!-- this page is the main menu for all users, display buttons(start, gallery, account, logout)-->
     <head>
         <title> Menu </title>
     </head>
     <body>
         <div>
-            <h1> Welcome to WiT System Menu </h1>
+            <h1>Hello, <b>{{request.user}}</b></h1>
         </div>
         <a class="btn btn-primary" href="/upload_image">START</a>
         <!-- <a class="btn btn-primary" href="/gallery">GALLERY</a> -->
-        <a class="btn btn-primary" href="/user">ACCOUNT</a>
-        <p><a href="{% url 'logout'%}">Log Out</a></p>
+        <a class="btn btn-primary" href="profile">PROFILE</a>
+        <!--<p><a href="{% url 'logout'%}">Log Out</a></p>-->
     </body>
-    </html>
+{% endblock content %}
