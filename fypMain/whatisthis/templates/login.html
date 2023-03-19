@@ -131,7 +131,7 @@
     <body>
 
         <body>
-            {% csrf_token %}
+            
             <div class="container h-100">
                 <div class="d-flex justify-content-center h-100">
                     <div class="user_card">
@@ -145,6 +145,7 @@
                         </div>
                         <div class="d-flex justify-content-center form_container">
                             <form method="POST" action="">
+                                {% csrf_token %}
                                 <div class="input-group mb-3">
                                     {{ form.username }}
                                 </div>
