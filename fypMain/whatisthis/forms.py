@@ -18,7 +18,8 @@ class ImageForm(forms.ModelForm):
         def form_valid(self, form):
             form.instance.created_by = self.request.user
             return super().form_valid(form)
-        
+
+#inherit UserCreationForm and extend it to include an email field        
 class UserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
@@ -32,7 +33,8 @@ class UserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
-        
+
+#inherit AuthenticationForm and extend it to include remember_me boolean toggle        
 class LoginForm(AuthenticationForm):
     #username and password are inherited from AuthenticationForm
     remember_me = forms.BooleanField(required=False)
