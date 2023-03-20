@@ -164,7 +164,7 @@
 
                                 <span class="d-flex flex-column justify-content-center requirements">
                                     <li>
-                                        4-12 letters, numbers or spaces 
+                                        letters, numbers, symbols or spaces 
                                     </li>
                                     <li>
                                         Do not use your real name
@@ -188,6 +188,16 @@
                                 <div class="input-group mb-2">
                                     {{ form.password2 }} 
                                 </div>
+
+                                {% if form.errors %}
+                                    {% for field, errors in form.errors.items %}
+                                        {% for error in errors %}
+                                        <span class="d-flex flex-column justify-content-center requirements">
+                                            {{ error }}
+                                        </span>
+                                        {%endfor%}
+                                    {%endfor%}
+                                {% endif %}
 
                                 <div class="d-flex justify-content-center mt-3 submit_container">
                                     <input class="btn login_btn" type="submit" value="Login">

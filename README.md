@@ -64,3 +64,4 @@ You can also run: pip install -r requirements.txt to autoinstall required depend
 5. requests
 6. gTTS
 7. iPython
+8. python-dotenv
