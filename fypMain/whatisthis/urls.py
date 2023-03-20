@@ -20,6 +20,7 @@ from . import views
 from .views import * #import all functions from views.py
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import ResetPasswordView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
@@ -29,8 +30,18 @@ urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),
     path("signup/", views.SignUp.as_view(), name="signup"),
     path('upload_image', upload_image, name='upload_image'),
-    path('display_image', display_image, name = 'display_image'),
+    #path('display_image', display_image, name = 'display_image'),
     path('menu', menu, name='menu'),
+    path('user', user, name='user'),
+    #path('profile/', profile, name='profile'),
+    path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
+    path('password-reset-confirm/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),
+         name='password_reset_confirm'),
+    path('password-reset-complete/',
+         auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),
+         name='password_reset_complete'),
+    path('password-change/', ChangePasswordView.as_view(), name='password_change'),
     path('logout', auth_views.LogoutView.as_view(), name='logout')
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
