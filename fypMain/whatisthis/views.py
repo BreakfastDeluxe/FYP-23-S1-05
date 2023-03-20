@@ -227,3 +227,15 @@ def generate_audio(text, file):
     tts.save(save_path)
 
     return save_path
+
+
+
+# Model implementation
+import joblib
+from django.shortcuts import render
+
+#Is this folder path??? hmmm
+load_model = joblib.load('/FYP-23-S1-05/fypMain/whatisthis/MLmodel/model.joblib')
+
+def predict(request):
+    user_img = [request.POST.get('image')]
