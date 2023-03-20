@@ -36,3 +36,5 @@ def save(self, *args, **kwargs):
         new_img = (100, 100)
         img.thumbnail(new_img)
         img.save(self.avatar.path)
+    caption = models.CharField(max_length = 255, blank=True, null=True)
+    keywords = models.CharField(max_length = 255, blank=True, null=True)

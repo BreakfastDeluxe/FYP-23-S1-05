@@ -25,7 +25,8 @@ class ImageTestCase(TestCase):
         Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage1.jpg')
         Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage2.jpg', caption = 'unitTestCaption2', keywords = 'unitTestCaption2')
         
-    def test_image_creation(self):
+
+    def test_image_data(self):
         imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
         print('Test case: ' + str(imageTest_image_1.upload_Image))
         self.assertEqual(str(imageTest_image_1.created_by), 'testuser')
@@ -72,3 +73,4 @@ class KeywordGenerationTestCase(TestCase):
         keywords = generate_keywords(imageTest_image_1.upload_Image.url)
         print('Keywords: ' + keywords)
         self.assertIsNotNone(keywords)
+        

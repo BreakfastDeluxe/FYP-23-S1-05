@@ -65,22 +65,20 @@ def signup(request):
             return redirect(to='login')
 
 @login_required
-def profile(request):
+def user(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
         
-
         if user_form.is_valid():
             user_form.save()
-            
             messages.success(request, 'Your profile is updated successfully')
             return redirect(to='menu')
     else:
         user_form = UpdateUserForm(instance=request.user)
         
-
     return render(request, 'profile.html', {'user_form': user_form})
-
+"""
+#deprecated
 @login_required
 def user(request):
     if request.method == 'POST':
@@ -93,7 +91,7 @@ def user(request):
     else:
         user_form = UpdateUserForm(instance=request.user)
     return render(request, 'user.html', {'user_form': user_form})
-
+"""
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     template_name = 'password_reset.html'
     email_template_name = 'password_reset_email.html'
