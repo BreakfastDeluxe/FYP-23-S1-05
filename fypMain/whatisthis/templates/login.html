@@ -155,13 +155,21 @@
                                 </div>
                                 
                                 <div class="form-check form-check-inline">
-                                    {{ form.remember_me }} Remember my account
+                                    {{ form.remember_me }} Remember Me
                                   </div>
         
                                     <div class="d-flex justify-content-center mt-3 login_container">
                                          <input class="btn login_btn" type="submit" value="Login">
                                     </div>
-
+                                    {% if form.errors %}
+                                        {% for field, errors in form.errors.items %}
+                                            {% for error in errors %}
+                                            <div class="d-flex justify-content-center form-link">
+                                                <p id="form-account">{{ error }}</p>
+                                            </div>
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {% endif %}
                                     <div class="d-flex justify-content-center form-link">
                                         <p id="form-forget">Forgot your password? <a href="{% url 'password_reset' %}" class="ml-2">Reset here</a></p>
                                     </div>
