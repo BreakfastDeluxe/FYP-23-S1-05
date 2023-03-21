@@ -118,6 +118,12 @@ def upload_image(request):
             author.save()
             form.save_m2m()
             form.save()
+
+            # ====== ML part ======
+            image = form.save()
+            prediction = predict_image_class(image.upload_image.path)
+            #=========
+
             # Getting the current instance object to display in the template
             id = request.user  # get current userid
             # Images = Image.objects.filter(created_by_id=id)#retrieve all image objects, filtered by current userid
@@ -127,7 +133,7 @@ def upload_image(request):
             blur_value = blur_check(Images.upload_Image.url)
             keywords = generate_keywords(file)
             audio = generate_audio(keywords, file)
-            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio})
+            return render(request, 'upload_image.html', {'form': form,'prediction': prediction, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio})
     else:
         form = ImageForm()
 
@@ -235,13 +241,32 @@ import joblib
 from django.shortcuts import render
 
 #Is this folder path??? hmmm
-load_model = joblib.load('/FYP-23-S1-05/fypMain/whatisthis/MLmodel/model.joblib')
+load_model = joblib.load('model.joblib')
+
+def preprocess_image(image):
+    
+    img = Image.open(image) # Open the image using PIL
+    img = img.resize((128, 128))
+    img_array = np.array(img) #Convert the image to a numpy array
+    img_array = img_array / 255.0 #Normalize
+    img_array = np.expand_dims(img_array, axis=0)
+
+    return img_array
+
+def predict_image_class(image):
+
+    img_array = preprocess_image(image)
+    prediction = load_model.predict(img_array)
+
+    #0 for cat, 1 for dog
+    return prediction[0]
 
 def predict(request):
     if request.method == 'POST':
         image_file = request.FILES['image']
         img = Image.open(image_file).convert('RGB')
         img = img.resize((128, 128)) #resize to model input size
+        img = img/255 #normalize 
 
         #Convert image to array
         img_arr = np.array(img)

@@ -24,7 +24,16 @@
                 </audio>
             </div>
             <a class="btn btn-primary" href="menu">Menu</a>
-        {% endif %}  
+        {% endif %}
+        
+        {% if prediction is not None %}
+            {% if prediction == 0 %}
+                <p>The uploaded image is a cat.</p>
+            {% else %}
+                <p>The uploaded image is a dog.</p>
+            {% endif %}
+        {% endif %}
+
     
     {% endblock content %}  
     </body>
