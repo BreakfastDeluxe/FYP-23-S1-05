@@ -19,6 +19,7 @@ import argparse
 import glob
 import numpy as np
 import requests
+from PIL import Image
 
 # Create your views here.
 
@@ -121,7 +122,7 @@ def upload_image(request):
 
             # ====== ML part ======
             image = form.save()
-            prediction = predict_image_class(image.upload_image.path)
+            prediction = predict_image_class(image.upload_Image.path)
             #=========
 
             # Getting the current instance object to display in the template
@@ -241,7 +242,7 @@ import joblib
 from django.shortcuts import render
 
 #Is this folder path??? hmmm
-load_model = joblib.load('model.joblib')
+load_model = joblib.load('/Users/brandontan/Desktop/FYP/untitled folder/FYP-23-S1-05/fypMain/whatisthis/MLmodel/model.joblib')
 
 def preprocess_image(image):
     
@@ -261,6 +262,7 @@ def predict_image_class(image):
     #0 for cat, 1 for dog
     return prediction[0]
 
+'''
 def predict(request):
     if request.method == 'POST':
         image_file = request.FILES['image']
@@ -283,3 +285,4 @@ def predict(request):
                             # that display the label
         return render(request, 'prediction_result.html', {'label': label})
     return render(request, 'upload_image.html')
+'''
