@@ -21,6 +21,12 @@ import numpy as np
 import requests
 from PIL import Image
 
+import os
+import pandas as pd
+import tensorflow as tf
+from tensorflow import keras
+
+
 # Create your views here.
 
 
@@ -242,7 +248,7 @@ import joblib
 from django.shortcuts import render
 
 #Is this folder path??? hmmm
-load_model = joblib.load('/Users/brandontan/Desktop/FYP/untitled folder/FYP-23-S1-05/fypMain/whatisthis/MLmodel/model2.joblib')
+load_model = joblib.load('/Users/brandontan/Desktop/FYP/untitled folder/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn.joblib')
 
 def preprocess_image(image):
     
