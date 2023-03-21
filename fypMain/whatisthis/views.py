@@ -248,7 +248,7 @@ import joblib
 from django.shortcuts import render
 
 #Is this folder path??? hmmm
-load_model = joblib.load('/Users/brandontan/Desktop/FYP/untitled folder/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn.joblib')
+load_model = joblib.load('/Users/brandontan/Desktop/FYP/untitled folder/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib')
 
 def preprocess_image(image):
     
