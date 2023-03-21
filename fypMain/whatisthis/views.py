@@ -20,6 +20,8 @@ import glob
 import numpy as np
 import requests
 
+import joblib
+
 # Create your views here.
 
 
@@ -227,3 +229,38 @@ def generate_audio(text, file):
     tts.save(save_path)
 
     return save_path
+
+
+
+#ML implementation here
+model_load = joblib.load('/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMain/whatisthis/MLmodel/model.joblib')
+
+from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
+from PIL import Image
+import numpy as np
+
+def predict_image(request):
+    #Check if POST and got uploaded file inside or not
+    if request.method == 'POST' and request.FILES['image']:
+        
+        uploaded_image = request.FILES['image']
+        
+        # Save the image to disk
+        #fs = FileSystemStorage()
+        #filename = fs.save(uploaded_image.name, uploaded_image)
+        #file_url = fs.url(filename)
+
+        img = Image.open(uploaded_image).convert('RGB')
+        img = img.resize((128, 128)) 
+        img = np.array(img) / 255.0 # Normalize 
+        
+        # Make the prediction
+        pred = model_load.predict(np.array([img]))
+        label = 'Dog' if pred[0] == 1 else 'Cat'
+
+        return render(request, 'display_image.html', {'label': label})
+    
+    return render(request, 'index.html')
+
+

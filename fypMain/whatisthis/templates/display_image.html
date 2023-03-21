@@ -13,6 +13,11 @@
             <img src="{{ image }}" class="img-responsive" style="width: 100%; float: left; margin-right: 10px;" />
             {{blur}}
         </div>
+        <div>
+            {% if label%}
+            <p> The image is a {{ label }}</p>
+            {% endif %}
+        </div>
         <a class="btn btn-primary" href="menu">Menu</a>
     </body>
 </html>
