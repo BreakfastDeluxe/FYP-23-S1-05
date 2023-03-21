@@ -134,6 +134,7 @@ def upload_image(request):
         form = ImageForm()
 
     return render(request, 'upload_image.html', {'form': form})
+	
 
 
 def display_image(request):
@@ -237,7 +238,7 @@ model_load = joblib.load('/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMai
 
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
-from PIL import Image
+from PIL import Image as myImage
 import numpy as np
 
 def predict_image(request):
@@ -251,7 +252,7 @@ def predict_image(request):
         #filename = fs.save(uploaded_image.name, uploaded_image)
         #file_url = fs.url(filename)
 
-        img = Image.open(uploaded_image).convert('RGB')
+        img = myImage.open(uploaded_image).convert('RGB')
         img = img.resize((128, 128)) 
         img = np.array(img) / 255.0 # Normalize 
         
