@@ -238,4 +238,23 @@ from django.shortcuts import render
 load_model = joblib.load('/FYP-23-S1-05/fypMain/whatisthis/MLmodel/model.joblib')
 
 def predict(request):
-    user_img = [request.POST.get('image')]
+    if request.method == 'POST':
+        image_file = request.FILES['image']
+        img = Image.open(image_file).convert('RGB')
+        img = img.resize((128, 128)) #resize to model input size
+
+        #Convert image to array
+        img_arr = np.array(img)
+        img_arr = np.expand_dims(img_arr, axis = 0)
+
+        #predict
+        pred = load_model.predict(img_arr)
+
+        if pred == 0:
+            label = 'cat'
+        else:
+            label = 'dog'
+                            #Need to create a prediction_result.html page
+                            # that display the label
+        return render(request, 'prediction_result.html', {'label': label})
+    return render(request, 'upload_image.html')
