@@ -1,0 +1,6 @@
+import joblib
+
+from tensorflow import keras
+
+model_path = '/Users/brandontan/Desktop/FYP/untitled folder/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib'
+loaded_model = joblib.load(model_path)

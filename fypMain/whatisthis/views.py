@@ -20,6 +20,7 @@ import glob
 import numpy as np
 import requests
 from PIL import Image
+from joblib import load
 
 import os
 import pandas as pd
@@ -244,11 +245,11 @@ def generate_audio(text, file):
 
 
 # Model implementation
-import joblib
-from django.shortcuts import render
 
 #Is this folder path??? hmmm
-load_model = joblib.load('/Users/brandontan/Desktop/FYP/untitled folder/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib')
+#model_path = '/Users/brandontan/Desktop/FYP/untitled folder/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib'
+load_model = load('/Users/brandontan/Desktop/FYP/untitled folder/FYP-23-S1-05/fypMain/whatisthis/MLmodel/model.joblib')
+
 
 def preprocess_image(image):
     
