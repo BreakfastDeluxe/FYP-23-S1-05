@@ -21,6 +21,7 @@ import numpy as np
 import requests
 
 import joblib
+from django.conf import settings
 
 # Create your views here.
 
@@ -129,7 +130,8 @@ def upload_image(request):
             blur_value = blur_check(Images.upload_Image.url)
             keywords = generate_keywords(file)
             audio = generate_audio(keywords, file)
-            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio})
+            label = predict_image(file)
+            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio, 'label': label})
     else:
         form = ImageForm()
 
@@ -234,34 +236,49 @@ def generate_audio(text, file):
 
 
 #ML implementation here
-model_load = joblib.load('/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMain/whatisthis/MLmodel/model.joblib')
+
 
 from django.shortcuts import render
-from django.core.files.storage import FileSystemStorage
 from PIL import Image as myImage
 import numpy as np
 
-def predict_image(request):
-    #Check if POST and got uploaded file inside or not
-    if request.method == 'POST' and request.FILES['image']:
-        
-        uploaded_image = request.FILES['image']
-        
-        # Save the image to disk
-        #fs = FileSystemStorage()
-        #filename = fs.save(uploaded_image.name, uploaded_image)
-        #file_url = fs.url(filename)
+def predict_image(file):
 
-        img = myImage.open(uploaded_image).convert('RGB')
-        img = img.resize((128, 128)) 
-        img = np.array(img) / 255.0 # Normalize 
-        
-        # Make the prediction
-        pred = model_load.predict(np.array([img]))
-        label = 'Dog' if pred[0] == 1 else 'Cat'
+    model_load = joblib.load('/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib')
 
-        return render(request, 'display_image.html', {'label': label})
+    #type(model_load)
+    #print(type(model_load))
+    #print(dir(model_load))
+    file = '.'+file  # look one folder above to ./media/images
     
-    return render(request, 'index.html')
+    img = myImage.open(file).convert('RGB')
+    img = img.resize((128, 128)) 
+    img = np.array(img) / 255.0 # Normalize 
+        
+	# Make the prediction
+    pred = model_load.predict(np.array([img]))
+    label = 'Dog' if pred[0] == 1 else 'Cat'
+    
+    return label
 
+'''
+def predict_image(file):
+
+    model_load = joblib.load('/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib')
+
+    #type(model_load)
+    #print(type(model_load))
+    #print(dir(model_load))
+    file = '.'+file  # look one folder above to ./media/images
+    
+    img = myImage.open(file).convert('RGB')
+    img = img.resize((128, 128)) 
+    img = np.array(img) / 255.0 # Normalize 
+        
+	# Make the prediction
+    pred = model_load.predict(np.array([img]))
+    label = 'Dog' if pred[0] == 1 else 'Cat'
+    
+    return label
+'''
 
