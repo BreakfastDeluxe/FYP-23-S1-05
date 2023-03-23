@@ -153,6 +153,17 @@ def display_image(request):
         # send template and model to renderer
         return render(request, 'display_image.html', {'image': file, 'blur': blur_value})
 
+#allow current user to delete their own account
+#initially links to prompt page to confirm delete
+@login_required
+def delete_user(request):
+    user = request.user
+    if request.method == 'POST':
+        user.delete()
+        return redirect(to='login')
+
+    return render(request, 'delete_user.html')
+
 # HELPER FUNCTIONS
 
 # openCV2 implementation to determine blur level
@@ -232,53 +243,3 @@ def generate_audio(text, file):
     tts.save(save_path)
 
     return save_path
-
-
-
-#ML implementation here
-
-
-from django.shortcuts import render
-from PIL import Image as myImage
-import numpy as np
-
-def predict_image(file):
-
-    model_load = joblib.load('/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib')
-
-    #type(model_load)
-    #print(type(model_load))
-    #print(dir(model_load))
-    file = '.'+file  # look one folder above to ./media/images
-    
-    img = myImage.open(file).convert('RGB')
-    img = img.resize((128, 128)) 
-    img = np.array(img) / 255.0 # Normalize 
-        
-	# Make the prediction
-    pred = model_load.predict(np.array([img]))
-    label = 'Dog' if pred[0] == 1 else 'Cat'
-    
-    return label
-
-'''
-def predict_image(file):
-
-    model_load = joblib.load('/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib')
-
-    #type(model_load)
-    #print(type(model_load))
-    #print(dir(model_load))
-    file = '.'+file  # look one folder above to ./media/images
-    
-    img = myImage.open(file).convert('RGB')
-    img = img.resize((128, 128)) 
-    img = np.array(img) / 255.0 # Normalize 
-        
-	# Make the prediction
-    pred = model_load.predict(np.array([img]))
-    label = 'Dog' if pred[0] == 1 else 'Cat'
-    
-    return label
-'''
-
