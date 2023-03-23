@@ -107,7 +107,7 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     success_message = "Successfully Changed Your Password"
     success_url = reverse_lazy('menu')
 
-
+import base64
 def upload_image(request):
 
     if request.method == 'POST':
@@ -124,10 +124,15 @@ def upload_image(request):
             # getting latest uploaded Image by id attribute
             Images = Image.objects.latest('id')
             file = Images.upload_Image.url
-            blur_value = blur_check(Images.upload_Image.url)
+            #blur checking function
+            blur_value = blur_check(Images.upload_Image.url)\
+            #keyword generation function (everypixel API)
             keywords = generate_keywords(file)
+            #audio generation function (GTTS)
             audio = generate_audio(keywords, file)
-            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio})
+            #image classifier (pytorch - DenseNet pretrained model)
+            img_class = get_classification(file)
+            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio, 'img_class' : img_class})
     else:
         form = ImageForm()
 
@@ -239,3 +244,52 @@ def generate_audio(text, file):
 
     return save_path
 
+#pytorch helpers
+
+from torchvision import models
+from torchvision import transforms
+from django.conf import settings
+import json, io
+import PIL.Image
+
+model_DenseNet = models.densenet121(pretrained=True)
+model_DenseNet.eval()
+
+json_path = os.path.join(settings.STATIC_ROOT, "imagenet_class_index.json")
+imagenet_mapping = json.load(open(json_path))
+
+from torchvision import transforms
+
+def transform_image(image_bytes):
+    """
+    Transform image into required DenseNet format: 224x224 with 3 RGB channels and normalized.
+    Return the corresponding tensor.
+    """
+    my_transforms = transforms.Compose([transforms.Resize(255),
+                                        transforms.CenterCrop(224),
+                                        transforms.ToTensor(),
+                                        transforms.Normalize(
+                                            [0.485, 0.456, 0.406],
+                                            [0.229, 0.224, 0.225])])
+    image = PIL.Image.open(io.BytesIO(image_bytes))
+    return my_transforms(image).unsqueeze(0)
+
+
+def get_classification(file):
+    """For given image bytes, predict the label using the pretrained DenseNet"""
+    # Load image (it is loaded as BGR by default)
+    file = '.'+file  # look one folder above to ./media/images
+    image = cv2.imread(file)
+    # Conver array to RGB
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    # image encoding
+    success, encoded_image = cv2.imencode('.jpeg', image)
+    # convert encoded image to bytearray
+    content_bytes = encoded_image.tobytes()
+    #print(content_bytes)
+    tensor = transform_image(content_bytes)
+    outputs = model_DenseNet.forward(tensor)
+    _, y_hat = outputs.max(1)
+    predicted_idx = str(y_hat.item())
+    class_name, human_label = imagenet_mapping[predicted_idx]
+    return human_label
