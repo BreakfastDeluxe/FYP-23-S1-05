@@ -65,3 +65,4 @@ You can also run: pip install -r requirements.txt to autoinstall required depend
 6. gTTS
 7. iPython
 8. python-dotenv
+9. Django_recaptcha

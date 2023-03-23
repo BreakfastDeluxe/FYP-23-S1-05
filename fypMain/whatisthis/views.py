@@ -42,6 +42,10 @@ class Login(LoginView):
         if not remember_me:
             self.request.session.set_expiry(0)  # if remember me is
             self.request.session.modified = True
+        else:
+            for key, error in list(form.errors.items()):
+                if key == 'captcha' and error[0] == 'This field is required.':
+                    messages.error(self.request, "You must pass the reCAPTCHA test")    
         return super(Login, self).form_valid(form)
 
 
