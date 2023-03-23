@@ -28,12 +28,10 @@
                             {{ user_form.email }}
                     </div>
                     <div class="form-group">
-                        <a href="{% url 'password_change' %}">Change Password</a>
+                        <a href="{% url 'password_change' %}">Change Password</a></br>
+                        <a href="{% url 'delete_user' %}">Delete Account</a>
                         <hr>
-                        <!--<label class="small mb-1">Change Avatar:</label>
-                        {{ profile_form.avatar }}-->
                     </div>
-                    <!--<label class="small mb-1">Bio:</label> {{ profile_form.bio }}-->
                 </div>
             </div>
             <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
