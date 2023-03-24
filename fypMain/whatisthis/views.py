@@ -107,6 +107,9 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     success_message = "Successfully Changed Your Password"
     success_url = reverse_lazy('menu')
 
+def history(request): 
+    return render(request, "history.html")
+
 
 def upload_image(request):
 
