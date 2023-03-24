@@ -107,7 +107,7 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     success_message = "Successfully Changed Your Password"
     success_url = reverse_lazy('menu')
 
-import base64
+
 def upload_image(request):
 
     if request.method == 'POST':
@@ -132,6 +132,10 @@ def upload_image(request):
             audio = generate_audio(keywords, file)
             #image classifier (pytorch - DenseNet pretrained model)
             img_class = get_classification(file)
+            #image captioner (DO NOT USE FOR NOW)
+            #img_cap = get_caption(file)
+            #print("debug - Image Cap")
+            #print(img_cap)
             return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio, 'img_class' : img_class})
     else:
         form = ImageForm()
@@ -274,9 +278,7 @@ def transform_image(image_bytes):
     image = PIL.Image.open(io.BytesIO(image_bytes))
     return my_transforms(image).unsqueeze(0)
 
-
-def get_classification(file):
-    """For given image bytes, predict the label using the pretrained DenseNet"""
+def img_to_bytes(file):
     # Load image (it is loaded as BGR by default)
     file = '.'+file  # look one folder above to ./media/images
     image = cv2.imread(file)
@@ -285,7 +287,12 @@ def get_classification(file):
     # image encoding
     success, encoded_image = cv2.imencode('.jpeg', image)
     # convert encoded image to bytearray
-    content_bytes = encoded_image.tobytes()
+    return encoded_image.tobytes()
+    
+def get_classification(file):
+    """For given image bytes, predict the label using the pretrained DenseNet"""
+    # convert encoded image to bytearray
+    content_bytes = img_to_bytes(file)
     #print(content_bytes)
     tensor = transform_image(content_bytes)
     outputs = model_DenseNet.forward(tensor)
@@ -293,3 +300,8 @@ def get_classification(file):
     predicted_idx = str(y_hat.item())
     class_name, human_label = imagenet_mapping[predicted_idx]
     return human_label
+
+from .img_caption import inference
+def get_caption(file):
+    content_bytes= img_to_bytes(file)
+    return inference(content_bytes)
