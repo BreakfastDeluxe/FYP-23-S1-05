@@ -34,6 +34,7 @@ urlpatterns = [
     path('menu', menu, name='menu'),
     path('user', user, name='user'),
     path('history', history, name='gallery'), #url for images displayed
+    path('delete_user', delete_user, name='delete_user'),
     #path('profile/', profile, name='profile'),
     path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
     path('password-reset-confirm/<uidb64>/<token>/',

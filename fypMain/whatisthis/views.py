@@ -151,6 +151,17 @@ def display_image(request):
         # send template and model to renderer
         return render(request, 'display_image.html', {'image': file, 'blur': blur_value})
 
+#allow current user to delete their own account
+#initially links to prompt page to confirm delete
+@login_required
+def delete_user(request):
+    user = request.user
+    if request.method == 'POST':
+        user.delete()
+        return redirect(to='login')
+
+    return render(request, 'delete_user.html')
+
 # HELPER FUNCTIONS
 
 # openCV2 implementation to determine blur level
@@ -230,3 +241,4 @@ def generate_audio(text, file):
     tts.save(save_path)
 
     return save_path
+
