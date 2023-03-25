@@ -243,3 +243,27 @@ def generate_audio(text, file):
     tts.save(save_path)
 
     return save_path
+
+from django.shortcuts import render
+from PIL import Image as myImage
+import numpy as np
+import keras
+
+model_load = joblib.load('/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib')
+
+def predict_image(file):
+
+    #type(model_load)
+    #print(type(model_load))
+    #print(dir(model_load))
+    #file = '.'+file  # look one folder above to ./media/images
+    
+    img = myImage.open(file).convert('RGB')
+    img = img.resize((128, 128)) 
+    img = np.array(img) / 255.0 # Normalize 
+        
+	# Make the prediction
+    pred = model_load.predict(np.array([img]))
+    label = 'Dog' if pred[0] == 1 else 'Cat'
+    
+    return label
