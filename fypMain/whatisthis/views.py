@@ -254,7 +254,6 @@ import numpy as np
 import keras
 import os
 from joblib import load
-import pickle
 
 def predict_image(file):
     
@@ -273,6 +272,6 @@ def predict_image(file):
         
 	# Make the prediction
     pred = model_load.predict(np.array([img]))
-    label = 'Dog' if pred[0] == 1 else 'Cat'
+    label = 'Dog' if pred[0] >= 0.5 else 'Cat'
     
     return label
