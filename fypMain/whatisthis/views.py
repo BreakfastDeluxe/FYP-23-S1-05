@@ -19,6 +19,7 @@ import argparse
 import glob
 import numpy as np
 import requests
+import zlib
 
 import joblib
 from django.conf import settings
@@ -251,16 +252,28 @@ from django.shortcuts import render
 from PIL import Image as myImage
 import numpy as np
 import keras
-
-model_load = joblib.load('/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib')
+import os
+from joblib import load
+import pickle
 
 def predict_image(file):
+    
+    model_path = './mlmodel/cnn_model.joblib'
 
+    if os.path.exists(model_path):
+        model_load = joblib.load(model_path)
+    else:
+        raise Exception(f"{model_path} does not exist")
+    
     #type(model_load)
     #print(type(model_load))
     #print(dir(model_load))
-    #file = '.'+file  # look one folder above to ./media/images
-    
+    file = '.'+file  # look one folder above to ./media/images
+    #model_path = '/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib'
+    #print(os.path.exists(model_path))
+    #model_load = joblib.load(model_path)
+    #model_load = open(os.path.join(settingsShow.BASE_DIR, 'whatisthis/MLmodel/cnn_model.joblib'))
+
     img = myImage.open(file).convert('RGB')
     img = img.resize((128, 128)) 
     img = np.array(img) / 255.0 # Normalize 

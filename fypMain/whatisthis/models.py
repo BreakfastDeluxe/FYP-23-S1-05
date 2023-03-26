@@ -38,3 +38,8 @@ def save(self, *args, **kwargs):
         img.save(self.avatar.path)
     caption = models.CharField(max_length = 255, blank=True, null=True)
     keywords = models.CharField(max_length = 255, blank=True, null=True)
+
+
+#Brandon changes start here
+class MLModel(models.Model):
+    model_file = models.FileField(upload_to ='cnn_model.joblib')

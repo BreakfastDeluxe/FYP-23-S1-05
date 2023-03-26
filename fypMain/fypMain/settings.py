@@ -132,7 +132,11 @@ LOGOUT_REDIRECT_URL = "/" #redirects to home page on logout
 ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
 def location(f):
     return os.path.join(ROOT_DIR, f)
+#Original
 MEDIA_ROOT = location('media/')
+#Brandon changes start here
+
+#Brandon changes end here
 MEDIA_URL = '/media/'
 
 from dotenv import load_dotenv

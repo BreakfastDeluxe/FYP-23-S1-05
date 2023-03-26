@@ -74,3 +74,21 @@ class KeywordGenerationTestCase(TestCase):
         print('Keywords: ' + keywords)
         self.assertIsNotNone(keywords)
         
+class PredictTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345!a')
+        login = self.client.login(username='testuser', password='12345!a')
+        Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage1.jpg')
+        
+    def testPrediction(self):
+        imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
+        file = imageTest_image_1.upload_Image.url
+        print("predict unit testing start")
+        model_load = joblib.load('/Users/brandontan/Desktop/FYP/num2/FYP-23-S1-05/fypMain/whatisthis/MLmodel/cnn_model.joblib')
+        print("Load model test:")
+        self.assertIsNotNone(model_load)
+        print("predict_image method test:")
+        label = predict_image(file)
+        print(label)
+        self.assertIsNotNone(label)
+        print('predict unit test end')

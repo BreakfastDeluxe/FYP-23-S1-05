@@ -2,31 +2,6 @@
 {% load static %}
 <!-- this page is the image upload function for users, display button(upload)
     this page will include display_image to display back the uploaded image to the user-->
-<<<<<<< HEAD
-    <head>
-        <meta charset="UTF-8">
-        <title>Upload_image</title>
-    </head>
-    <body>
-            {% block content %}  
-        <form method="post" enctype="multipart/form-data">  
-            {% csrf_token %}  
-            {{ form.as_p }}  
-            <button type="submit">Upload</button>  
-        </form>  
-        <!-- if an image was uploaded, display it and the blur check result -->
-        {% if image %}  
-            <h3>Succesfully uploaded</h3>  
-            <p><img src="{{ image}}" alt="connect" style="max-height:300px"></p>  
-            {{blur}}
-            
-            <p> The image is a {{ label }}</p>
-            <div style="margin-top: 30px; margin-bottom: 50px;" class="center">
-                <audio controls style="width: 60%;">
-                    <source src="{{audio}}" type="audio/ogg">
-                    Your browser does not support the audio element.
-                </audio>
-=======
 
 <head>
     <meta charset="UTF-8">
@@ -204,7 +179,6 @@
             </div>
             <div class="d-flex introduction-img">
                 <img src="{% static 'girl.png' %}">
->>>>>>> bcbf8cafc18e35df8661118dc58e709bd2b5bb4e
             </div>
 
         </div>
