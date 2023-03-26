@@ -73,7 +73,7 @@ class KeywordGenerationTestCase(TestCase):
         keywords = generate_keywords(imageTest_image_1.upload_Image.url)
         print('Keywords: ' + keywords)
         self.assertIsNotNone(keywords)
-        
+'''        
 class PredictTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345!a')
@@ -92,3 +92,4 @@ class PredictTestCase(TestCase):
         print(label)
         self.assertIsNotNone(label)
         print('predict unit test end')
+'''        

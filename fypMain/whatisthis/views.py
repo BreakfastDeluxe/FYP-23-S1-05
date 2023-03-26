@@ -258,7 +258,7 @@ import pickle
 
 def predict_image(file):
     
-    model_path = './mlmodel/cnn_model.joblib'
+    model_path = './whatisthis/MLmodel/cnn_model.joblib'
 
     if os.path.exists(model_path):
         model_load = joblib.load(model_path)
