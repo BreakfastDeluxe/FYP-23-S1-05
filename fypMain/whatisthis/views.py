@@ -128,7 +128,7 @@ def upload_image(request):
             Images = Image.objects.latest('id')
             file = Images.upload_Image.url
             #blur checking function
-            blur_value = blur_check(Images.upload_Image.url)\
+            blur_value = blur_check(Images.upload_Image.url)
             #keyword generation function (everypixel API)
             keywords = generate_keywords(file)
             #audio generation function (GTTS)
@@ -225,12 +225,18 @@ def generate_keywords(file):
 
     classified_keywords = ""
     print(keywords)  # debug print out dictionary of keyword:confidence
-    #iterate though dictionary to extract keywords
-    for i in keywords['keywords']:
-        classified_keywords += "\n"
-        if i['score'] > 0.6:  # filter keywords by high confidence
-            classified_keywords += i['keyword']
-            # print(i['keyword'])
+    if(keywords):
+        #iterate though dictionary to extract keywords
+        for i in keywords['keywords']:
+            classified_keywords += "\n"
+            if i['score'] > 0.6:  # filter keywords by high confidence
+                classified_keywords += i['keyword']
+                # print(i['keyword'])
+            else:
+                classified_keywords += 'Low Confidence: '
+                classified_keywords += i['keyword']
+    else:
+        classified_keywords = 'Error: No Keywords could be generated'
 
     print(classified_keywords)  # debug print out high confidency keywords
 
@@ -259,7 +265,8 @@ from django.conf import settings
 import json, io
 import PIL.Image
 
-model_DenseNet = models.densenet121(pretrained=True)
+#model_DenseNet = models.densenet121(pretrained=True)
+model_DenseNet = models.densenet121(weights='DenseNet121_Weights.DEFAULT')
 model_DenseNet.eval()
 
 json_path = os.path.join(settings.STATIC_ROOT, "imagenet_class_index.json")

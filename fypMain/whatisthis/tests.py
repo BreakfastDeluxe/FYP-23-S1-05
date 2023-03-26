@@ -4,6 +4,7 @@ from .views import *
 
 # Create your tests here.
 
+#test the object models.User [from django.contrib.auth.models]
 class UserTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345!a')
@@ -18,6 +19,7 @@ class UserTestCase(TestCase):
         self.assertFalse(login)
         print('Login Fail Test OK')
 
+#test the object models.Image
 class ImageTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345!a')
@@ -43,6 +45,7 @@ class ImageTestCase(TestCase):
         self.assertIsNotNone(imageTest_image_2.keywords)
         print('Test keywords: ' + str(imageTest_image_2.keywords))
 
+#test the function views.blue_check(file)
 class BlurTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345!a')
@@ -61,12 +64,12 @@ class BlurTestCase(TestCase):
         print('Is Blur 2: ' + blur_value2)
         self.assertIsNotNone(blur_value2)
         
+#test the function views.generate_keywords(file)
 class KeywordGenerationTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345!a')
         login = self.client.login(username='testuser', password='12345!a')
-        Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage1.jpg')
-        Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage2.jpg')  
+        Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage1.jpg') 
         
     def test_image_keywording(self):
         imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
@@ -74,3 +77,15 @@ class KeywordGenerationTestCase(TestCase):
         print('Keywords: ' + keywords)
         self.assertIsNotNone(keywords)
         
+#test the function views.generate_audio(text, file)
+class AudioGenerationTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345!a')
+        login = self.client.login(username='testuser', password='12345!a')
+        Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage1.jpg')
+        
+    def test_image_keywording(self):
+        imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
+        audio_path = generate_audio(imageTest_image_1.upload_Image.url)
+        print('Audio Path: ' + audio_path)
+        self.assertIsNotNone(audio_path)
