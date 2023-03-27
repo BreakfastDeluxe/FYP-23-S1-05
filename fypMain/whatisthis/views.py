@@ -199,9 +199,14 @@ def blur_check(file):
 # ML implementation to generate caption
 
 
-def generate_caption():
-    caption = None
-    return caption
+def generate_caption(file):
+    content_bytes= img_to_bytes(file)
+    caption_list = inference(content_bytes)#returns a list of caption:confidence pairs
+    caption = caption_list[0][0]#extract caption with highest confidence
+    if(caption):
+        return caption
+    else:
+        return "Error: Caption not generated"
 
 # API implementation to generate keywords
 
