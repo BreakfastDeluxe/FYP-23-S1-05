@@ -18,6 +18,54 @@ class UserTestCase(TestCase):
         login = self.client.login(username='testuser', password='wrongPass2')
         self.assertFalse(login)
         print('Login Fail Test OK')
+#testing views and associated URL pairings
+class DisplayViewsTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345!a')
+    #test home view   
+    def test_call_view_load_home(self):
+        response = self.client.get('')
+        self.assertEqual(response.status_code, 200) #HTTP OK
+        self.assertTemplateUsed(response, 'home.html')
+    #test login view   
+    def test_call_view_load_login(self):
+        response = self.client.get('/login/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'login.html')
+    #test signup view   
+    def test_call_view_load_login(self):
+        response = self.client.get('/signup/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'signup.html')
+    #test menu view
+    def test_call_view_load_menu(self):
+        self.client.login(username='testuser', password='12345!a')
+        response = self.client.get('/menu')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'menu.html')
+    #test upload_image view
+    def test_call_view_load_uploadImage(self):
+        self.client.login(username='testuser', password='12345!a')
+        response = self.client.get('/upload_image')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'upload_image.html')
+    #test user view
+    def test_call_view_load_user(self):
+        self.client.login(username='testuser', password='12345!a')
+        response = self.client.get('/user')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'profile.html')
+    #test gallery view
+    def test_call_view_load_gallery(self):
+        self.client.login(username='testuser', password='12345!a')
+        response = self.client.get('/history')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'history.html')
+    #test logout view
+    def test_call_view_load_logout(self):
+        self.client.login(username='testuser', password='12345!a')
+        response = self.client.get('/logout')
+        self.assertEqual(response.status_code, 302)#HTTP FOUND (Redirect)
 
 #test the object models.Image
 class ImageTestCase(TestCase):
