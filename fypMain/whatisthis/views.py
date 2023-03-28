@@ -1,13 +1,12 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-# from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
-from .forms import UpdateUserForm, UpdateProfileForm
+from .forms import UpdateUserForm
 from django.contrib.auth.views import PasswordChangeView
 
 from django.http import HttpResponse
@@ -44,7 +43,7 @@ class Login(LoginView):
             self.request.session.modified = True
         return super(Login, self).form_valid(form)
 
-
+@login_required
 def menu(request):
     return render(request, "menu.html")
 
@@ -93,6 +92,7 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     success_message = "Successfully Changed Your Password"
     success_url = reverse_lazy('menu')
 
+@login_required
 def history(request):
     id = request.user  # get current userid
     gallery_images = Image.objects.filter(created_by_id=id)#retrieve all image objects, filtered by current userid
@@ -101,7 +101,7 @@ def history(request):
     #    print(image.upload_Image.url)
     return render(request, "history.html", {'gallery_images': gallery_images})
 
-
+@login_required
 def upload_image(request):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)

@@ -205,7 +205,6 @@
                         </div>
                         {% if image %}
                         {{blur}}</br>
-                        Image Class: {{img_class}}</br>
 
                         <!-- Upon submit, display this -->
                         <span class="d-flex flex-column successful-msg">
@@ -234,9 +233,9 @@
                                 <h3 style="font-family: lores-12, sans-serif;
                                 font-weight: 700;
                                 font-style: normal;">
-                                    Caption
+                                Caption
                                 </h3>
-                                <textarea class="caption"  rows="4" cols="30">&nbsp;&nbsp;&nbsp;Caption goes here</textarea>
+                                <textarea class="caption"  rows="4" cols="30">&nbsp;&nbsp;&nbsp;{{img_class}}</textarea>
                     </div>
 
                 </div>
