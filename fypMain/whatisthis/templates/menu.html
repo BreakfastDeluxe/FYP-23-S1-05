@@ -1,130 +1,246 @@
 {% block content %}
-{% load static %} 
+{% load static %}
 <html>
-    <!-- this page is the main landing page for all users, display buttons(login, signup)-->
-    <head>
+<!-- this page is the main landing page for all users, display buttons(login, signup)-->
 
-        <!-- Link to fonts -->
-        <link rel="stylesheet" href="https://use.typekit.net/cyv2luf.css">
-        <link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- button fonts -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-        <style>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link to fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/cyv2luf.css">
+    <link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- button fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <style>
+        body {
+            background:  url('{% static "bg-img/bg-overlay.png" %}'), url('{% static "bg-img/background1.png" %}');
+            background-size: 100% 100%;
+            min-height: 100vh;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
 
+        .items {
+            display: flex;
+            flex-direction: column;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            justify-content: center;
+        }
+
+        div.items>img:nth-child(1) {
+            /*selects first element*/
+            opacity: 40%;
+            width: 100vh;
+            position: relative;
+            top: 10vh;
+            z-index: -1;
+        }
+
+        div.items>img:nth-child(2) {
+            position: absolute;
+            width: 65vh;
+            top: 30vh;
+        }
+
+        .subtitle {
+            position: absolute;
+            top: 40vh;
+            padding: 10px;
+
+        }
+
+        p {
+            font-family: "futura-pt", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 3.5vh;
+            color: #834E27;
+        }
+
+        .button-container {
+            /*bring div to front*/
+            z-index: 1;
+            position: relative;
+            bottom: 8vh;
+        }
+
+        .btn.start_btn,
+        .btn.gallery_btn,
+        .btn.profile_btn {
+            border: 3px #707070;
+            color: #00A6FF;
+            border-style: solid;
+            border-radius: 30px;
+            background-color: #FFBA5C;
+            font-family: "lores-12", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 20px;
+            width: 200px;
+            height: 50px;
+            color: #00A6FF;
+            text-decoration: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn.start_btn:active,
+        .btn.gallery_btn:active,
+        .btn.profile_btn:active {
+            /*onclick button design remaines*/
+            border: 3px #707070;
+            color: #00A6FF;
+            border-style: solid;
+            border-radius: 30px;
+            background-color: #FFBA5C;
+            font-family: "lores-12", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 20px;
+            width: 200px;
+            height: 50px;
+            color: #00A6FF;
+            text-decoration: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .create_btn a {
+            font-size: 18px;
+        }
+
+        @media only screen and (max-width: 740px) {
+
+            /* For tablet: */
             body {
-                background: url('{% static "home-bg.jpg" %}'); 
+                background: url('{% static "bg-img/bg-overlay-md.png" %}'),
+                url('{% static "bg-img/bg-md.png" %}');
                 background-size: 100% 100%;
-                min-height: 100vh;
+                background-position: no-repeat;
+                background-position: center center;
+            }
+
+
+            .items {
+                position: relative;
+                top: 10vh;
+            }
+
+            div.items>img:nth-child(1) {
+                /*selects first element*/
+                opacity: 40%;
+                width: 70vh;
+                z-index: -1;
+            }
+
+            div.items>img:nth-child(2) {
+                width: 50vh;
+                top: 25vh;
+            }
+
+            .subtitle {
+                font-size: 2.5vh;
+                transform: translate(-0.5rem, -3.5rem);
+            }
+
+            .btn.start_btn, .btn.gallery_btn, .btn.profile_btn {
+                width: 10rem; 
+                font-size: 1.2rem; 
+            }
+
+            .button-container {
+                top: 7vh;
+            }
+        }
+
+
+        @media only screen and (max-width: 440px) {
+            body {
+                background: url('{% static "bg-img/bg-overlay-sm.png" %}'),
+                url('{% static "bg-img/bg-sm.png" %}');
+                background-size: 100% 100%;
                 background-position: center center;
                 background-repeat: no-repeat;
             }
 
             .items {
-                display: flex; 
-                flex-direction: column;
-                margin-left:auto;
-                margin-right:auto;
                 position: relative;
-                justify-content: center;
-            }
-            div.items > img:nth-child(1) { /*selects first element*/
-                opacity: 40%;
-                width: 50%;
-                position: relative;
-                top:10vh;
-                z-index:-1;
+                top: 0vh;
             }
 
-            div.items > img:nth-child(2) {
-                position: absolute;
-                width: 30%;
-                top:30vh;
+            div.items>img:nth-child(1) {
+                /*selects first element*/
+                opacity: 40%;
+                width: 48vh;
+                z-index: -1;
+                top: 25vh;
+            }
+
+            div.items>img:nth-child(2) {
+                width: 30vh;
+                top: 33vh;
             }
 
             .subtitle {
-                position: absolute;
-                top: 40vh;
-                max-width: 25%;
-                
+                font-size: 0.7rem;
+                top: 45vh;
+                padding: 10px;
             }
 
-            p {
-                font-family: "futura-pt", sans-serif;
-                font-weight: 400;
-                font-style: normal;
-                font-size: 25px;
-                color: #834E27;
+            .btn.start_btn,
+            .btn.gallery_btn,
+            .btn.profile_btn {
+                /*bring div to front*/
+                z-index: 1;
+                position: relative;
+                bottom: 6vh;
+                font-size: 12px;
+                font-size: 13px;
+                width: 8rem;
+                height: 2.5rem;
             }
 
-            .button-container { /*bring div to front*/ 
-                z-index:1; 
-                position: relative; 
-                bottom: 8vh;
+            .btn.start_btn:active,
+            .btn.gallery_btn:active,
+            .btn.profile_btn:active {
+                /*bring div to front*/
+                z-index: 1;
+                position: relative;
+                bottom: 6vh;
+                font-size: 12px;
+                font-size: 13px;
+                width: 35%;
+                height: 35%;
             }
 
-            .btn.start_btn, .btn.gallery_btn, .btn.profile_btn {
-                border: 3px #707070;
-                color: #00A6FF;
-                border-style: solid;
-                border-radius: 30px;
-                background-color: #FFBA5C;
-                font-family: "lores-12", sans-serif;
-                font-weight: 700;
-                font-style: normal; 
-                font-size: 20px;
-                width: 200px;
-                height: 50px;
-                color: #00A6FF;
-                text-decoration: none;
-                margin-left: auto;
-                margin-right:auto;
+            .button-container {
+                /*bring div to front*/
+                top: 20vh;
             }
 
-            .btn.start_btn:active, .btn.gallery_btn:active, .btn.profile_btn:active { /*onclick button design remaines*/
-                border: 3px #707070;
-                color: #00A6FF;
-                border-style: solid;
-                border-radius: 30px;
-                background-color: #FFBA5C;
-                font-family: "lores-12", sans-serif;
-                font-weight: 700;
-                font-style: normal; 
-                font-size: 20px;
-                width: 200px;
-                height: 50px;
-                color: #00A6FF;
-                text-decoration: none;
-                margin-left: auto;
-                margin-right:auto;
-            }
+        }
+    </style>
+</head>
 
-            .create_btn a {
-                font-size:18px;
-            }
-
-            @media (max-width: 768px) {
-                .body {
-                    min-height: 10vh;
-                }
-            }
-
-        </style>
-    </head>
-    <body>
-        <div class="wrapper-container"> <!-- wrap elements -->
-            <div class="d-flex justify-content-center align-items-center items">
-                <img src="{% static 'bubble.png' %}">
-                 <img src="{% static 'title.png' %}"><br/>
-                    <p class="subtitle">Start detecting objects around you! </p>
-            </div>
-                <div class="d-flex flex-column justify-content-center button-container">
-                    <a href="{% url 'upload_image' %}" class="btn start_btn">START</a>
-                    <br/>
-                    <a href="{% url 'gallery' %}" class="btn gallery_btn">GALLERY</a>
-                    <br/>
-                    <a href="" class="btn profile_btn">ACCOUNT</a>
-                </div> 
+<body>
+    <div class="wrapper-container"> <!-- wrap elements -->
+        <div class="d-flex justify-content-center align-items-center items">
+            <img src="{% static 'bubble.png' %}">
+            <img src="{% static 'title.png' %}"><br />
+            <p class="subtitle">Start detecting objects around you! </p>
         </div>
+        <div class="d-flex flex-column justify-content-center button-container">
+            <a href="{% url 'upload_image' %}" class="btn start_btn">START</a>
+            <br />
+            <a href="{% url 'gallery' %}" class="btn gallery_btn">GALLERY</a>
+            <br />
+            <a href="{% static 'user' %}" class="btn profile_btn">ACCOUNT</a>
+        </div>
+    </div>
 
-    </body>
+</body>
+
 </html>
 {% endblock content %}
