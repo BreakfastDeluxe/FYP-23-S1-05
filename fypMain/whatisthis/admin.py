@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Profile
+#allows registered models to be managed from admin console (websiteurl)/admin
+#login with superuser credentials to access console
 
 # Register your models here.
-admin.site.register(Profile)
+from .models import Image
+
+admin.site.register(Image)

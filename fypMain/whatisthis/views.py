@@ -1,13 +1,12 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-# from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
-from .forms import UpdateUserForm, UpdateProfileForm
+from .forms import UpdateUserForm
 from django.contrib.auth.views import PasswordChangeView
 
 from django.http import HttpResponse
