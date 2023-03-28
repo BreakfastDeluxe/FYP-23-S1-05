@@ -1,6 +1,8 @@
 from django.test import TestCase
+from django.core.files import File
 from .models import *
 from .views import *
+from .validators import *
 
 # Create your tests here.
 
@@ -94,7 +96,6 @@ class ImageTestCase(TestCase):
         login = self.client.login(username='testuser', password='12345!a')
         Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage1.jpg')
         Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage2.jpg', caption = 'unitTestCaption2', keywords = 'unitTestCaption2')
-        
 
     def test_image_data(self):
         imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
@@ -194,3 +195,15 @@ class CaptionGenerationTestCase(TestCase):
         self.assertIsNotNone(caption)
         #check type = str
         self.assertIsInstance(caption, str)
+        
+#test the fizesize validation function
+class ValidateFilesizeTestCase(TestCase):
+    
+    def test_filesize_validation(self):
+        testfile1 = File
+        testfile1.size = 10485760 # <1MB
+        self.assertIs(validate_file_size(testfile1), File)
+        testfile2 = File
+        testfile2.size = 10585760 # >1MB
+        self.assertRaises(ValidationError, validate_file_size, testfile2)
+        
