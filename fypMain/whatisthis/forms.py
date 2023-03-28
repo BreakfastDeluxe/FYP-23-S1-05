@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.exceptions import ValidationError
-from .models import Profile
+
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox  
  
@@ -59,11 +59,3 @@ class UpdateUserForm(forms.ModelForm):
         model = User
         fields = ['username', 'email']
 
-
-class UpdateProfileForm(forms.ModelForm):
-    avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
-    bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
-
-    class Meta:
-        model = Profile
-        fields = ['avatar', 'bio']

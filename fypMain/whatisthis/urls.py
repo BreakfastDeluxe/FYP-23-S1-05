@@ -25,16 +25,14 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 urlpatterns = [
-    #path('', views.index, name='index'),
     path('', home, name = "home"),
     path('login/', views.Login.as_view(), name='login'),
     path("signup/", views.SignUp.as_view(), name="signup"),
     path('upload_image', upload_image, name='upload_image'),
-    #path('display_image', display_image, name = 'display_image'),
     path('menu', menu, name='menu'),
     path('user', user, name='user'),
+    path('history', history, name='gallery'), #url for images displayed
     path('delete_user', delete_user, name='delete_user'),
-    #path('profile/', profile, name='profile'),
     path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
     path('password-reset-confirm/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),
