@@ -280,7 +280,7 @@ import PIL.Image #can't iuse Image as it will conflict with Image(object) used f
 model_DenseNet = models.densenet121(weights='DenseNet121_Weights.DEFAULT')
 model_DenseNet.eval()
 #get imagenet natural language text mappings
-json_path = os.path.join(settings.STATIC_ROOT, "imagenet_class_index.json")
+#json_path = os.path.join(settings.STATIC_ROOT, "imagenet_class_index.json")
 imagenet_mapping = json.load(open(json_path))
 
 from torchvision import transforms
