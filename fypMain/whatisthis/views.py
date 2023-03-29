@@ -126,8 +126,9 @@ def upload_image(request):
             keywords = generate_keywords(file)
             #audio generation function (GTTS)
             audio = generate_audio(keywords, file)
-            label = predict_image(file)
-            
+            #brandon's image classifier
+            #label = predict_image(file)
+            label = ''
             #image classifier (pytorch - DenseNet pretrained model)
             img_class = get_classification(file)
             #image captioner (pytorch - MSCOCO model - DO NOT USE FOR NOW)
@@ -259,14 +260,6 @@ def predict_image(file):
     label = 'Dog' if pred[0] >= 0.5 else 'Cat'
     
     return label
-
-    audioFilename = os.path.basename(file)+'.mp3' #set the target filename for audio saving
-    lang = 'en' #set TTS output language
-    tts = gTTS(text, lang=lang) #call gTTS function to generate audio
-    save_path = './media/audio/' + audioFilename #set save location
-    tts.save(save_path)#save generated audio to location
-
-    return save_path #return saved audio location for retrieval
 
 #pytorch helpers
 
