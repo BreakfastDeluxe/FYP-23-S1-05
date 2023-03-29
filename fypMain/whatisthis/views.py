@@ -18,6 +18,10 @@ import argparse
 import glob
 import numpy as np
 import requests
+import zlib
+
+import joblib
+from django.conf import settings
 
 # Create your views here.
 
@@ -122,15 +126,19 @@ def upload_image(request):
             keywords = generate_keywords(file)
             #audio generation function (GTTS)
             audio = generate_audio(keywords, file)
+            #brandon's image classifier
+            #label = predict_image(file)
+            label = ''
             #image classifier (pytorch - DenseNet pretrained model)
             img_class = get_classification(file)
             #image captioner (pytorch - MSCOCO model - DO NOT USE FOR NOW)
             #img_cap = generate_caption(file)
-            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio, 'img_class' : img_class})
+            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio, 'label': label, 'img_class' : img_class})
     else:
         form = ImageForm()
 
     return render(request, 'upload_image.html', {'form': form})
+	
 
 #allow current user to delete their own account
 #initially links to prompt page to confirm delete
@@ -217,13 +225,41 @@ from gtts import gTTS
 import shutil
 
 def generate_audio(text, file):
-    audioFilename = os.path.basename(file)+'.mp3' #set the target filename for audio saving
-    lang = 'en' #set TTS output language
-    tts = gTTS(text, lang=lang) #call gTTS function to generate audio
-    save_path = './media/audio/' + audioFilename #set save location
-    tts.save(save_path)#save generated audio to location
+    audioFilename = os.path.basename(file)+'.mp3'
+    lang = 'en'
+    tts = gTTS(text, lang=lang)
+    save_path = './media/audio/' + audioFilename
+    tts.save(save_path)
 
-    return save_path #return saved audio location for retrieval
+    return save_path
+
+from django.shortcuts import render
+from PIL import Image as myImage
+import numpy as np
+import keras
+import os
+from joblib import load
+
+def predict_image(file):
+    
+    model_path = './whatisthis/MLmodel/cnn_model.joblib'
+
+    if os.path.exists(model_path):
+        model_load = joblib.load(model_path)
+    else:
+        raise Exception(f"{model_path} does not exist")
+    
+    file = '.'+file  # look one folder above to ./media/images
+ 
+    img = myImage.open(file).convert('RGB')
+    img = img.resize((128, 128)) 
+    img = np.array(img) / 255.0 # Normalize 
+        
+	# Make the prediction
+    pred = model_load.predict(np.array([img]))
+    label = 'Dog' if pred[0] >= 0.5 else 'Cat'
+    
+    return label
 
 #pytorch helpers
 
