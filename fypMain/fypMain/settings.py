@@ -119,12 +119,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'whatisthis\static')
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'whatisthis\static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = "menu" #redirects to menu page on login
 LOGOUT_REDIRECT_URL = "/" #redirects to home page on logout
 
