@@ -257,6 +257,9 @@ def predict_image(file):
 	# Make the prediction
     pred = model_load.predict(np.array([img]))
     label = 'Dog' if pred[0] >= 0.5 else 'Cat'
+
+    if pred[0] < 0.4:
+        return 'I am not sure what that is'
     
     return label
 
