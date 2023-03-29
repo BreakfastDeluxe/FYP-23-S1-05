@@ -13,11 +13,12 @@
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <style>
         body {
-            background:  url('{% static "bg-img/bg-overlay.png" %}'), url('{% static "bg-img/background1.png" %}');
-            background-size: 100% 100%;
-            min-height: 100vh;
+            background: url('{% static "bg-img/bg-overlay.png" %}'),
+            url('{% static "bg-img/background1.png" %}');
+            background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
+            margin-bottom: 5rem;
         }
 
         .items {
@@ -111,6 +112,44 @@
             font-size: 18px;
         }
 
+        /* Account button drop down */
+
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #FFBA5C;
+            padding: 1.5rem;
+            margin-right: auto;
+            margin-left: auto;
+            border-radius: 2rem;
+            left: 0;
+            right: 0;
+            top: 3.15rem;
+            width: 12rem;
+        }
+
+        .dropdown-content a {
+            background-color: #FFBA5C;
+            font-family: "lores-12", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        .show {
+            display: grid;
+        }
+
+
+        .btn.profile_btn:focus {
+            border-color: black;
+        }
+
+
         @media only screen and (max-width: 740px) {
 
             /* For tablet: */
@@ -145,14 +184,21 @@
                 transform: translate(-0.5rem, -3.5rem);
             }
 
-            .btn.start_btn, .btn.gallery_btn, .btn.profile_btn {
-                width: 10rem; 
-                font-size: 1.2rem; 
+            .btn.start_btn,
+            .btn.gallery_btn,
+            .btn.profile_btn {
+                width: 10rem;
+                font-size: 1.2rem;
             }
 
             .button-container {
                 top: 7vh;
             }
+
+            .dropdown-content {
+                padding: 0.5rem;
+            }
+
         }
 
 
@@ -211,8 +257,8 @@
                 bottom: 6vh;
                 font-size: 12px;
                 font-size: 13px;
-                width: 35%;
-                height: 35%;
+                width: 8rem;
+                height: 2.5rem;
             }
 
             .button-container {
@@ -220,6 +266,15 @@
                 top: 20vh;
             }
 
+            .dropdown-content {
+                padding: 1rem;
+                width: 8rem;
+                top: -0.3rem;
+            }
+
+            .dropdown-content a {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -236,7 +291,13 @@
             <br />
             <a href="{% url 'gallery' %}" class="btn gallery_btn">GALLERY</a>
             <br />
-            <a href="{% static 'user' %}" class="btn profile_btn">ACCOUNT</a>
+            <div class="d-flex flex-column dropdown-container">
+                <button onClick="myFunction()" class="btn profile_btn">ACCOUNT</button>
+                <div id="dropdown" class="dropdown-content">
+                    <a href="{% url 'password_reset' %}" class="btn settings_btn">SETTINGS</a>
+                    <a href="{% url 'logout' %}" class="btn signout_btn">LOG OUT</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -244,3 +305,24 @@
 
 </html>
 {% endblock content %}
+
+<script>
+    /* When the user clicks on the button, 
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+        document.getElementById("dropdown").classList.toggle("show");
+    }
+
+    window.onclick = function (event) {
+        if (!event.target.matches('.profile_btn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
