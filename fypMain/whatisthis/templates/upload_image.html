@@ -407,38 +407,11 @@
                     <div class="display-form">
                         {{ form.as_p }}
                     </div>
-                    <div class="d-flex flex-column justify-content-center"> <!--Display uploaded img-->
-                        <!-- if an image was uploaded, display it and the blur check result -->
-                        <div class="d-flex flex-column justify-content-center display">
-                            <img src="{{ image }}" style="max-height: 280px;" id="input-img">
-                        </div><br />
-                        <div class="d-flex flex-column justify-content-center display-form">
-                            {{ form.as_p }}
-                        </div>
-                        <div class="d-flex flex-column justify-content-center btn-container">
-                            <button type="submit" class="upload_btn">Upload</button>
-                        </div>
-                        {% if image %}
-                        
-                        {{label}}
-                        {{blur}}</br>
-
-                        <!-- Upon submit, display this -->
-                        <span class="d-flex flex-column successful-msg">
-                            <h4>Succesfully uploaded</h4>
-                            <div class="d-flex flex-column audio-item">
-                                <audio controls style="width: 30%;">
-                                    <source src="{{audio}}" type="audio/ogg">
-                                    Your browser does not support the audio element.
-                                </audio>
-                            </div>
-                            <a class="btn btn-primary" href="menu">Menu</a>
-                            {% endif %}
-                        </span>
                     <div class="btn-container">
                         <button type="submit" class="upload_btn">Upload</button>
                     </div>
                     {% if image %}
+                    {{label}}
                     {{blur}}
                     <!-- Upon submit, display this -->
                     <span class="successful-msg">
