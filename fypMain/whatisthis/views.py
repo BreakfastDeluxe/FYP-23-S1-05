@@ -259,7 +259,7 @@ def predict_image(file):
     label = 'Dog' if pred[0] >= 0.5 else 'Cat'
     
     return label
-'''
+
     audioFilename = os.path.basename(file)+'.mp3' #set the target filename for audio saving
     lang = 'en' #set TTS output language
     tts = gTTS(text, lang=lang) #call gTTS function to generate audio
@@ -267,7 +267,7 @@ def predict_image(file):
     tts.save(save_path)#save generated audio to location
 
     return save_path #return saved audio location for retrieval
-'''
+
 #pytorch helpers
 
 from torchvision import models
@@ -280,7 +280,7 @@ import PIL.Image #can't iuse Image as it will conflict with Image(object) used f
 model_DenseNet = models.densenet121(weights='DenseNet121_Weights.DEFAULT')
 model_DenseNet.eval()
 #get imagenet natural language text mappings
-#json_path = os.path.join(settings.STATIC_ROOT, "imagenet_class_index.json")
+json_path = os.path.join(settings.STATIC_ROOT, "imagenet_class_index.json")
 imagenet_mapping = json.load(open(json_path))
 
 from torchvision import transforms
