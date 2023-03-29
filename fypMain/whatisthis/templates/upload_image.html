@@ -1,10 +1,12 @@
 <html>
+{% include 'navbar.html' %}
 {% load static %}
 <!-- this page is the image upload function for users, display button(upload)
     this page will include display_image to display back the uploaded image to the user-->
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload_image</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -12,76 +14,99 @@
 
     <style>
         body {
-            background: url('{% static "background.png" %}');
+            background: url('{% static "bg-img/background2.png" %}');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
         }
 
-        .container {
-            max-width: 100%;
-            margin: 0;
-            padding: 0;
-            margin-bottom: 30%;
-        }
-
-        .introduction {
-            text-align: left;
-            margin-left: auto;
-            margin-right: auto;
-            z-index: 1;
-            margin-top: 15%;
-        }
-
-        .introduction-item {
-            color: #FFD185;
-            text-transform: uppercase;
-            position: relative;
-            max-width: 70%;
-            padding-left: 10%;
-            top: 20px;
-        }
-
-        .introduction-item h2 {
-            font-family: "lores-12", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-            font-size: 45px;
-            padding-bottom: 20px;
-        }
-
-        .introduction-item p {
-            font-family: "neuzeit-grotesk", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-            font-size: 20px;
-            max-width: 75%;
+        .section-hero {
+            margin-top: 5rem;
+            margin-bottom: 5rem;
+            padding: 5rem;
         }
 
         .introduction-img img {
-            width: 250px;
-            position: relative;
-            right: 20%;
-
+            max-width: 60%;
+            margin-top: 25%;
+            margin-left: -5rem;
         }
 
-        .introduction-img {
-            /*start image on the right side of screen*/
-            justify-content: right;
+        .hero {
+            max-width: 100%;
         }
 
-        .ellipse {
-            clip-path: ellipse(80rem 50% at center left);
-            width: 1300px;
-            height: 650px;
-            background-color: #A5793E;
+        .grid-item::before,
+        .grid-item::after {
+            content: "";
+            display: block;
             position: absolute;
-            left: 0;
-            top: 10%;
+            border-radius: 50%;
+            height: 70%;
+            width: 90%;
+            left: -10%;
+            bottom: 6rem;
             background-color: #AB5EBB;
-            opacity: 70%;
-            z-index: -1;
+            opacity: 60%;
+        }
 
+        .grid-item {
+            display: grid;
+            grid-template-columns: 1fr 0.5fr;
+            margin-left: auto;
+            margin-right: auto;
+            justify-content: center;
+            margin-bottom: 0;
+        }
+
+        /* bring elements to front*/
+        .introduction-text,
+        .introduction-img {
+            z-index: 1;
+        }
+
+        .introduction-text {
+            width: 100%;
+            color: #FFD185;
+            padding-left: 1rem;
+            width: 80%;
+            margin-top: -3rem;
+        }
+
+        .introduction-text h2 {
+            font-family: "hellofont-id-langrunti", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 3.5rem;
+            text-transform: uppercase;
+        }
+
+        .introduction-text p {
+            font-family: "neuzeit-grotesk", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 1.5rem;
+            width: 100%;
+            padding-top: 20px;
+            font-size: 1.2rem;
+            overflow: auto;
+        }
+
+        .form_container {
+            background-color: #C2A071;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1rem;
+            width: 100%;
+        }
+
+
+        .form-item {
+            padding-top: 5%;
+            padding-left: 10%;
+            display: flex;
+            justify-content: center;
+            width: 100%;
         }
 
         .history-img * {
@@ -91,25 +116,30 @@
             background-color: #CEB593;
         }
 
-
-        .form_container {
-            background-color: #C2A071;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 10%;
-            padding: 0;
+        .display {
+            height: 300px;
+            width: auto;
+            background-color: #ffd18587;
+            border-style: solid;
+            border-width: 10px;
+            border-color: #FFFFFF;
         }
 
-        .form-item {
-            padding-top: 5%;
-            padding-left: 10%;
+        .display-container {
+            padding: 0px 10px 0px 10px;
         }
 
-        .display-form p {
-            font-family: "futura-pt", sans-serif;
-            font-weight: 400;
+        .generate-items {
+            padding: 0 10px 0 10px;
+            max-height: 19rem;
+            max-width: 70%;
+            text-decoration: none;
+            color: #FFFFFF;
+            display: grid;
+            align-items: center;
         }
 
+        /* buttons */
         .upload_btn {
             border: 3px #707070;
             background-color: #00A6FF;
@@ -121,35 +151,10 @@
             height: 40px;
         }
 
-        .btn-container {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .display {
-            height: 300px;
-            width: auto;
-            background-color: #FFD185;
-            border-style: solid;
-            border-width: 10px;
-            border-color: #FFFFFF;
-        }
-
-
-        .generate-items {
-            padding: 10px;
-            max-height: 19rem;
-            max-width: 70%;
-            text-decoration: none;
-            font-family: "futura-pt", sans-serif;
-            font-weight: 400;
-            color: #FFFFFF;
-        }
-
-        textarea {
+        .caption {
             font-family: "lores-12", sans-serif;
             font-weight: 700;
-            font-style: normal; 
+            font-style: normal;
             border-radius: 20px;
             background-color: #FFD185;
             text-align: justify;
@@ -157,99 +162,307 @@
             border-width: 3px;
         }
 
+        .display-container {
+            text-align:center;
+        }
 
+        .display-form p,
+        .generate-items {
+            font-family: "neuzeit-grotesk", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            color: #FFFFFF;
+        }
+
+        /* CHANGING UP ELEMENTS ACCORDING TO SCREEN SIZES */
+        @media (max-width: 1040px) {
+            .introduction-text h2 {
+                font-size: 2.5rem;
+            }
+
+            .introduction-text {
+                padding-left: 0;
+            }
+        }
+
+        @media (max-width: 910px) {
+            .introduction-img img {
+                max-width: 80%;
+            }
+        }
+
+        /* Table size */
+        @media (max-width: 770px) {
+
+            .grid-item::before,
+            .grid-item::after {
+                height: 65%;
+            }
+
+            .introduction-text {
+                margin-left: -2rem;
+            }
+
+            .introduction-text h2 {
+                font-size: 2rem;
+            }
+
+            .introduction-text p {
+                font-size: 1rem;
+            }
+
+            .introduction-img img {
+                position: relative;
+                top: 20%;
+            }
+
+            .form-item {
+                padding-left: 0;
+            }
+
+            .display-form p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* mobile size */
+        @media only screen and (max-width: 470px) {
+            body {
+                background: url('{% static "bg-img/bg-sm.png" %}');
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center center;
+                padding: 1rem;
+
+            }
+
+
+            /***************** HERO **************/
+            .section-hero {
+                margin: 0;
+                padding: 0;
+            }
+
+            .grid-item::before,
+            .grid-item::after {
+                border-radius: 50px;
+                box-shadow: 10px 10px 6px #A5793E;
+                left: 0;
+                transform: translate(20px, -10px);
+            }
+
+            .grid-item {
+                max-width: 100%;
+                margin-top: 5rem;
+                margin-bottom: 5rem;
+            }
+
+            .introduction-text {
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: -2rem;
+            }
+
+            .introduction-text h2 {
+                font-size: 2rem;
+            }
+
+            .introduction-text p {
+                font-size: 1.2rem;
+                width: 100%;
+                padding: 0;
+            }
+
+            .introduction-img img {
+                transform: translate(3rem, -2.5rem);
+                margin-top: 10%;
+                width: 50%;
+            }
+
+            /***************** END HERO **************/
+
+            .grid-item,
+            .form-item {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0;
+            }
+
+            /* center elements */
+            .form-item,
+            .grid-item,
+            .generate-items {
+                max-width: 100%;
+                justify-content: center;
+                text-align: center;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            /*************** FORM CONTAINER ************/
+            .form_container {
+                border-radius: 6rem;
+                box-shadow: 10px 10px 6px #A5793E;
+                max-width: 100%;
+                padding: 0;
+                margin-top: -3rem;
+
+            }
+
+            .display {
+                max-width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #input-img {
+                max-width: 100%;
+            }
+
+            .display-container {
+                margin-top: 5rem;
+                max-width: 100%;
+            }
+
+            /* hide the history imgs */
+            .history-img {
+                display: none;
+            }
+
+            /* center the button */
+            .btn-container {
+                left: 0;
+            }
+
+            .display-form p {
+                font-size: 0.75em;
+            }
+
+            .display-form {
+                margin-left: 14%;
+            }
+
+            .form-item {
+                padding-bottom: 5rem;
+            }
+
+            /*************** END FORM CONTAINER ************/
+
+            /*********** GUIDELINES ********************/
+
+            .guidelines-title b {
+                display: none;
+            }
+
+            .guidelines {
+                font-size: 1rem;
+                line-height: 1rem;
+            }
+
+        }
     </style>
 </head>
 
 <body>
     {% block content %}
-    <div class="container">
-        <div class="ellipse"></div>
-        <div class="d-flex flex-column justify-content-center introduction">
-            <div class="d-flex flex-column justify-content-center introduction-item">
-                <h2>
-                    Welcome to What is this,
-                </h2>
-                <p>
-                    a learning platform to recognize objects around you, & outputs a descriptive caption based on the
-                    image.<br />
-                    start by uploading an image from your album & start to see the magic happen!
 
-                </p>
-            </div>
-            <div class="d-flex introduction-img">
-                <img src="{% static 'Cute Girl Thinking Pose Chibi Illustration.png' %}">
-            </div>
-
-        </div>
-        <div class="d-flex flex-column form_container">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <div class="d-flex flex-row justify-content-center form-item">
-                    <div class="d-flex flex-column history-img">
-                        <div class="img1"  id="displayed-img"></div>
-                        <div class="img2"></div>
-                        <div class="img3"></div>
-                    </div>
-                    <div class="d-flex flex-column justify-content-center"> <!--Display uploaded img-->
-                        <!-- if an image was uploaded, display it and the blur check result -->
-                        <div class="d-flex flex-column justify-content-center display">
-                            <img src="{{ image }}" style="max-height: 280px;" id="input-img">
-                        </div><br />
-                        <div class="d-flex flex-column justify-content-center display-form">
-                            {{ form.as_p }}
-                        </div>
-                        <div class="d-flex flex-column justify-content-center btn-container">
-                            <button type="submit" class="upload_btn">Upload</button>
-                        </div>
-                        {% if image %}
-                        {{blur}}</br>
-
-                        <!-- Upon submit, display this -->
-                        <span class="d-flex flex-column successful-msg">
-                            <h4>Succesfully uploaded</h4>
-                            <div class="d-flex flex-column audio-item">
-                                <audio controls style="width: 30%;">
-                                    <source src="{{audio}}" type="audio/ogg">
-                                    Your browser does not support the audio element.
-                                </audio>
-                            </div>
-                            <a class="btn btn-primary" href="menu">Menu</a>
-                            {% endif %}
-                        </span>
-                    </div>
-
-                    <div class="d-flex flex-column justify-content-center generate-items"> <!--guidelines + output -->
-                        <h3 class="guidelines-title">
-                            <b style="text-transform:uppercase">rules to follow</b>
-                        </h3>
-                        <p class="guidelines">
-                            Upload a clear photo,<br />
-                            blurry photos will not be useful for us! <br /><br />
-
-                            Allowed file types (JPEG, PNG)<br />
-                            Image size < 1mb </p>
-                                <h3 style="font-family: lores-12, sans-serif;
-                                font-weight: 700;
-                                font-style: normal;">
-                                Caption
-                                </h3>
-                                <textarea class="caption"  rows="4" cols="30">&nbsp;&nbsp;&nbsp;{{img_class}}</textarea>
-                    </div>
-
+    <section class="section-hero">
+        <div class="hero">
+            <div class="grid-item">
+                <div class="introduction-text">
+                    <h2>
+                        What is this,
+                    </h2>
+                    <p>
+                        A learning platform to recognize objects around you, & outputs a descriptive caption based on
+                        the
+                        image.<br /><br />
+                        Start by uploading an image from your album & start to see the magic happen!
+                    </p>
                 </div>
+
+                <div class="introduction-img">
+                    <img src="{% static 'girl.png' %}">
+                </div>
+            </div>
         </div>
+    </section>
+
+    <div class="form_container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-item">
+                <div class="history-img">
+                    <div class="img1" id="displayed-img"></div>
+                    <div class="img2"></div>
+                    <div class="img3"></div>
+                </div>
+                <!-- if an image was uploaded, display it and the blur check result-->
+                <div class="display-container">
+                    <div class="display">
+                        <img src="{{ image }}" style="max-height: 280px;" id="input-img">
+                    </div><br />
+                    <div class="display-form">
+                        {{ form.as_p }}
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="upload_btn">Upload</button>
+                    </div>
+                    {% if image %}
+                    {{blur}}
+                    <!-- Upon submit, display this -->
+                    <span class="successful-msg">
+                        <h4>Succesfully uploaded</h4>
+                        <div class="audio-item">
+                            <audio controls style="width: 30%;">
+                                <source src="{{audio}}" type="audio/ogg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <a class="btn btn-primary" href="menu">Menu</a>
+                        {% endif %}
+                    </span>
+                </div>
+
+
+                <div class="generate-items">
+                    <h3 class="guidelines-title">
+                        <b style="text-transform:uppercase">rules to follow</b>
+                    </h3>
+                    <p class="guidelines">
+                        Upload a clear photo,<br />
+                        blurry photos will not be useful for us! <br />
+
+                        Allowed file types (JPEG, PNG)<br />
+                        Image size < 1mb </p>
+                            <h3 style="font-family: lores-12, sans-serif;
+                                    font-weight: 700;
+                                    font-style: normal;">
+                                Caption
+                            </h3>
+                            <textarea class="caption"
+                                style="height: 4rem; width: 100%">&nbsp;&nbsp;&nbsp;Caption goes here</textarea>
+                </div>
+
+            </div>
         </form>
+
         {% endblock content %}
-    </div>
     </div>
 </body>
 
 </html>
 
 <script>
-    const imgInput = document.querySelector("#input-img")
-    const displayImg = document.querySelector("#displayed-img")
-    displayImg.src = URL.createObjectURL(imgInput.files[0])
+    // Font activation
+    (function (d) {
+        var config = {
+            kitId: 'yks7jmw',
+            scriptTimeout: 3000,
+            async: true
+        },
+            h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+    })(document);
 </script>
