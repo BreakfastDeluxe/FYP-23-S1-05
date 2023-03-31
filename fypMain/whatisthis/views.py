@@ -182,6 +182,7 @@ def blur_check(file):
         return (0)
 
 # ML implementation to generate caption
+from .img_caption import inference
 def generate_caption(file):
     content_bytes= img_to_bytes(file)
     caption_list = inference(content_bytes)#returns a list of caption:confidence pairs
@@ -326,8 +327,10 @@ def get_classification(file):
     class_name, human_label = imagenet_mapping[predicted_idx]#map predicted index to imagenet text map
     return human_label
 
-from .img_caption import inference
-def get_caption(file):
-    content_bytes= img_to_bytes(file)
-    caption = 'I think i see ' + inference(content_bytes)
-    return caption
+def delete_image(request):
+    #when delete button in image selected, delete image and reload gallery
+    image_id = request.POST.get('image_id')
+    #print('image id = ' + image_id)
+    image = Image.objects.get(id=image_id)
+    image.delete()
+    return redirect(to='gallery')

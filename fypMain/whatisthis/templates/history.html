@@ -6,6 +6,12 @@
     {% if gallery_images %}
         {% for image in gallery_images %}
             <img src="{{ image.upload_Image.url }}" style="max-height: 280px;" id="gallery-img">
+            <!--{{image.id}}-->
+            <form action="{%url 'delete_image' %}" method="POST">
+                {% csrf_token %}
+                <input type='hidden' id = 'image_id' name = 'image_id' value = {{image.id}}>
+                <input type="submit" value="Delete">
+            </form>
         {% endfor %}
     {% endif %}
     </div>
