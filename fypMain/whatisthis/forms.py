@@ -55,14 +55,11 @@ class UpdateUserForm(forms.ModelForm):
         fields = ['username', 'email']
 
 class CreateTaskForm(forms.ModelForm):
-    task_description = forms.CharField(max_length=100,
-                               required=True,
-                               widget=forms.TextInput(attrs={'class': 'form-control'}))
-    task_keywords = forms.CharField(max_length=100,
+    task_keyword = forms.CharField(max_length=100,
                                required=True,
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
     task_complete = False
     
     class Meta:
         model = Task
-        fields = ['task_description', 'task_keywords', 'task_complete']
+        fields = ['task_keyword', 'task_complete']

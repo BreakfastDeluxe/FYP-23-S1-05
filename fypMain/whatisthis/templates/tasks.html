@@ -2,11 +2,11 @@
     <body>
         <h3>Tasks Page</h3></br>
         {% if block_new_task %}<!-- If a task is still outstanding, disable the form, dont allow new task to be added-->
-        Create a new task!</br>
+        Create a new picture task!</br>
+        Write the word that best describes the object e.g. 'apple'
             <form method="post">
             {% csrf_token %}
-            Task Description: {{form.task_description}}</br>
-            Task Keywords: {{form.task_keywords}}</br>
+            Take a picture of a(n): {{form.task_keyword}}</br>
                 <button class="button"
                         type="submit">Create Task
                 </button>
@@ -15,16 +15,14 @@
         {% endif %}
         <h3>Current Task</h3></br>
         {% if tasks %}<!-- Display the current(latest) task-->
-        Task Description: {{current_task.task_description}}</br>
-        Task Keywords: {{current_task.task_keywords}}</br>
+        Task Description: Take a picture of a(n) {{current_task.task_keyword}}</br>
         Task Complete?: {{current_task.task_complete}}</br>
         {% endif %}
         <hr>
         <h3>All Tasks</h3></br>
         {% if tasks %}<!-- Display all tasks (past and current)-->
             {% for task in tasks %}
-                Task Description: {{task.task_description}}</br>
-                Task Keywords: {{task.task_keywords}}</br>
+                Task Description: Take a picture of a(n) {{current_task.task_keyword}}</br>
                 Task Complete?: {{task.task_complete}}</br>
             {% endfor %}
         {% endif %}

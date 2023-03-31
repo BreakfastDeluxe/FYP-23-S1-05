@@ -149,7 +149,10 @@ def upload_image(request):
             Images.save()
             #audio generation function (GTTS)
             audio = generate_audio(caption, file)
-            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_warn, 'keywords': keywords, 'audio': audio, 'img_class' : img_class, 'caption' : caption})
+            task_completion = check_task_completion(keywords, request)
+            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_warn, 
+                                                         'keywords': keywords, 'audio': audio, 'img_class' : img_class, 
+                                                         'caption' : caption, 'task_completion': task_completion})
     else:
         form = ImageForm()
 
@@ -355,11 +358,25 @@ def manage_tasks(request):
     id = request.user  # get current userid
     #get all of the tasks of this user
     tasks = Task.objects.filter(created_by_id=id)
-    #get the latest task (outstanding task)
-    current_task = Task.objects.filter(created_by_id=id).latest('id')
-    if(current_task.task_complete == False): #if the task is not complete
-        #print('blocking')
-        block_new_task = False#dont allow a new task to be created
+    if(tasks):
+        #get the latest task (outstanding task)
+        current_task = Task.objects.filter(created_by_id=id).latest('id')
+        if(current_task.task_complete == False): #if the task is not complete
+            #print('blocking')
+            block_new_task = False#dont allow a new task to be created
+        else:
+            block_new_task = True
+        return render(request, 'tasks.html', {'form': form, 'tasks':tasks, 'current_task': current_task, 'block_new_task': block_new_task})
     else:
         block_new_task = True
-    return render(request, 'tasks.html', {'form': form, 'tasks':tasks, 'current_task': current_task, 'block_new_task': block_new_task})
+    return render(request, 'tasks.html', {'form': form, 'tasks':tasks, 'block_new_task': block_new_task})
+
+def check_task_completion(keywords, request):
+    id = request.user  # get current userid
+    current_task = Task.objects.filter(created_by_id=id).latest('id')
+    if current_task.task_keyword in keywords:
+        current_task.task_complete = True
+        current_task.save()
+        return 1
+    else:
+        return 0
