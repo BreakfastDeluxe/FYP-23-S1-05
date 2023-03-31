@@ -16,3 +16,12 @@ class Image(models.Model):
     caption = models.CharField(max_length = 255, blank=True, null=True)
     #setup blank field for storing keyword generation later
     keywords = models.CharField(max_length = 255, blank=True, null=True)
+
+class Task(models.Model):
+    #get the current logged in user's id and associate it with this uploaded image (set the ownership)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    #used to describe the task given to the child
+    task_description = models.CharField(max_length=255)
+    #used to score the image taken
+    task_keywords = models.CharField(max_length=255)
+    task_complete = models.BooleanField()
