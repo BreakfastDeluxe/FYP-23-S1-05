@@ -101,7 +101,7 @@ def history(request):
     id = request.user  # get current userid
     if request.method == 'POST':
         search_query = request.POST.get('search_query')
-        gallery_images = Image.objects.filter(created_by_id=id, keywords__icontains=search_query)#retrieve all image objects, filtered by current userid
+        gallery_images = Image.objects.filter(created_by_id=id, keywords__icontains=search_query) | Image.objects.filter(created_by_id=id, caption__icontains=search_query)#retrieve all image objects, filtered by current userid and (matching keyword/caption)
         return render(request, "history.html", {'gallery_images': gallery_images})
     else: 
         
