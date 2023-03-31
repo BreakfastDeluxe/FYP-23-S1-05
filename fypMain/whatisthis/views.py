@@ -99,11 +99,17 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
 @login_required
 def history(request):
     id = request.user  # get current userid
-    gallery_images = Image.objects.filter(created_by_id=id)#retrieve all image objects, filtered by current userid
-    #print(gallery_images)
-    #for image in gallery_images:
-    #    print(image.upload_Image.url)
-    return render(request, "history.html", {'gallery_images': gallery_images})
+    if request.method == 'POST':
+        search_query = request.POST.get('search_query')
+        gallery_images = Image.objects.filter(created_by_id=id, keywords__icontains=search_query) | Image.objects.filter(created_by_id=id, caption__icontains=search_query)#retrieve all image objects, filtered by current userid and (matching keyword/caption)
+        return render(request, "history.html", {'gallery_images': gallery_images})
+    else: 
+        
+        gallery_images = Image.objects.filter(created_by_id=id)#retrieve all image objects, filtered by current userid
+        #print(gallery_images)
+        #for image in gallery_images:
+        #    print(image.upload_Image.url)
+        return render(request, "history.html", {'gallery_images': gallery_images})
 
 @login_required
 def upload_image(request):

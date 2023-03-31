@@ -3,6 +3,15 @@
 <head></head>
 <body>
     <div>
+        <h4>Search: 
+            <form action="{%url 'gallery' %}" method="POST">
+                {% csrf_token %}
+                <input type='text' id = 'search_query' name = 'search_query'>
+                <input type="submit" value="Search">
+            </form>
+        </h4>
+    </div>
+    <div>
     {% if gallery_images %}
         {% for image in gallery_images %}
             <img src="{{ image.upload_Image.url }}" style="max-height: 280px;" id="gallery-img">
@@ -13,7 +22,10 @@
                 <input type="submit" value="Delete">
             </form>
         {% endfor %}
+        {% else %}
+        <h4> No images found!</h4>
     {% endif %}
+    
     </div>
 </body>
 </html>
