@@ -327,3 +327,10 @@ def get_classification(file):
     class_name, human_label = imagenet_mapping[predicted_idx]#map predicted index to imagenet text map
     return human_label
 
+def delete_image(request):
+    #when delete button in image selected, delete image and reload gallery
+    image_id = request.POST.get('image_id')
+    #print('image id = ' + image_id)
+    image = Image.objects.get(id=image_id)
+    image.delete()
+    return redirect(to='gallery')
