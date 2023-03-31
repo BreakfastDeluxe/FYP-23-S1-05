@@ -122,18 +122,28 @@ def upload_image(request):
             file = Images.upload_Image.url
             #blur checking function
             blur_value = blur_check(Images.upload_Image.url)
+            if(blur_value):
+                caption = 'This picture looks blurry but...'
+                blur_warn = 'This picture might be blurry, could you try again?'
+            else: 
+                caption = ''
+                blur_warn = ''
             #keyword generation function (everypixel API)
             keywords = generate_keywords(file)
-            #audio generation function (GTTS)
-            audio = generate_audio(keywords, file)
             #brandon's image classifier
             #label = predict_image(file)
-            label = ''
+            #label = ''
             #image classifier (pytorch - DenseNet pretrained model)
             img_class = get_classification(file)
             #image captioner (pytorch - MSCOCO model - DO NOT USE FOR NOW)
-            #img_cap = generate_caption(file)
-            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio, 'label': label, 'img_class' : img_class})
+            img_cap = generate_caption(file)
+            caption += img_cap
+            Images.caption = caption
+            Images.keywords = keywords
+            Images.save()
+            #audio generation function (GTTS)
+            audio = generate_audio(caption, file)
+            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_warn, 'keywords': keywords, 'audio': audio, 'img_class' : img_class, 'caption' : caption})
     else:
         form = ImageForm()
 
@@ -166,10 +176,10 @@ def blur_check(file):
     var = cv2.Laplacian(grey, cv2.CV_64F).var()
     # if variance is less than the set threshold
     # image is blurred otherwise not
-    if var < 20:
-        return ('Image might be Blurred: '+str(var))
-    else:
-        return ('Image Not Blurred: '+str(var))
+    if var < 20:#if blurry, return 1
+        return (1)
+    else:#else return 0
+        return (0)
 
 # ML implementation to generate caption
 def generate_caption(file):
@@ -177,7 +187,7 @@ def generate_caption(file):
     caption_list = inference(content_bytes)#returns a list of caption:confidence pairs
     caption = caption_list[0][0]#extract caption with highest confidence
     if(caption):
-        return caption
+        return 'I think i see...' + caption
     else:
         return "Error: Caption not generated"
 
@@ -319,4 +329,5 @@ def get_classification(file):
 from .img_caption import inference
 def get_caption(file):
     content_bytes= img_to_bytes(file)
-    return inference(content_bytes)
+    caption = 'I think i see ' + inference(content_bytes)
+    return caption
