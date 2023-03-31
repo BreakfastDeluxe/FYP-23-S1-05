@@ -412,12 +412,14 @@
                     </div>
                     {% if image %}
                     {{label}}
-                    {{blur}}
                     <!-- Upon submit, display this -->
                     <span class="successful-msg">
-                        <h4>Succesfully uploaded</h4>
+                        <h4>{% if blur %}{{blur}}
+                            {% else %}
+                            Succesfully uploaded
+                        {% endif %}</h4>
                         <div class="audio-item">
-                            <audio controls style="width: 30%;">
+                            <h5>Read it to me:</h5><audio controls style="width: 30%;">
                                 <source src="{{audio}}" type="audio/ogg">
                                 Your browser does not support the audio element.
                             </audio>
@@ -444,7 +446,7 @@
                                 Caption
                             </h3>
                             <textarea class="caption"
-                                style="height: 4rem; width: 100%">&nbsp;&nbsp;&nbsp;Caption goes here</textarea>
+                                style="height: 4rem; width: 100%">&nbsp;&nbsp;&nbsp;{{caption}}</textarea>
                 </div>
 
             </div>
