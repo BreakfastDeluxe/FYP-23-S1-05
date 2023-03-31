@@ -34,6 +34,7 @@ urlpatterns = [
     path('history', history, name='gallery'), #url for images displayed
     path('delete_image', delete_image, name='delete_image'),
     path('delete_user', delete_user, name='delete_user'),
+    path('tasks', manage_tasks, name = 'tasks'),
     path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
     path('password-reset-confirm/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),

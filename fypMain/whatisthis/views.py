@@ -124,7 +124,7 @@ def upload_image(request):
             # Getting the current instance object to display in the template
             id = request.user  # get current userid
             # getting latest uploaded Image by id attribute
-            Images = Image.objects.latest('id')
+            Images = Image.objects.filter(created_by_id=id).latest('id')
             file = Images.upload_Image.url
             #blur checking function
             blur_value = blur_check(Images.upload_Image.url)
@@ -340,3 +340,26 @@ def delete_image(request):
     image = Image.objects.get(id=image_id)
     image.delete()
     return redirect(to='gallery')
+
+def manage_tasks(request):
+    if request.method == 'POST':
+        form = CreateTaskForm(request.POST)
+        if form.is_valid():
+            author = form.save(commit=False)
+            author.created_by = request.user
+            author.save()
+            form.save_m2m()
+            form.save()
+    else: 
+        form  = CreateTaskForm()
+    id = request.user  # get current userid
+    #get all of the tasks of this user
+    tasks = Task.objects.filter(created_by_id=id)
+    #get the latest task (outstanding task)
+    current_task = Task.objects.filter(created_by_id=id).latest('id')
+    if(current_task.task_complete == False): #if the task is not complete
+        #print('blocking')
+        block_new_task = False#dont allow a new task to be created
+    else:
+        block_new_task = True
+    return render(request, 'tasks.html', {'form': form, 'tasks':tasks, 'current_task': current_task, 'block_new_task': block_new_task})
