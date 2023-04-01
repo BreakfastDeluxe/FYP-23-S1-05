@@ -99,11 +99,17 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
 @login_required
 def history(request):
     id = request.user  # get current userid
-    gallery_images = Image.objects.filter(created_by_id=id)#retrieve all image objects, filtered by current userid
-    #print(gallery_images)
-    #for image in gallery_images:
-    #    print(image.upload_Image.url)
-    return render(request, "history.html", {'gallery_images': gallery_images})
+    if request.method == 'POST':
+        search_query = request.POST.get('search_query')
+        gallery_images = Image.objects.filter(created_by_id=id, keywords__icontains=search_query) | Image.objects.filter(created_by_id=id, caption__icontains=search_query)#retrieve all image objects, filtered by current userid and (matching keyword/caption)
+        return render(request, "history.html", {'gallery_images': gallery_images})
+    else: 
+        
+        gallery_images = Image.objects.filter(created_by_id=id)#retrieve all image objects, filtered by current userid
+        #print(gallery_images)
+        #for image in gallery_images:
+        #    print(image.upload_Image.url)
+        return render(request, "history.html", {'gallery_images': gallery_images})
 
 @login_required
 def upload_image(request):
@@ -122,17 +128,28 @@ def upload_image(request):
             file = Images.upload_Image.url
             #blur checking function
             blur_value = blur_check(Images.upload_Image.url)
+            if(blur_value):
+                caption = 'This picture looks blurry but...'
+                blur_warn = 'This picture might be blurry, could you try again?'
+            else: 
+                caption = ''
+                blur_warn = ''
             #keyword generation function (everypixel API)
             keywords = generate_keywords(file)
-            #audio generation function (GTTS)
-            audio = generate_audio(keywords, file)
-            label = predict_image(file)
-            
+            #brandon's image classifier
+            #label = predict_image(file)
+            #label = ''
             #image classifier (pytorch - DenseNet pretrained model)
             img_class = get_classification(file)
             #image captioner (pytorch - MSCOCO model - DO NOT USE FOR NOW)
-            #img_cap = generate_caption(file)
-            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur': blur_value, 'keywords': keywords, 'audio': audio, 'label': label, 'img_class' : img_class})
+            img_cap = generate_caption(file)
+            caption += img_cap
+            Images.caption = caption
+            Images.keywords = keywords
+            Images.save()
+            #audio generation function (GTTS)
+            audio = generate_audio(caption, file)
+            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_warn, 'keywords': keywords, 'audio': audio, 'img_class' : img_class, 'caption' : caption})
     else:
         form = ImageForm()
 
@@ -165,18 +182,19 @@ def blur_check(file):
     var = cv2.Laplacian(grey, cv2.CV_64F).var()
     # if variance is less than the set threshold
     # image is blurred otherwise not
-    if var < 20:
-        return ('Image might be Blurred: '+str(var))
-    else:
-        return ('Image Not Blurred: '+str(var))
+    if var < 20:#if blurry, return 1
+        return (1)
+    else:#else return 0
+        return (0)
 
 # ML implementation to generate caption
+from .img_caption import inference
 def generate_caption(file):
     content_bytes= img_to_bytes(file)
     caption_list = inference(content_bytes)#returns a list of caption:confidence pairs
     caption = caption_list[0][0]#extract caption with highest confidence
     if(caption):
-        return caption
+        return 'I think i see...' + caption
     else:
         return "Error: Caption not generated"
 
@@ -263,14 +281,6 @@ def predict_image(file):
     
     return label
 
-    audioFilename = os.path.basename(file)+'.mp3' #set the target filename for audio saving
-    lang = 'en' #set TTS output language
-    tts = gTTS(text, lang=lang) #call gTTS function to generate audio
-    save_path = './media/audio/' + audioFilename #set save location
-    tts.save(save_path)#save generated audio to location
-
-    return save_path #return saved audio location for retrieval
-
 #pytorch helpers
 
 from torchvision import models
@@ -326,7 +336,10 @@ def get_classification(file):
     class_name, human_label = imagenet_mapping[predicted_idx]#map predicted index to imagenet text map
     return human_label
 
-from .img_caption import inference
-def get_caption(file):
-    content_bytes= img_to_bytes(file)
-    return inference(content_bytes)
+def delete_image(request):
+    #when delete button in image selected, delete image and reload gallery
+    image_id = request.POST.get('image_id')
+    #print('image id = ' + image_id)
+    image = Image.objects.get(id=image_id)
+    image.delete()
+    return redirect(to='gallery')
