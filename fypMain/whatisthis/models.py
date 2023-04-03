@@ -16,6 +16,7 @@ class Image(models.Model):
     caption = models.CharField(max_length = 255, blank=True, null=True)
     #setup blank field for storing keyword generation later
     keywords = models.CharField(max_length = 255, blank=True, null=True)
+    rating = models.IntegerField(default=0)
 
 class Task(models.Model):
     #get the current logged in user's id and associate it with this uploaded image (set the ownership)

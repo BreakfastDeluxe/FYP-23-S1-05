@@ -115,6 +115,14 @@ def history(request):
 def upload_image(request):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
+        #rating system
+        rating=request.POST.get('rating')
+        if(rating):
+            id = request.user  # get current userid
+            # getting latest uploaded Image by id attribute
+            Images = Image.objects.filter(created_by_id=id).latest('id')
+            rate_caption(Images.id, rating)
+        
         if form.is_valid():
             author = form.save(commit=False)
             author.created_by = request.user
@@ -380,3 +388,16 @@ def check_task_completion(keywords, request):
         return 1
     else:
         return 0
+    
+def rate_caption(image_id, option):
+    print(option)
+    image = Image.objects.get(id = image_id)
+    option = int(option)
+    
+    if(option >= 1):
+        image.rating = 1
+    else:
+        if(option <= 0):
+            image.rating = -1
+    image.save()
+    return 0
