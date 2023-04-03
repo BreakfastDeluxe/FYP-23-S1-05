@@ -51,6 +51,14 @@ class Login(LoginView):
 def menu(request):
     return render(request, "menu.html")
 
+def check_pin(*args, **kwargs): # decorator function for checking pin
+    def wrapper(func):
+        if kwargs.get('pin', None) == 'pin':
+            func() # show index, if password is corrent
+        else:
+            raise Exception('Access denied') # else raise the exception
+    return wrapper
+
 
 class SignUp(CreateView):
     form_class = UserCreationForm
@@ -104,6 +112,8 @@ def history(request):
     #for image in gallery_images:
     #    print(image.upload_Image.url)
     return render(request, "history.html", {'gallery_images': gallery_images})
+
+
 
 @login_required
 def upload_image(request):

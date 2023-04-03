@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
 from .validators import *
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -16,3 +18,18 @@ class Image(models.Model):
     caption = models.CharField(max_length = 255, blank=True, null=True)
     #setup blank field for storing keyword generation later
     keywords = models.CharField(max_length = 255, blank=True, null=True)
+
+class CustomUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)
+    pin = models.CharField(max_length=6, default='000000')
+
+@receiver(post_save, sender=User)
+def create_custom_user(sender, instance, created, **kwargs):
+    if created:
+        CustomUser.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_custom_user(sender, instance, **kwargs):
+    instance.customuser.save()
+
