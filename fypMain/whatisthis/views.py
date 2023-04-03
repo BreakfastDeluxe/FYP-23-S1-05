@@ -163,8 +163,10 @@ def upload_image(request):
                                                          'caption' : caption, 'task_completion': task_completion})
     else:
         form = ImageForm()
+        id = request.user  # get current userid
+        current_task = Task.objects.filter(created_by_id=id).latest('id')
 
-    return render(request, 'upload_image.html', {'form': form})
+    return render(request, 'upload_image.html', {'form': form, 'current_task' : current_task})
 	
 
 #allow current user to delete their own account
@@ -380,11 +382,14 @@ def manage_tasks(request):
     return render(request, 'tasks.html', {'form': form, 'tasks':tasks, 'block_new_task': block_new_task})
 
 def check_task_completion(keywords, request):
-    id = request.user  # get current userid
-    current_task = Task.objects.filter(created_by_id=id).latest('id')
+    user_id = request.user.id  # get current userid
+    current_task = Task.objects.filter(created_by_id=user_id).latest('id')
     if current_task.task_keyword in keywords:
         current_task.task_complete = True
         current_task.save()
+        user = User.objects.get(id=user_id)
+        user.customuser.score += 1
+        user.customuser.save()
         return 1
     else:
         return 0

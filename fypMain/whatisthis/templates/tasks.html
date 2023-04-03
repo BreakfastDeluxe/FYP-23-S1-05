@@ -1,14 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Tasks Page{% endblock title %}
+{% block content %}
 <html>
     <body>
-        <h3>Tasks Page</h3></br>
+        <h3>Tasks Page</h3></br><hr>
         {% if block_new_task %}<!-- If a task is still outstanding, disable the form, dont allow new task to be added-->
-        Create a new picture task!</br>
-        Write the word that best describes the object e.g. 'apple'
+        <h4>Create a new picture task!</h4></br>
+        Set a learning goal to guide your child's journey!</br>
+        Allow them to seek out items matching your goal and learn about them</br>
+        Write the word that best describes the item e.g. 'apple'
             <form method="post">
             {% csrf_token %}
             Take a picture of a(n): {{form.task_keyword}}</br>
-                <button class="button"
-                        type="submit">Create Task
+                <button class="btn btn-dark btn-lg"
+                        type="submit" >Create Task
                 </button>
             </form>
         <hr>
@@ -22,9 +27,10 @@
         <h3>All Tasks</h3></br>
         {% if tasks %}<!-- Display all tasks (past and current)-->
             {% for task in tasks %}
-                Task Description: Take a picture of a(n) {{current_task.task_keyword}}</br>
+                Task Description: Take a picture of a(n) {{task.task_keyword}}</br>
                 Task Complete?: {{task.task_complete}}</br>
             {% endfor %}
         {% endif %}
     </body>
 </html>
+{% endblock content %}

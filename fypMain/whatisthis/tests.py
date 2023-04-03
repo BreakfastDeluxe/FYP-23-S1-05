@@ -63,7 +63,7 @@ class DisplayViewsTestCase(TestCase):
         response = self.client.get('/user')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'profile.html')
-    #test gallery view
+    #test gallery & search view
     def test_call_view_load_gallery(self):
         response = self.client.get('/history', follow=True)
         self.assertRedirects(response, '/login/?next=/history')
@@ -71,6 +71,8 @@ class DisplayViewsTestCase(TestCase):
         response = self.client.get('/history')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'history.html')
+        response = self.client.post('/history', {'search_query' : 'testSearch'})
+        self.assertEqual(response.status_code, 200)
     #test logout view
     def test_call_view_load_logout(self):
         self.client.login(username='testuser', password='12345!a')
@@ -131,19 +133,19 @@ class BlurTestCase(TestCase):
     def test_image_blur(self):
         imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
         blur_value1 = blur_check(imageTest_image_1.upload_Image.url)
-        print('Not Blur 1: ' + blur_value1)
+        print('Not Blur 1: ' + str(blur_value1))
         #check if exists
         self.assertIsNotNone(blur_value1)
         #check type = str
-        self.assertIsInstance(blur_value1, str)
+        self.assertIsInstance(blur_value1, int)
         
         imageTest_image_2 = Image.objects.get(upload_Image = 'images/unitTestImage2.jpg')
         blur_value2 = blur_check(imageTest_image_2.upload_Image.url)
-        print('Is Blur 2: ' + blur_value2)
+        print('Is Blur 2: ' + str(blur_value2))
         #check if exists
         self.assertIsNotNone(blur_value2)
         #check type = str
-        self.assertIsInstance(blur_value2, str)
+        self.assertIsInstance(blur_value2, int)
         
 #test the function views.generate_keywords(file) expect return str
 class KeywordGenerationTestCase(TestCase):
@@ -207,3 +209,18 @@ class ValidateFilesizeTestCase(TestCase):
         testfile2.size = 10585760 # >1MB
         self.assertRaises(ValidationError, validate_file_size, testfile2)
         
+#test the delete_image function        
+class DeleteImageTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345!a')
+        login = self.client.login(username='testuser', password='12345!a')
+        Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage1.jpg')
+        
+    def test_delete_image(self):
+        imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
+        self.assertIsNotNone(imageTest_image_1)
+        image_id = imageTest_image_1.id
+        #print(image_id)
+        response = self.client.post('/delete_image', {'image_id' : image_id})
+        #print(response.status_code)
+        self.assertFalse(Image.objects.filter(upload_Image = 'images/unitTestImage1.jpg').exists())

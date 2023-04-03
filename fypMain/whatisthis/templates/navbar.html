@@ -52,8 +52,9 @@
     <img src="{% static 'logo.png' %}" class="logo-img" width="auto" height="50">
     <div class="nav-list">
         <a class="navbar-brand" href="{% url 'gallery' %}">Gallery</a>
-        <a class="navbar-brand" href="{% url 'password_reset' %}">Profile</a>
-        <a class="navbar-brand" href="">Hello, {{ user }}</a>
+        <a class="navbar-brand" href="{% url 'user' %}">Account</a>
+        <a class="navbar-brand" >Hello, {{ user }}</a>
+        <a class="navbar-brand" >Score: {{ user.customuser.score}}</a>
     </div>
 </nav>
 {% block content %}{% endblock %}
