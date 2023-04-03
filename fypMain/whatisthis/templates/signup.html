@@ -1,42 +1,35 @@
 {% load static %}
 <html>
-    <!-- this page is the signup page for new users, display signup form-->
-    <head>
-        <title> Signup </title>
+<!-- this page is the signup page for new users, display signup form-->
 
-        <link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- button fonts -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Signup </title>
+    <link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- button fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <style>
         body {
-            background-image: url('{% static "signup.png" %}');
-            background-size: 100% 100%; 
-            background-position: left top; 
+            background-image: url('{% static "bg-img/signup.png" %}');
+            background-size: 100% 100%;
+            background-position: left top;
             background-repeat: no-repeat;
         }
 
-        .container, .col-items, .row-items, .img-items {
-            text-align: center; 
+        .container,
+        .col-items,
+        .row-items,
+        .img-items {
+            text-align: center;
             margin-left: auto;
-            margin-right: auto; 
-        }
-
-        .ellipse {
-            clip-path: ellipse(16rem 20% at top left);
-            width: 750px;
-            height: 500px;
-            background-color: #A5793E; 
-            padding: 0;
-            margin: 0;
-            position: absolute;
-            top: 0; 
-            left: 0;
-            opacity: 30%;
+            margin-right: auto;
         }
 
         .heading {
             font-family: "lores-12", sans-serif;
             font-weight: 700;
-            font-style: normal; 
+            font-style: normal;
             color: #6A6763;
             font-size: 35px;
             margin-bottom: 5%;
@@ -48,7 +41,7 @@
             font-weight: 400;
             font-style: normal;
             font-size: 18px;
-            color: #6A6763; 
+            color: #6A6763;
             text-transform: uppercase;
         }
 
@@ -65,25 +58,28 @@
             padding: 10px 0px 10px 0px;
         }
 
-        #id_username, #id_email, #id_password1, #id_password2 {
+        #id_username,
+        #id_email,
+        #id_password1,
+        #id_password2 {
             border-style: solid;
-                outline: 3px #707070;
-                border-radius: 30px!important;
-                background: #FFBA5C;
-                width: 200px;
-                height: 35px;
-                font-family: "lores-12", sans-serif;
-                font-weight: 700;
-                font-style: normal; 
-                font-size: 20px;
-                letter-spacing: -0.5px;
+            outline: 3px #707070;
+            border-radius: 30px !important;
+            background: #FFBA5C;
+            width: 200px;
+            height: 35px;
+            font-family: "lores-12", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 20px;
+            letter-spacing: -0.5px;
         }
 
         .requirements {
             max-width: 200px;
             font-size: 12px;
-            text-align:left;
-            padding:5px 0px 10px 0px;
+            text-align: left;
+            padding: 5px 0px 10px 0px;
         }
 
         .row-items {
@@ -91,10 +87,10 @@
         }
 
         .mb-2 {
-            margin-bottom: 2rem!important;
+            margin-bottom: 2rem !important;
         }
 
-        .btn.login_btn {
+        .btn.submit_btn {
             border: 3px #707070;
             background-color: #00A6FF;
             color: #FFFFFF;
@@ -104,7 +100,8 @@
             width: 200px;
         }
 
-        .btn.login_btn:active { /*when button is active, design remains*/ 
+        .btn.submit_btn:active {
+            /*when button is active, design remains*/
             border: 3px #707070;
             background-color: #00A6FF;
             color: #FFFFFF;
@@ -126,7 +123,7 @@
 
         div.input-group {
             justify-content: center;
-            max-width:100%;
+            max-width: 100%;
         }
 
         .terms_container {
@@ -135,30 +132,42 @@
 
         .terms-items {
             font-size: 12px;
-            text-align:center;
+            text-align: center;
         }
 
         .terms-items img {
-            float:left;
+            float: left;
         }
 
         .nav-back img {
             width: 20px;
             height: auto;
             margin-right: 10px;
-            color: #A5793E!important;
+            color: #A5793E !important;
         }
-        
+
+        .nav::before {
+            content: '';
+            background-color: #A5793E; 
+            width: 18rem; 
+            height: 7rem; 
+            position: absolute; 
+            top: 0; 
+            left: 0;
+            border-radius: 0 0 100%;
+            opacity: 40%;
+        }
+
         .nav-back {
             max-width: 100%;
-            position: absolute; 
-            left: 0; 
+            position: absolute;
+            left: 0;
             top: 0;
             padding: 30px;
             text-transform: uppercase;
         }
 
-        .nav-back a { 
+        .nav-back a {
             text-decoration: none;
             font-family: "futura-pt", sans-serif;
             font-weight: 400;
@@ -167,111 +176,183 @@
             color: #A5793E;
         }
 
-    </style>    
-    </head>
-    <body>
-            <div class="d-flex flex-column justify-content-center h-100 container">
-                <div class="ellipse"></div> <!--ellipse background for the nav item-->
-                <div class="d-flex flex-column justify-content-center col-items"> 
-                    <div class="d-flex flex-column nav">
-                        <div class="d-flex flex-row nav-back">
-                            <img src="{% static 'arrow1.png' %}">
-                            <a href="{% url 'home' %}" class="nav-back-item">
-                                Back to home
-                            </a>
-                        </div>
+        @media (max-width: 750px) {
+            .heading {
+                font-size: 2rem; 
+                margin-bottom: 0.5rem;
+            }
+
+            .nav::before {
+                width: 12rem; 
+                height: 5rem;
+            }
+
+            .nav-back {
+                padding: 1.5rem;
+            }
+
+            .nav-back a {
+                font-size: 0.7rem;
+            }
+
+            .nav-back img {
+                width: 0.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .row-items {
+                margin-top:2rem;
+            }
+
+            .img-items {
+                flex-direction: column!important;
+            }
+
+            .first-item, .next-items {
+                width: 8rem;
+            }
+
+        }
+
+        @media (max-width: 400px) {
+            html {
+                font-size: 80%;
+            }
+
+            ::placeholder {
+                font-size: 1.2rem;
+            }
+
+            #id_username, #id_email, #id_password1, #id_password2, .btn.submit_btn {
+                width: 13rem;
+            }
+
+            div.input-group, .submit_container {
+                justify-content: left!important;
+            }
+
+            .img-items img {
+                max-width: 80%;
+            }
+            
+            .img-items {
+                justify-content: center;
+            }
+
+            .terms_container p {
+                font-size: 0.8rem; 
+                margin-right: 3rem;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex flex-column justify-content-center h-100 container">
+        <div class="d-flex flex-column justify-content-center col-items">
+            <div class="d-flex flex-column nav">
+                <div class="d-flex flex-row nav-back">
+                    <img src="{% static 'arrow1.png' %}">
+                    <a href="{% url 'home' %}" class="nav-back-item">
+                        Back to home
+                    </a>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center flex-column title">
+                <h3 class="heading">
+                    Sign up!
+                </h3>
+
+                <h5 class="subtitle">
+                    Create an account<br /> to keep track of your pictures!
+                </h5>
+            </div>
+
+            <div class="d-flex flex-row justify-content-center row-items"> <!--pictures + form -->
+                <div class="d-flex flex-row img-items"> <!-- 3 pix -->
+                    <div class="d-flex flex-column justify-content-center first-item"> <!-- first pix on first col-->
+                        <img src="{% static 'image.jpg' %}">
                     </div>
-                    <div class="d-flex justify-content-center flex-column title">
-                        <h3 class="heading">
-                            Sign up!
-                        </h3>
-
-                        <h5 class="subtitle">
-                            Create an account<br/> to keep track of your pictures! 
-                        </h5>
+                    <div class="d-flex flex-column justify-content-center next-items">
+                        <img src="{% static 'image-1.jpg' %}">
+                        <img src="{% static 'image-2.jpg' %}">
                     </div>
+                </div>
 
-                    <div class="d-flex flex-row justify-content-center row-items"> <!--pictures + form -->
-                        <div class="d-flex flex-row img-items"> <!-- 3 pix -->
-                            <div class="d-flex flex-column justify-content-center first-item"> <!-- first pix on first col-->
-                                <img src="{% static 'image.jpg' %}">
-                            </div>
-                            <div class="d-flex flex-column justify-content-center next-items">
-                                <img src="{% static 'image-1.jpg' %}">
-                                <img src="{% static 'image-2.jpg' %}">
-                            </div>
+                <div class="d-flex flex-column justify-content-center form_container">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            {{ form.username }}
                         </div>
 
-                        <div class="d-flex flex-column justify-content-center form_container">
-                            <form method="post">
-                                {% csrf_token %}
-                                <div class="input-group">
-                                    {{ form.username }} 
-                                </div>
+                        <span class="d-flex flex-column justify-content-center requirements">
+                            <li>
+                                letters, numbers, symbols or spaces
+                            </li>
+                            <li>
+                                Do not use your real name
+                            </li>
+                        </span>
 
-                                <span class="d-flex flex-column justify-content-center requirements">
-                                    <li>
-                                        letters, numbers, symbols or spaces 
-                                    </li>
-                                    <li>
-                                        Do not use your real name
-                                    </li>   
-                                </span>
+                        <div class="input-group">
+                            {{ form.email }}
+                        </div>
 
-                                <div class="input-group">
-                                    {{ form.email }} 
-                                </div>
+                        <span class="d-flex flex-column justify-content-center requirements">
+                            <li>
+                                Input Parent's Email
+                            </li>
+                        </span>
 
-                                <span class="d-flex flex-column justify-content-center requirements">
-                                    <li>
-                                        Input Parent's Email 
-                                    </li> 
-                                </span>
+                        <div class="input-group mb-2">
+                            {{ form.password1 }}
+                        </div>
 
-                                <div class="input-group mb-2">
-                                    {{ form.password1 }} 
-                                </div>
-
-                                <div class="input-group mb-2">
-                                    {{ form.password2 }} 
-                                </div>
+                        <div class="input-group mb-2">
+                            {{ form.password2 }}
+                        </div>
 
                                 <div class="input-group mb-2">
                                     {{ form.pin }} 
                                 </div>
 
-                                {% if form.errors %}
-                                    {% for field, errors in form.errors.items %}
-                                        {% for error in errors %}
-                                        <span class="d-flex flex-column justify-content-center requirements">
-                                            {{ error }}
-                                        </span>
-                                        {%endfor%}
-                                    {%endfor%}
-                                {% endif %}
+                        {% if form.errors %}
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                        <span class="d-flex flex-column justify-content-center requirements">
+                            {{ error }}
+                        </span>
+                        {%endfor%}
+                        {%endfor%}
+                        {% endif %}
 
-                                <div class="d-flex justify-content-center mt-3 submit_container">
-                                    <input class="btn login_btn" type="submit" value="Submit">
-                               </div>
-
-                               <div class="d-flex flex-column justify-content-center terms_container">
-                                <div class="terms-items" style="display:inline-block">
-                                    <img src="{% static 'protection.png' %}" style="max-width:25%">
-                                        <p style="margin-top:0.5rem;">
-                                            By signing, you agree to our Terms & Conditions
-                                        </p>
-                                </div>
-                                    
-                                </div>
-                                </div>
-
-                               
-                            </form>
+                        <div class="d-flex justify-content-center mt-3 submit_container">
+                            <input class="btn submit_btn" type="submit" value="Submit">
                         </div>
-                    </div>
+
+                        <div class="d-flex flex-column justify-content-center terms_container">
+                            <div class="terms-items" style="display:inline-block">
+                                <img src="{% static 'protection.png' %}" style="max-width:25%">
+                                <p style="margin-top:0.5rem;">
+                                    By signing, you agree to our Terms & Conditions
+                                </p>
+                            </div>
+
+                        </div>
                 </div>
+
+
+                </form>
             </div>
-            <!--
+        </div>
+    </div>
+    </div>
+    <!--
             <h1> SIGNUP FORM HERE </h1>
             <h2>Sign up</h2>
             <form method="post">
@@ -282,15 +363,16 @@
               <p> Confirm Password:{{ form.password2 }}</p>
               <button type="submit">Sign Up</button>
             </form> -->
-    </body>
+</body>
+
 </html>
 
 <script>
     //Add in placeholders in input fields 
 
     var form_fields = document.getElementsByTagName("input");
-    form_fields[1].placeholder = "Username"; 
-    form_fields[2].placeholder = "Email"; 
-    form_fields[3].placeholder = "Password"; 
+    form_fields[1].placeholder = "Username";
+    form_fields[2].placeholder = "Email";
+    form_fields[3].placeholder = "Password";
     form_fields[4].placeholder = "Confirm Password"; 
 </script>
