@@ -3,6 +3,7 @@ from django.core.files import File
 from .models import *
 from .views import *
 from .validators import *
+from django.test.client import RequestFactory
 
 # Create your tests here.
 
@@ -20,10 +21,17 @@ class UserTestCase(TestCase):
         login = self.client.login(username='testuser', password='wrongPass2')
         self.assertFalse(login)
         print('Login Fail Test OK')
+    def test_customUser(self):
+        testUser = User.objects.get(username='testuser')
+        #check default score
+        self.assertEquals(testUser.customuser.score, 0)
+        #check default pin
+        self.assertEquals(testUser.customuser.pin, '000000')
 #testing views and associated URL pairings
 class DisplayViewsTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345!a')
+        self.task = Task.objects.create(task_complete = 0, created_by_id = self.user.id, task_keyword = 'test_keyword')
     #test home view   
     def test_call_view_load_home(self):
         response = self.client.get('')
@@ -224,3 +232,51 @@ class DeleteImageTestCase(TestCase):
         response = self.client.post('/delete_image', {'image_id' : image_id})
         #print(response.status_code)
         self.assertFalse(Image.objects.filter(upload_Image = 'images/unitTestImage1.jpg').exists())
+        
+#test the Task Model        
+class TaskTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345!a')
+        self.task = Task.objects.create(task_complete = 0, created_by_id = self.user.id, task_keyword = 'test_keyword')
+    
+    def testTaskData(self):
+        taskTest1 = Task.objects.get(id=1)
+        self.assertEquals(taskTest1.task_complete, 0)
+        self.assertIsInstance(taskTest1.task_complete, int)
+        self.assertEquals(taskTest1.task_keyword, 'test_keyword')
+        self.assertIsInstance(taskTest1.task_keyword, str)
+        
+class CompleteTaskTestCase(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username='testuser', password='12345!a')
+        login = self.client.login(username='testuser', password='12345!a')
+        self.task = Task.objects.create(task_complete = 0, created_by_id = self.user.id, task_keyword = 'test_keyword')
+        
+    def test_complete_task(self):
+        login = self.client.login(username='testuser', password='12345!a')
+        request = self.factory.get('/upload_image')
+        request.user = self.user
+        taskTest1 = Task.objects.get(id=1)
+        #false positive test, should not trigger completion
+        self.assertEquals(check_task_completion('different_keyword', request), 0)
+        #positive test, should trigger completion
+        self.assertEquals(check_task_completion('test_keyword', request), 1)
+        
+class RateCaptionTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345!a')
+        login = self.client.login(username='testuser', password='12345!a')
+        Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage1.jpg')
+        
+    def test_rate_caption(self):
+        testImage = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
+        
+        #test if init rating is 0
+        self.assertEquals(testImage.rating, 0)
+        rate_caption(testImage.id, '1') #rate caption positively
+        testImage = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
+        self.assertEquals(testImage.rating, 1)
+        rate_caption(testImage.id, '0') #rate caption negatively
+        testImage = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
+        self.assertEquals(testImage.rating, -1)

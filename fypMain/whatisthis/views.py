@@ -395,7 +395,7 @@ def check_task_completion(keywords, request):
         return 0
     
 def rate_caption(image_id, option):
-    print(option)
+    #print(option)
     image = Image.objects.get(id = image_id)
     option = int(option)
     
