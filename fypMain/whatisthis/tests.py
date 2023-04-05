@@ -98,6 +98,12 @@ class DisplayViewsTestCase(TestCase):
         response = self.client.get('/password-reset/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'password_reset.html')
+    #test manage_tasks view
+    def test_call_view_manage_tasks(self):
+        self.client.login(username='testuser', password='12345!a')
+        response = self.client.get('/tasks')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'tasks.html')
 
 #test the object models.Image
 class ImageTestCase(TestCase):
