@@ -113,6 +113,12 @@ def history(request):
 
 @login_required
 def upload_image(request):
+    id = request.user  # get current userid
+    current_task = Task.objects.filter(created_by_id=id)
+    if not current_task:
+        current_task = None
+    else:
+        current_task = current_task.latest('id')
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         #rating system
@@ -160,7 +166,7 @@ def upload_image(request):
             task_completion = check_task_completion(keywords, request)
             return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_warn, 
                                                          'keywords': keywords, 'audio': audio, 'img_class' : img_class, 
-                                                         'caption' : caption, 'task_completion': task_completion})
+                                                         'caption' : caption, 'task_completion': task_completion, 'current_task' : current_task})
     else:
         form = ImageForm()
         id = request.user  # get current userid
@@ -386,6 +392,7 @@ def manage_tasks(request):
         block_new_task = True
     return render(request, 'tasks.html', {'form': form, 'tasks':tasks, 'block_new_task': block_new_task})
 
+#used in upload_image view after user uploads an image. 
 def check_task_completion(keywords, request):
     user_id = request.user.id  # get current userid
     current_task = Task.objects.filter(created_by_id=user_id).latest('id')
@@ -398,7 +405,8 @@ def check_task_completion(keywords, request):
         return 1
     else:
         return 0
-    
+
+#used in upload_image view, take in image_id and user option(thumb up(1)/down(0)), set image(model).rating accordingly    
 def rate_caption(image_id, option):
     #print(option)
     image = Image.objects.get(id = image_id)

@@ -20,16 +20,27 @@
         {% endif %}
         <h3>Current Task</h3></br>
         {% if tasks %}<!-- Display the current(latest) task-->
-        Task Description: Take a picture of a(n) {{current_task.task_keyword}}</br>
-        Task Complete?: {{current_task.task_complete}}</br>
+        <ol>
+            {% if current_task.task_complete %}
+            {% else %}
+            <li>
+                Task: Take a picture of a(n) {{current_task.task_keyword}}</br>
+            </li>
+            {% endif %}
         {% endif %}
+        </ol>
         <hr>
-        <h3>All Tasks</h3></br>
+        <h3>Completed Tasks</h3></br>
         {% if tasks %}<!-- Display all tasks (past and current)-->
+        <ol>
             {% for task in tasks %}
-                Task Description: Take a picture of a(n) {{task.task_keyword}}</br>
-                Task Complete?: {{task.task_complete}}</br>
+                {% if task.task_complete %}
+                <li>
+                    Task: Take a picture of a(n) {{task.task_keyword}}</br>
+                </li>
+                {% endif %}
             {% endfor %}
+        </ol>
         {% endif %}
     </body>
 </html>
