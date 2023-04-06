@@ -21,6 +21,7 @@ class UserTestCase(TestCase):
         login = self.client.login(username='testuser', password='wrongPass2')
         self.assertFalse(login)
         print('Login Fail Test OK')
+    #test if customUser is auto created along with user, default values init correctly
     def test_customUser(self):
         testUser = User.objects.get(username='testuser')
         #check default score
@@ -251,7 +252,8 @@ class TaskTestCase(TestCase):
         self.assertIsInstance(taskTest1.task_complete, int)
         self.assertEquals(taskTest1.task_keyword, 'test_keyword')
         self.assertIsInstance(taskTest1.task_keyword, str)
-        
+
+#test the function that checks if uploaded image keyword matches current task keyword requirement        
 class CompleteTaskTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -261,14 +263,15 @@ class CompleteTaskTestCase(TestCase):
         
     def test_complete_task(self):
         login = self.client.login(username='testuser', password='12345!a')
-        request = self.factory.get('/upload_image')
-        request.user = self.user
+        request = self.factory.get('/upload_image')#create a HTTP request
+        request.user = self.user#set the HTTP request user variable to current user
         taskTest1 = Task.objects.get(id=1)
         #false positive test, should not trigger completion
         self.assertEquals(check_task_completion('different_keyword', request), 0)
         #positive test, should trigger completion
         self.assertEquals(check_task_completion('test_keyword', request), 1)
-        
+
+#test the caption rating system        
 class RateCaptionTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345!a')

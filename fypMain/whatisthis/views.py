@@ -169,12 +169,6 @@ def upload_image(request):
                                                          'caption' : caption, 'task_completion': task_completion, 'current_task' : current_task})
     else:
         form = ImageForm()
-        id = request.user  # get current userid
-        current_task = Task.objects.filter(created_by_id=id)
-        if not current_task:
-            current_task = None
-        else:
-            current_task = current_task.latest('id')
         return render(request, 'upload_image.html', {'form': form, 'current_task' : current_task})
 
     
