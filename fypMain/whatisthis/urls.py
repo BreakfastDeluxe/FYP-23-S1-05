@@ -26,23 +26,24 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('', home, name = "home"),
-    path('login/', views.Login.as_view(), name='login'),
-    path("signup/", views.SignUp.as_view(), name="signup"),
-    path('upload_image', upload_image, name='upload_image'),
-    path('menu', menu, name='menu'),
-    path('user', user, name='user'),
-    path('history', history, name='gallery'), #url for images displayed
-    path('delete_image', delete_image, name='delete_image'),
-    path('delete_user', delete_user, name='delete_user'),
-    path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
+    path('login/', views.Login.as_view(), name='login'),#login page
+    path("signup/", views.SignUp.as_view(), name="signup"),#signup page
+    path('upload_image', upload_image, name='upload_image'),#main function page(from start button)
+    path('menu', menu, name='menu'),#main menu
+    path('user', user, name='user'),#view/edit user account
+    path('history', history, name='gallery'), #image gallery
+    path('delete_image', delete_image, name='delete_image'),#used to invoke image delete by passing image ID
+    path('delete_user', delete_user, name='delete_user'),#confirmation page for delete user
+    path('tasks', manage_tasks, name = 'tasks'),#view/create tasks
+    path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),#password reset form
     path('password-reset-confirm/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),
-         name='password_reset_confirm'),
+         name='password_reset_confirm'),#password reset confirmation
     path('password-reset-complete/',
          auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),
-         name='password_reset_complete'),
-    path('password-change/', ChangePasswordView.as_view(), name='password_change'),
-    path('logout', auth_views.LogoutView.as_view(), name='logout')
+         name='password_reset_complete'),#password reset success page
+    path('password-change/', ChangePasswordView.as_view(), name='password_change'),#edit password form
+    path('logout', auth_views.LogoutView.as_view(), name='logout')#logout redirect to login
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

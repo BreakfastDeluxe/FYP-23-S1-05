@@ -3,6 +3,7 @@ from django.contrib import admin
 #login with superuser credentials to access console
 
 # Register your models here.
-from .models import Image
+from .models import *
 
 admin.site.register(Image)
+admin.site.register(Task)
