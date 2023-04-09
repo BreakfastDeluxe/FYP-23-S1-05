@@ -404,7 +404,14 @@
             {% csrf_token %}
             <div class="form-item">
                 <div class="history-img">
-                    <div class="img1" id="displayed-img"></div>
+                    <div class="img1" id="displayed-img">
+                        <!-- display the current task -->
+                        {% if current_task %}
+                            {% if current_task.task_complete == 0 %}
+                                Take a picture of a(n): {{ current_task.task_keyword}}
+                            {% endif %}
+                        {% endif %}
+                    </div>
                     <div class="img2"></div>
                     <div class="img3"></div>
                 </div>
@@ -435,6 +442,9 @@
                         </div>
                         <a class="btn btn-primary" href="menu">Menu</a>
                         {% endif %}
+                        {% if task_completion %}
+                        Congratulations you have completed a task!
+                        {% endif %}
                     </span>
                 </div>
 
@@ -452,7 +462,7 @@
                             <h3 style="font-family: lores-12, sans-serif;
                                     font-weight: 700;
                                     font-style: normal;">
-                                Caption
+                                Description:
                             </h3>
                             <textarea class="caption"
                                 style="height: 4rem; width: 100%">&nbsp;&nbsp;&nbsp;{{caption}}</textarea>
@@ -463,6 +473,44 @@
 
         {% endblock content %}
     </div>
+    {% if image %}
+    <div id='rating-system'>
+        Rating System Test:
+
+        <form method="post" id="rating-form" class="rating-form" onsubmit="document.getElementById('rating-system').style.display = 'none'">
+            {% csrf_token %}
+            <button type="submit" id="rating" value ='0' onClick="submitVal(this.value)">Rating Down</button>
+            <button type="submit" id="rating" value ='1' onClick="submitVal(this.value)">Rating Up</button>
+            
+        </form>
+      
+        <script src="https://code.jquery.com/jquery-3.5.1.js" 
+              integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+                crossorigin="anonymous"></script>
+      
+        <script type="text/javascript">
+
+        function submitVal(value){
+            $(document).on('submit','#rating-form',function(e){
+                e.preventDefault();
+                var form = $(this).parents('form.rating-form');
+                $.ajax({
+                    type:'POST',
+                    url:'{% url "upload_image" %}',
+                    data:
+                    {
+                        rating:value,
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success:function(){
+                        }
+                    })
+                });
+        }
+       
+        </script>
+    </div>
+    {% endif %}
 </body>
 
 </html>
