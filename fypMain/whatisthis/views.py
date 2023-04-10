@@ -113,8 +113,22 @@ def history(request):
 
 @login_required
 def upload_image(request):
+    id = request.user  # get current userid
+    current_task = Task.objects.filter(created_by_id=id)
+    if not current_task:
+        current_task = None
+    else:
+        current_task = current_task.latest('id')
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
+        #rating system
+        rating=request.POST.get('rating')
+        if(rating):
+            id = request.user  # get current userid
+            # getting latest uploaded Image by id attribute
+            Images = Image.objects.filter(created_by_id=id).latest('id')
+            rate_caption(Images.id, rating)
+        
         if form.is_valid():
             author = form.save(commit=False)
             author.created_by = request.user
@@ -124,7 +138,7 @@ def upload_image(request):
             # Getting the current instance object to display in the template
             id = request.user  # get current userid
             # getting latest uploaded Image by id attribute
-            Images = Image.objects.latest('id')
+            Images = Image.objects.filter(created_by_id=id).latest('id')
             file = Images.upload_Image.url
             #blur checking function
             blur_value = blur_check(Images.upload_Image.url)
@@ -149,11 +163,15 @@ def upload_image(request):
             Images.save()
             #audio generation function (GTTS)
             audio = generate_audio(caption, file)
-            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_warn, 'keywords': keywords, 'audio': audio, 'img_class' : img_class, 'caption' : caption})
+            task_completion = check_task_completion(keywords, request)
+            return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_warn, 
+                                                         'keywords': keywords, 'audio': audio, 'img_class' : img_class, 
+                                                         'caption' : caption, 'task_completion': task_completion, 'current_task' : current_task})
     else:
         form = ImageForm()
+        return render(request, 'upload_image.html', {'form': form, 'current_task' : current_task})
 
-    return render(request, 'upload_image.html', {'form': form})
+    
 	
 
 #allow current user to delete their own account
@@ -343,3 +361,58 @@ def delete_image(request):
     image = Image.objects.get(id=image_id)
     image.delete()
     return redirect(to='gallery')
+
+def manage_tasks(request):
+    if request.method == 'POST':
+        form = CreateTaskForm(request.POST)
+        if form.is_valid():
+            author = form.save(commit=False)
+            author.created_by = request.user
+            author.save()
+            form.save_m2m()
+            form.save()
+    else: 
+        form  = CreateTaskForm()
+    id = request.user  # get current userid
+    #get all of the tasks of this user
+    tasks = Task.objects.filter(created_by_id=id)
+    if(tasks):
+        #get the latest task (outstanding task)
+        current_task = Task.objects.filter(created_by_id=id).latest('id')
+        if(current_task.task_complete == False): #if the task is not complete
+            #print('blocking')
+            block_new_task = False#dont allow a new task to be created
+        else:
+            block_new_task = True
+        return render(request, 'tasks.html', {'form': form, 'tasks':tasks, 'current_task': current_task, 'block_new_task': block_new_task})
+    else:
+        block_new_task = True
+    return render(request, 'tasks.html', {'form': form, 'tasks':tasks, 'block_new_task': block_new_task})
+
+#used in upload_image view after user uploads an image. 
+def check_task_completion(keywords, request):
+    user_id = request.user.id  # get current userid
+    current_task = Task.objects.filter(created_by_id=user_id).latest('id')
+    if current_task.task_keyword in keywords:
+        current_task.task_complete = True
+        current_task.save()
+        user = User.objects.get(id=user_id)
+        user.customuser.score += 1
+        user.customuser.save()
+        return 1
+    else:
+        return 0
+
+#used in upload_image view, take in image_id and user option(thumb up(1)/down(0)), set image(model).rating accordingly    
+def rate_caption(image_id, option):
+    #print(option)
+    image = Image.objects.get(id = image_id)
+    option = int(option)
+    
+    if(option >= 1):
+        image.rating = 1
+    else:
+        if(option <= 0):
+            image.rating = -1
+    image.save()
+    return 0
