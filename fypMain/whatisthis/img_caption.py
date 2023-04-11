@@ -173,6 +173,7 @@ def inference(image_bytes):
     # Choose Device
     
     # Prepare an image
+    # To(device) to check if can use GPU
     image = transform_image(image_bytes).to(device)
 
     # Generate an caption from the image
