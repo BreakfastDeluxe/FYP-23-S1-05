@@ -54,12 +54,12 @@
             display: none;
             width: 11rem;
             padding: 1.5rem;
-            padding-top:2rem;
-            right: -10rem;
+            padding-top: 2rem;
+            right: -9rem;
             background-color: #FFBA5C;
-            z-index:-1;
+            z-index: -1;
             justify-content: right;
-            top:-1rem;
+            top: -1rem;
         }
 
         a.btn.profile_btn {
@@ -114,7 +114,6 @@
     <div class="nav-list">
         <a class="navbar-brand" href="{% url 'upload_image' %}">Upload</a>
         <a class="navbar-brand" href="{% url 'gallery' %}">Gallery</a>
-<<<<<<< HEAD
         <!-- Wrap in a dropdown container -->
         <div class="dropdown-container">
             <button onclick="myFunction()" class="navbar-dropdown">Hello, {{ user }}</button>
@@ -123,11 +122,6 @@
                 <a href="{% url 'logout' %}" class="btn signout_btn">Log out</a>
             </div>
         </div>
-=======
-        <a class="navbar-brand" href="{% url 'user' %}">Account</a>
-        <a class="navbar-brand" >Hello, {{ user }}</a>
-        <a class="navbar-brand" >Score: {{ user.customuser.score}}</a>
->>>>>>> eefc33a766dfe9a01ad6118dd4c1aceda753a5cc
     </div>
 </nav>
 {% block content %}{% endblock %}

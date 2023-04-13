@@ -10,12 +10,21 @@
 
 <head>
     <style>
+        body {
+            background-color: #FFE4B8;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         .img-gallery {
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-start;
             width: 100%;
-            background-color: #ffc10726;
         }
 
         .img-gallery>li {
@@ -39,7 +48,6 @@
 
         .search-container {
             padding: 2rem 0rem 0.5rem 2.5rem;
-            background-color: #ffc10726;
         }
 
         form {
@@ -63,31 +71,41 @@
             right: 2rem;
         }
 
+        .search-container form {
+            background-color: #B18C5A;
+            border-radius: 50px;
+            box-shadow: #A2712F inset 10px 10px 30px, #343333 8px 8px 30px;
+            padding: 1rem;
+            width: 60%;
+
+        }
+
         .gallery {
             margin-right: 2.5rem;
+            padding-left: 1rem;
         }
 
         .gallery-text {
-            font-size: 2.5rem;
+            font-size: 1.2rem;
             font-family: "grenadine-mvb", sans-serif;
             font-weight: 500;
             font-style: normal;
-            color: #747474;
+            color: #FFFFFF;
         }
-        
+
         #delete_image {
             margin: 10px;
             padding: 1.5rem;
             border-radius: 100%;
             background-color: #ffb6bd;
             color: #b02a37;
-            position: absolute; 
-            transform:translate(0.5rem, -3rem);
+            position: absolute;
+            transform: translate(0.5rem, -3rem);
             visibility: hidden;
         }
 
         .img-gallery li:hover #delete_image {
-            visibility:visible;
+            visibility: visible;
 
         }
 
@@ -96,7 +114,6 @@
             cursor: pointer;
             position: relative;
         }
-
     </style>
 </head>
 
