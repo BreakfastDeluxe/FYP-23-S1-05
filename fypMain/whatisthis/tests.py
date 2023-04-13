@@ -3,6 +3,7 @@ from django.core.files import File
 from .models import *
 from .views import *
 from .validators import *
+from .img_keyword import *
 from django.test.client import RequestFactory
 
 # Create your tests here.
@@ -177,6 +178,7 @@ class KeywordGenerationTestCase(TestCase):
         self.assertIsNotNone(keywords)
         #check type = str
         self.assertIsInstance(keywords, str)
+
         
 #test the function views.generate_audio(text, file) expect return str
 class AudioGenerationTestCase(TestCase):

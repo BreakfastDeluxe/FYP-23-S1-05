@@ -210,6 +210,21 @@ from .img_caption import inference
 def generate_caption(file):
     content_bytes= img_to_bytes(file)
     caption_list = inference(content_bytes)#returns a list of caption:confidence pairs
+    print("Full caption list")
+    print(caption_list)
+    fullStr = ""
+    for item in caption_list:
+        fullStr += item[0]
+        fullStr += ' '
+    def unique_list(l):
+        ulist = []
+        [ulist.append(x) for x in l if x not in ulist]
+        return ulist
+
+    fullStr=' '.join(unique_list(fullStr.split()))
+    print("Extracted Keywords list")
+    print(fullStr)
+    
     caption = caption_list[0][0]#extract caption with highest confidence
     if(caption):
         return 'I think i see...' + caption
