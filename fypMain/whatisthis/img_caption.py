@@ -42,7 +42,7 @@ class EncoderCNN(nn.Module):
             features = self.resnet(images)
         features = features.reshape(features.size(0), -1)
         features = self.bn(self.linear(features))
-        return features
+        return features #returns FC as tensor
 
 
 class DecoderRNN(nn.Module):
@@ -157,7 +157,7 @@ decoder.load_state_dict(torch.load(DECODER_PATH))
 
 def transform_image(image_bytes):
     """
-    Transform image into required DenseNet format: 224x224 with 3 RGB channels and normalized.
+    Transform image into required ResNet format: 224x224 with 3 RGB channels and normalized.
     Return the corresponding tensor.
     """
     my_transforms = transforms.Compose([transforms.Resize([224, 224], Image.LANCZOS),
@@ -169,7 +169,7 @@ def transform_image(image_bytes):
     return my_transforms(image).unsqueeze(0)
 
 def inference(image_bytes):
-    """For given image bytes, output the cations and probilities using the EncoderCNN and DecoderRNN"""
+    """For given image bytes, output the captions and probilities using the EncoderCNN and DecoderRNN"""
     # Choose Device
     
     # Prepare an image
@@ -192,4 +192,5 @@ def inference(image_bytes):
                 break
         sentence = ' '.join(sampled_caption)
         res.append((sentence, math.exp(prob.item()/len(sampled_id))*100))
-    return res
+    return res #returns dict of caption:confidence pairs
+        

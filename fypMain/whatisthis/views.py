@@ -149,21 +149,21 @@ def upload_image(request):
                 caption = ''
                 blur_warn = ''
             #keyword generation function (everypixel API)
-            keywords = generate_keywords(file)
+            keywords = generate_caption(file)[1]
             #brandon's image classifier
             #label = predict_image(file)
             #label = ''
             #image classifier (pytorch - DenseNet pretrained model)
             img_class = get_classification(file)
             #image captioner (pytorch - MSCOCO model - DO NOT USE FOR NOW)
-            img_cap = generate_caption(file)
+            img_cap = generate_caption(file)[0]
             caption += img_cap
             Images.caption = caption
             Images.keywords = keywords
             Images.save()
             #audio generation function (GTTS)
             audio = generate_audio(caption, file)
-            task_completion = check_task_completion(keywords, request)
+            task_completion = check_task_completion(keywords, caption, request)
             return render(request, 'upload_image.html', {'form': form, 'image': file, 'blur' : blur_warn, 
                                                          'keywords': keywords, 'audio': audio, 'img_class' : img_class, 
                                                          'caption' : caption, 'task_completion': task_completion, 'current_task' : current_task})
@@ -210,12 +210,28 @@ from .img_caption import inference
 def generate_caption(file):
     content_bytes= img_to_bytes(file)
     caption_list = inference(content_bytes)#returns a list of caption:confidence pairs
+    print("Full caption list")
+    print(caption_list)
+    fullStr = ""
+    for item in caption_list:
+        fullStr += item[0]
+        fullStr += ' '
+    def unique_list(l):
+        ulist = []
+        [ulist.append(x) for x in l if x not in ulist]
+        return ulist
+
+    fullStr=' '.join(unique_list(fullStr.split()))
+    print("Extracted Keywords list")
+    print(fullStr)
+    
     caption = caption_list[0][0]#extract caption with highest confidence
     if(caption):
-        return 'I think i see...' + caption
+        return 'I think i see...' + caption, fullStr
     else:
         return "Error: Caption not generated"
 
+#DEPRECATED!!!
 # API implementation to generate keywords
 def generate_keywords(file):
     # Read the image
@@ -387,18 +403,25 @@ def manage_tasks(request):
     return render(request, 'tasks.html', {'form': form, 'tasks':tasks, 'block_new_task': block_new_task})
 
 #used in upload_image view after user uploads an image. 
-def check_task_completion(keywords, request):
+def check_task_completion(keywords, caption, request):
     user_id = request.user.id  # get current userid
     current_task = Task.objects.filter(created_by_id=user_id).latest('id')
-    if current_task.task_keyword in keywords:
+    def complete_task():
         current_task.task_complete = True
         current_task.save()
         user = User.objects.get(id=user_id)
         user.customuser.score += 1
         user.customuser.save()
+
+    if current_task.task_keyword in caption:
+        complete_task()
         return 1
-    else:
-        return 0
+    else: 
+        if current_task.task_keyword in keywords:
+            complete_task()
+            return 1
+        else:
+            return 0
 
 #used in upload_image view, take in image_id and user option(thumb up(1)/down(0)), set image(model).rating accordingly    
 def rate_caption(image_id, option):
