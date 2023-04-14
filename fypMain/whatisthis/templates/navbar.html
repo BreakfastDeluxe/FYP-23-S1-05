@@ -44,22 +44,17 @@
             font-style: normal;
             color: #4D4D4D;
             position: absolute;
-            width: 8rem;
-            padding: 1.5rem;
+            padding: 1.5rem 1.5rem 8rem 1.5rem;
             transform: translate(-1rem, -1.6rem);
+            white-space: nowrap;
         }
 
         .dropdown-content {
             position: absolute;
             display: none;
-            width: 11rem;
-            padding: 1.5rem;
             padding-top: 2rem;
-            right: -9rem;
-            background-color: #FFBA5C;
-            z-index: -1;
-            justify-content: right;
-            top: -1rem;
+            z-index: 1;
+
         }
 
         a.btn.profile_btn {
@@ -146,14 +141,18 @@
 
     window.onclick = function (event) {
         if (!event.target.matches('.navbar-dropdown')) {
+
             var dropdowns = document.getElementsByClassName("dropdown-content");
             var i;
             for (i = 0; i < dropdowns.length; i++) {
                 var openDropdown = dropdowns[i];
                 if (openDropdown.classList.contains('show')) {
                     openDropdown.classList.remove('show');
+                    document.querySelector('.navbar-dropdown').style.backgroundColor = '';
                 }
             }
+        } else {
+            document.querySelector('.navbar-dropdown').style.backgroundColor = '#FFBA5C';
         }
     }
 </script>
