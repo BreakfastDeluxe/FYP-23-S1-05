@@ -29,32 +29,15 @@
             margin-bottom: 2rem;
         }
 
-        .introduction-img img {
-            max-width: 20%;
-            margin: 0 auto;
-            position: absolute;
-            bottom: 7rem;
-
-        }
-
         .introduction-img {
             margin-top: 5%;
+            width: 20rem;
+            margin: 0 auto;
+            position: absolute;
+            right: 15rem;
+            top: 15rem;
         }
 
-
-        /*
-        .introduction-img::before {
-            content: "";
-            position: absolute;
-            border-radius: 50%;
-            background-color: #AB5EBB;
-            z-index: -1;
-            width: 20%;
-            height: 50%;
-            transform: translate(-20%, -50%);
-            top: 50%;
-            right: 0;
-        }*/
 
         * .hero {
             max-width: 100%;
@@ -122,7 +105,7 @@
         }
 
         .star-container svg {
-            max-width: 8%;
+            width: 6rem;
             color: #FFD185;
         }
 
@@ -225,6 +208,7 @@
             border-radius: 50px;
             margin-left: 10%;
             height: 100%;
+            width: 100%;
             align-items: center;
             justify-content: center;
         }
@@ -354,14 +338,14 @@
         .button-flex {
             display: flex;
             gap: 2rem;
-            justify-content: center;
+            width: 10rem;
         }
 
         .bubble-container {
-            width: 9rem;
+            width: 10rem;
             position: absolute;
             top: 1rem;
-            right: 0;
+            right: 1rem;
         }
 
         .bubble-container svg {
@@ -370,13 +354,11 @@
         }
 
         .rating-icon {
-            position: relative;
+            position: absolute;
             z-index: 1;
-            /* to shift contents to right */
-            display: grid;
-            padding: 0 0.5rem 1.5rem 0;
-            justify-content: right;
+            padding-top: 0.5rem;
             top: 2rem;
+            right: 0;
         }
 
         .rating-container p,
@@ -397,21 +379,24 @@
             .introduction-text h2 {
                 font-size: 2.5rem;
             }
+
+            .introduction-text h2 span {
+                font-size: 2rem;
+            }
+
+            .introduction-text p {
+                font-size: 1rem;
+            }
         }
 
         @media (max-width: 910px) {
             .introduction-img img {
-                max-width: 80%;
+                width: 40%;
             }
         }
 
         /* Table size */
         @media (max-width: 770px) {
-
-            .grid-item::before,
-            .grid-item::after {
-                height: 65%;
-            }
 
             .introduction-text {
                 margin-left: -2rem;
@@ -443,45 +428,30 @@
         @media only screen and (max-width: 470px) {
 
             /***************** HERO **************/
+
             .section-hero {
                 margin: 0;
-                padding: 0;
-            }
-
-            .grid-item::before,
-            .grid-item::after {
-                border-radius: 50px;
-                box-shadow: 10px 10px 6px #A5793E;
-                left: 0;
-                transform: translate(1.5rem, -1.5rem);
-                background-color: #C885A9;
-                content: "";
-                display: block;
-                position: absolute;
-                height: 80%;
-                width: 90%;
-                opacity: 40%;
-                z-index: -1;
-            }
-
-            .grid-item {
-                max-width: 100%;
-                margin-top: 5rem;
-                margin-bottom: 5rem;
             }
 
             .introduction-text {
+                border-radius: 50px;
+                box-shadow: 10px 10px 6px #A5793E;
+                background-color: #e7c24c66;
+                position: relative;
+                right: 0;
+                padding: 1.5rem;
+                margin-top: 3rem;
                 margin-left: auto;
                 margin-right: auto;
-                padding: 0.5rem;
+
             }
 
             .introduction-text h2 {
-                font-size: 2.8rem;
+                font-size: 2rem;
             }
 
             .introduction-text h2 span {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
 
             .introduction-text p {
@@ -490,10 +460,6 @@
                 padding: 1rem;
                 margin-left: auto;
                 margin-right: auto;
-            }
-
-            .introduction-text p span {
-                font-size: 1.5rem !important;
             }
 
             .introduction-img img {
@@ -507,6 +473,13 @@
             }
 
             /***************** END HERO **************/
+
+            .banner-title {
+                font-size: 1.5rem;
+                width: 60%;
+                margin-left: auto;
+                margin-right: auto;
+            }
 
             .grid-item,
             .form-item {
@@ -605,10 +578,7 @@
                             style="font-size:2rem; text-transform:uppercase">magic happen!</span>
                     </p>
                 </div>
-
-                <div class="introduction-img">
-                    <img src="{% static 'girl.png' %}">
-                </div>
+                <img src="{% static 'girl.png' %}" class="introduction-img">
             </div>
         </div>
     </section>
@@ -739,6 +709,12 @@
                             </h3>
                             <textarea class="caption"
                                 style="height:10rem; width: 100%">&nbsp;&nbsp;&nbsp;{{caption}}</textarea>
+
+                            <!-- (inserting it here) success message when a user submits ratings -->
+                            <p id="success-message"
+                                style="display: none; padding: 1rem; position: relative; left: 30%; ">Thank you for
+                                rating
+                                us!</p>
                 </div>
 
             </div>
@@ -789,8 +765,6 @@
             </div>
 
         </form>
-        <p id="success-message" style="display: none; padding: 1rem; justify-content: right;">Thank you for rating
-            us!</p>
     </div>
 
 
