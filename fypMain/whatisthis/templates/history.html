@@ -1,31 +1,164 @@
 <html>
-    <!-- this page is the gallery to display images uploaded by the logged in user, display gallery of images and delete button on each image-->
-<head></head>
+{% include 'navbar.html' %}
+<!-- this page is the gallery to display images uploaded by the logged in user, display gallery of images and delete button on each image-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- fonts -->
+<link rel="stylesheet" href="https://use.typekit.net/zek8wwu.css"> <!-- fonts -->
+
+<head>
+    <style>
+        body {
+            background-color: #FFE4B8;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .img-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .img-gallery>li {
+            flex-basis: auto;
+            list-style-type: none;
+            /*background-color: #fce3c0;*/
+            padding: 10px;
+        }
+
+        .img-gallery li img {
+            object-fit: cover;
+            max-width: auto;
+            height: 25rem;
+            vertical-align: middle;
+            border-radius: 5px;
+        }
+
+        li:last-of-type {
+            margin-right: auto;
+        }
+
+        .search-container {
+            padding: 2rem 0rem 0.5rem 2.5rem;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+        }
+
+
+
+        #search_query {
+            font: 16px system-ui;
+            height: 2rem;
+            width: 20rem;
+            padding: 1.2rem;
+            border-radius: 30px;
+            border-style: none;
+        }
+
+        #search_image {
+            position: relative;
+            right: 2rem;
+        }
+
+        .search-container form {
+            background-color: #B18C5A;
+            border-radius: 50px;
+            box-shadow: #A2712F inset 10px 10px 30px, #343333 8px 8px 30px;
+            padding: 1rem;
+            width: 60%;
+
+        }
+
+        .gallery {
+            margin-right: 2.5rem;
+            padding-left: 1rem;
+        }
+
+        .gallery-text {
+            font-size: 1.2rem;
+            font-family: "grenadine-mvb", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            color: #FFFFFF;
+        }
+
+        #delete_image {
+            margin: 10px;
+            padding: 1.5rem;
+            border-radius: 100%;
+            background-color: #ffb6bd;
+            color: #b02a37;
+            position: absolute;
+            transform: translate(0.5rem, -3rem);
+            visibility: hidden;
+        }
+
+        .img-gallery li:hover #delete_image {
+            visibility: visible;
+
+        }
+
+        button {
+            all: unset;
+            cursor: pointer;
+            position: relative;
+        }
+    </style>
+</head>
+
 <body>
-    <div>
-        <h4>Search: 
-            <form action="{%url 'gallery' %}" method="POST">
-                {% csrf_token %}
-                <input type='text' id = 'search_query' name = 'search_query'>
-                <input type="submit" value="Search">
-            </form>
-        </h4>
+    <div class="search-container">
+        <form action="{%url 'gallery' %}" method="POST">
+            {% csrf_token %}
+            <div class="gallery">
+                <p class="gallery-text">Search for your images</p>
+            </div>
+            <input type='text' id='search_query' name='search_query' placeholder="Type the keyword">
+            <button type="submit" id="search_image"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+
     </div>
-    <div>
-    {% if gallery_images %}
+    <ul class="img-gallery">{% if gallery_images %}
         {% for image in gallery_images %}
-            <img src="{{ image.upload_Image.url }}" style="max-height: 280px;" id="gallery-img">
+        <li>
+            <img src="{{ image.upload_Image.url }}" style="max-height: 280px;" class="gallery-img">
             <!--{{image.id}}-->
             <form action="{%url 'delete_image' %}" method="POST">
                 {% csrf_token %}
-                <input type='hidden' id = 'image_id' name = 'image_id' value = {{image.id}}>
-                <input type="submit" value="Delete">
+                <input type='hidden' id='image_id' name='image_id' value={{image.id}}>
+                <button type="submit" value="Delete" id="delete_image"><i class="fa-regular fa-trash-can"></i></button>
             </form>
+        </li>
         {% endfor %}
         {% else %}
         <h4> No images found!</h4>
-    {% endif %}
-    
-    </div>
+        {% endif %}
+
+    </ul>
 </body>
+
 </html>
+
+<script src="https://kit.fontawesome.com/291dbe35c1.js" crossorigin="anonymous"></script>
+<script>
+    // Font activation
+    (function (d) {
+        var config = {
+            kitId: 'yks7jmw',
+            scriptTimeout: 3000,
+            async: true
+        },
+            h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+    })(document);
+</script>

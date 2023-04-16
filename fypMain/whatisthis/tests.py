@@ -3,6 +3,7 @@ from django.core.files import File
 from .models import *
 from .views import *
 from .validators import *
+from .img_keyword import *
 from django.test.client import RequestFactory
 
 # Create your tests here.
@@ -171,12 +172,13 @@ class KeywordGenerationTestCase(TestCase):
         
     def test_image_keywording(self):
         imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
-        keywords = generate_keywords(imageTest_image_1.upload_Image.url)
+        keywords = generate_caption(imageTest_image_1.upload_Image.url)[1]
         print('Keywords: ' + keywords)
         #check if exists
         self.assertIsNotNone(keywords)
         #check type = str
         self.assertIsInstance(keywords, str)
+
         
 #test the function views.generate_audio(text, file) expect return str
 class AudioGenerationTestCase(TestCase):
@@ -206,7 +208,7 @@ class CaptionGenerationTestCase(TestCase):
     def test_image_captioning(self):
         imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
         file = imageTest_image_1.upload_Image.url
-        caption = generate_caption(file)
+        caption = generate_caption(file)[0]
         print('Generated Caption: '+ caption)
         #check if exists
         self.assertIsNotNone(caption)
@@ -267,9 +269,9 @@ class CompleteTaskTestCase(TestCase):
         request.user = self.user#set the HTTP request user variable to current user
         taskTest1 = Task.objects.get(id=1)
         #false positive test, should not trigger completion
-        self.assertEquals(check_task_completion('different_keyword', request), 0)
+        self.assertEquals(check_task_completion('different_keyword', 'different_keyword', request), 0)
         #positive test, should trigger completion
-        self.assertEquals(check_task_completion('test_keyword', request), 1)
+        self.assertEquals(check_task_completion('test_keyword', 'test_keyword', request), 1)
 
 #test the caption rating system        
 class RateCaptionTestCase(TestCase):

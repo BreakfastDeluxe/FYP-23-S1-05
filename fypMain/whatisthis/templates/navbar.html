@@ -7,19 +7,73 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/zek8wwu.css"> <!-- fonts -->
 
     <style>
         .navbar {
             margin: 2rem;
+            font-family: "sofia-pro", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 1.2rem;
         }
 
         .logo-img {
             margin-left: 3rem;
         }
 
-        a.navbar-brand {
-            margin-right: 5rem;
+        .nav-list {
+            display: flex;
+            margin-right: 10rem;
+            gap: 5rem;
+            margin-left: auto;
         }
+
+        .dropdown-container {
+            position: relative;
+            margin-right: 1rem;
+            max-width: 100%;
+            transform: translate(1rem, 0.5rem);
+        }
+
+        /* style the profile btn */
+        .navbar-dropdown {
+            all: unset;
+            font-family: "sofia-pro", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            color: #4D4D4D;
+            position: absolute;
+            padding: 1.5rem 1.5rem 8rem 1.5rem;
+            transform: translate(-1rem, -1.6rem);
+            white-space: nowrap;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            display: none;
+            padding-top: 2rem;
+            z-index: 1;
+
+        }
+
+        a.btn.profile_btn {
+            padding-top: 2rem;
+        }
+
+        .show {
+            display: grid;
+        }
+
+        a.navbar-brand {
+            color: #4D4D4D;
+            /* links color */
+        }
+
+        /* profile button bg color change when click display 
+        .navbar-dropdown:focus {
+            background-color: #FFBA5C;
+        }*/
 
         @media (max-width: 770px) {
             .logo-img {
@@ -34,13 +88,13 @@
 
         @media (max-width: 470px) {
             .nav-list {
-                display:none;
+                display: none;
             }
 
             .logo-img {
                 margin: 0;
             }
-            
+
             nav.navbar {
                 justify-content: center;
             }
@@ -49,14 +103,56 @@
 </head>
 <html>
 <nav class="navbar">
-    <img src="{% static 'logo.png' %}" class="logo-img" width="auto" height="50">
+    <a href="{% url 'menu' %}">
+        <img src="{% static 'logo.png' %}" class="logo-img" width="auto" height="50">
+    </a>
     <div class="nav-list">
+        <a class="navbar-brand" href="{% url 'upload_image' %}">Upload</a>
         <a class="navbar-brand" href="{% url 'gallery' %}">Gallery</a>
-        <a class="navbar-brand" href="{% url 'user' %}">Account</a>
-        <a class="navbar-brand" >Hello, {{ user }}</a>
-        <a class="navbar-brand" >Score: {{ user.customuser.score}}</a>
+        <!-- Wrap in a dropdown container -->
+        <div class="dropdown-container">
+            <button onclick="myFunction()" class="navbar-dropdown">Hello, {{ user }}</button>
+            <div id="dropdown" class="dropdown-content">
+                <a href="{% url 'user' %}" class="btn profile_btn">Settings</a>
+                <a href="{% url 'logout' %}" class="btn signout_btn">Log out</a>
+            </div>
+        </div>
     </div>
 </nav>
 {% block content %}{% endblock %}
 
 </html>
+
+<script>
+    // Font activation
+    (function (d) {
+        var config = {
+            kitId: 'yks7jmw',
+            scriptTimeout: 3000,
+            async: true
+        },
+            h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+    })(document);
+
+    //User clicks on dropdown content, toggle between hiding and showing 
+    function myFunction() {
+        document.getElementById("dropdown").classList.toggle("show");
+    }
+
+    window.onclick = function (event) {
+        if (!event.target.matches('.navbar-dropdown')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                    document.querySelector('.navbar-dropdown').style.backgroundColor = '';
+                }
+            }
+        } else {
+            document.querySelector('.navbar-dropdown').style.backgroundColor = '#FFBA5C';
+        }
+    }
+</script>
