@@ -29,6 +29,7 @@ urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),#login page
     path("signup/", views.SignUp.as_view(), name="signup"),#signup page
     path('upload_image', upload_image, name='upload_image'),#main function page(from start button)
+    #path('pin', pin, name='pin'),
     path('menu', menu, name='menu'),#main menu
     path('user', user, name='user'),#view/edit user account
     path('gallery', gallery, name='gallery'), #image gallery

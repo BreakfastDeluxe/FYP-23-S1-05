@@ -8,7 +8,9 @@ from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import UpdateUserForm
 from django.contrib.auth.views import PasswordChangeView
-
+from django.views.generic.edit import UpdateView
+from .forms import ConfirmPasswordForm
+from fypMain.decorators import confirm_password
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from .forms import *
@@ -74,19 +76,27 @@ class SignUp(CreateView):
 #displays current log-in user info, allows user to edit username, email, password
 #redirect back to menu upon success
 @login_required
+@confirm_password
 def user(request):
-    if request.method == 'POST':
-        user_form = UpdateUserForm(request.POST, instance=request.user)
+#   if user is not None:
+#        return redirect('pin')
+#   else: 
+#        Exception('Access Denied')
+#
+        if request.method == 'POST':
+            user_form = UpdateUserForm(request.POST, instance=request.user)
+            Pin_Form = PinForm(request.POST, instance=request.user.customuser)
+            if user_form.is_valid():
+                user_form.save()
+                Pin_Form.save()
+                messages.success(request, 'Your profile is updated successfully')
+                return redirect(to='menu')
+            else:
+                Pin_Form = PinForm(instance=request.user.customuser)
+                user_form = UpdateUserForm(instance=request.user)
         
-        if user_form.is_valid():
-            user_form.save()
-            messages.success(request, 'Your profile is updated successfully')
-            return redirect(to='menu')
-    else:
-        user_form = UpdateUserForm(instance=request.user)
-        
-    return render(request, 'user.html', {'user_form': user_form})
-
+            return render(request, 'user.html', {'user_form': user_form, 'PinForm': Pin_Form})
+    
 #class based view for reset password e-mailer
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     template_name = 'password_reset.html'
@@ -121,6 +131,8 @@ def gallery(request):
         return render(request, "gallery.html", {'gallery_images': gallery_images})
 
 #main function, accessed when user presses "start" button
+
+
 @login_required
 def upload_image(request):
     id = request.user  # get current userid
