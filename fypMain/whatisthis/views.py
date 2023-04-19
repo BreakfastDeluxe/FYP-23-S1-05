@@ -8,7 +8,9 @@ from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import UpdateUserForm
 from django.contrib.auth.views import PasswordChangeView
-
+from django.views.generic.edit import UpdateView
+from .forms import ConfirmPasswordForm
+from fypMain.decorators import confirm_password
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from .forms import *
@@ -55,15 +57,6 @@ class Login(LoginView):
 def menu(request):
     return render(request, "menu.html")
 
-def check_pin(*args, **kwargs): # decorator function for checking pin
-    def wrapper(func):
-        if kwargs.get('pin', None) == 'pin':
-            func() # show index, if password is corrent
-        else:
-            raise Exception('Access denied') # else raise the exception
-    return wrapper
-
-
 class SignUp(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
@@ -83,22 +76,59 @@ def signup(request):
     return render(request, 'signup.html', {
         'sign_form': UserCreationForm,
  })
-@login_required
-def user(request):
-    if request.method == 'POST':
-        user_form = UpdateUserForm(request.POST, instance=request.user)
-        Pin_Form = PinForm(request.POST, instance=request.user.customuser)
-        if user_form.is_valid():
-            user_form.save()
-            Pin_Form.save()
-            messages.success(request, 'Your profile is updated successfully')
-            return redirect(to='menu')
-    else:
-        Pin_Form = PinForm(instance=request.user.customuser)
-        user_form = UpdateUserForm(instance=request.user)
-        
-    return render(request, 'profile.html', {'user_form': user_form, 'PinForm': Pin_Form})
 
+class ConfirmPasswordView(UpdateView):
+    form_class = ConfirmPasswordForm
+    template_name = 'confirm_password.html'
+
+    def get_object(self):
+        return self.request.user
+
+    def get_success_url(self):
+        return self.request.get_full_path()
+
+#def check_pin(*args, **kwargs): # decorator function for checking pin
+#    def decorator(func):
+#        def wrap(request, *args, **kwargs):
+#            if kwargs.get('pin', None) == 'pin':
+#                func(request, *args, **kwargs) # show profile, if pin is correct
+#            else:
+#                raise Exception('Access Denied')
+#        return wrap
+#    return decorator
+
+#@login_required
+#def pin(request):
+#    if request.method == 'POST':
+#        pin = request.POST['pin']
+#        Pin_Form = PinForm(instance=request.user)
+#        if pin == Pin_Form:
+#            return redirect('home')
+#
+#    return render(request, 'pin.html', {'PinForm': Pin_Form})
+
+@login_required
+@confirm_password
+def user(request):
+#   if user is not None:
+#        return redirect('pin')
+#   else: 
+#        Exception('Access Denied')
+#
+        if request.method == 'POST':
+            user_form = UpdateUserForm(request.POST, instance=request.user)
+            Pin_Form = PinForm(request.POST, instance=request.user.customuser)
+            if user_form.is_valid():
+                user_form.save()
+                Pin_Form.save()
+                messages.success(request, 'Your profile is updated successfully')
+                return redirect(to='menu')
+            else:
+                Pin_Form = PinForm(instance=request.user.customuser)
+                user_form = UpdateUserForm(instance=request.user)
+        
+            return render(request, 'profile.html', {'user_form': user_form, 'PinForm': Pin_Form})
+    
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     template_name = 'password_reset.html'
     email_template_name = 'password_reset_email.html'

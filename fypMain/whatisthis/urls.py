@@ -29,6 +29,7 @@ urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),
     path("signup/", views.SignUp.as_view(), name="signup"),
     path('upload_image', upload_image, name='upload_image'),
+    #path('pin', pin, name='pin'),
     path('menu', menu, name='menu'),
     path('user', user, name='user'),
     path('history', history, name='gallery'), #url for images displayed
