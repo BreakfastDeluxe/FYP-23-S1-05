@@ -36,6 +36,11 @@ class UserCreationForm(UserCreationForm):
             user.save()
         return user
 
+class PinForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['pin']
+
 #inherit AuthenticationForm and extend it to include remember_me boolean toggle        
 class LoginForm(AuthenticationForm):
     #username and password are inherited from AuthenticationForm

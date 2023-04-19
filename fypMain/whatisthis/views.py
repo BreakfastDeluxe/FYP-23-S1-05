@@ -78,20 +78,26 @@ def signup(request):
             name = sign_form.cleaned_data.get('username')
             messages.success(request, 'Account was created for ' + name) 
             return redirect(to='login')
+        
 
+    return render(request, 'signup.html', {
+        'sign_form': UserCreationForm,
+ })
 @login_required
 def user(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
-        
+        Pin_Form = PinForm(request.POST, instance=request.user.customuser)
         if user_form.is_valid():
             user_form.save()
+            Pin_Form.save()
             messages.success(request, 'Your profile is updated successfully')
             return redirect(to='menu')
     else:
+        Pin_Form = PinForm(instance=request.user.customuser)
         user_form = UpdateUserForm(instance=request.user)
         
-    return render(request, 'profile.html', {'user_form': user_form})
+    return render(request, 'profile.html', {'user_form': user_form, 'PinForm': Pin_Form})
 
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     template_name = 'password_reset.html'
