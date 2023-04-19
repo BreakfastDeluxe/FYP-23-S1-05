@@ -66,6 +66,11 @@ class UpdateUserForm(forms.ModelForm):
         model = User
         fields = ['username', 'email']
 
+class CreateTaskForm(forms.ModelForm):
+    task_keyword = forms.CharField(max_length=100,
+                               required=True,
+                               widget=forms.TextInput(attrs={'class': 'form-control'}))
+    task_complete = False
 class ConfirmPasswordForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 
@@ -85,3 +90,8 @@ class ConfirmPasswordForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+
+    class Meta:
+        model = Task
+        fields = ['task_keyword', 'task_complete']
