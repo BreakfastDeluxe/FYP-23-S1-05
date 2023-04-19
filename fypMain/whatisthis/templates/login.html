@@ -262,11 +262,74 @@
 <body>
 
     <body>
+<<<<<<< HEAD
         <div class="container h-100">
             <div class="d-flex justify-content-center h-100">
                 <div class="user_card">
                     <div class="d-flex justify-content-center">
                         <h3 id="form-title">Welcome Back!</h3>
+=======
+
+        <body>
+            <div class="container h-100">
+                <div class="d-flex justify-content-center h-100">
+                    <div class="user_card">
+                        <div class="d-flex justify-content-center">
+                            <h3 id="form-title">Welcome Back!</h3>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <h5 id="form-subtitle">Not sure what do?<br/> 
+                                Get a parent/guardian to help! </h5>
+                        </div>
+                        <div class="d-flex justify-content-center form_container">
+                            {% csrf_token %}
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                <div class="input-group mb-3">
+                                    {{ form.username }}
+                                </div>
+
+                                <div class="input-group mb-2">
+                                        {{ form.password }} 
+                                </div>
+                                
+                                <div class="input-group mb-2">
+                                    {{ form.captcha }} 
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    {{ form.remember_me }} Remember Me
+                                  </div>
+        
+                                    <div class="d-flex justify-content-center mt-3 login_container">
+                                         <input class="btn login_btn" type="submit" value="Login">
+                                    </div>
+                                    {% if form.errors %}
+                                        {% for field, errors in form.errors.items %}
+                                            {% for error in errors %}
+                                            <div class="d-flex justify-content-center form-link">
+                                                <p id="form-account">{{ error }}</p>
+                                            </div>
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {% endif %}
+                                    <div class="d-flex justify-content-center form-link">
+                                        <p id="form-forget">Forgot your password? <a href="{% url 'password_reset' %}" class="ml-2">Reset here</a></p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center form-link">
+                                        <p id="form-account">Don't have an account?</p>
+                                    </div>
+                                    <div class="d-flex justify-content-center create_container">
+                                        <a href="{% url 'signup' %}" class="btn create_btn">Create Account</a>
+                                    </div>
+
+                                    
+                            </form>
+                        </div>
+                
+>>>>>>> a97f2eb46a0effd034c1febe0d0daa07ba6fdf62
                     </div>
 
                     <div class="d-flex justify-content-center">

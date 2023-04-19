@@ -43,6 +43,10 @@ class Login(LoginView):
         if not remember_me:
             self.request.session.set_expiry(0)  # if remember me is
             self.request.session.modified = True
+        else:
+            for key, error in list(form.errors.items()):
+                if key == 'captcha' and error[0] == 'This field is required.':
+                    messages.error(self.request, "You must pass the reCAPTCHA test")    
         return super(Login, self).form_valid(form)
 
 #view for menu (after user login)
@@ -50,6 +54,15 @@ class Login(LoginView):
 @login_required
 def menu(request):
     return render(request, "menu.html")
+
+
+def check_pin(*args, **kwargs): # decorator function for checking pin
+    def wrapper(func):
+        if kwargs.get('pin', None) == 'pin':
+            func() # show index, if password is corrent
+        else:
+            raise Exception('Access denied') # else raise the exception
+    return wrapper
 
 #class based view for signup page (implement default django signup form w/ custom html)
 class SignUp(CreateView):

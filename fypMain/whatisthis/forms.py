@@ -6,7 +6,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.exceptions import ValidationError
-  
+
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox  
  
  # form used to upload image
 class ImageForm(forms.ModelForm):
@@ -38,11 +40,14 @@ class UserCreationForm(UserCreationForm):
 class LoginForm(AuthenticationForm):
     #username and password are inherited from AuthenticationForm
     remember_me = forms.BooleanField(required=False)
-    
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+
     class Meta:
         model = User
-        fields = ['username', 'password', 'remember_me'] #creates form fields
-        
+        fields = ['username', 'password', 'remember_me', 'captcha'] #creates form fields
+    
+    
+
 class UpdateUserForm(forms.ModelForm):
     username = forms.CharField(max_length=100,
                                required=True,

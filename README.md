@@ -65,8 +65,12 @@ You can also run: pip install -r requirements.txt to autoinstall required depend
 6. gTTS
 7. iPython
 8. python-dotenv
+<<<<<<< HEAD
 9. joblib
 10. keras
 11. tensorflow
 12. torchvision
 
+=======
+9. Django_recaptcha
+>>>>>>> a97f2eb46a0effd034c1febe0d0daa07ba6fdf62

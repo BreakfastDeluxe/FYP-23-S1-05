@@ -215,7 +215,23 @@
                 width: 8rem;
             }
 
+<<<<<<< HEAD
         }
+=======
+                                <div class="input-group mb-2">
+                                    {{ form.pin }} 
+                                </div>
+
+                                {% if form.errors %}
+                                    {% for field, errors in form.errors.items %}
+                                        {% for error in errors %}
+                                        <span class="d-flex flex-column justify-content-center requirements">
+                                            {{ error }}
+                                        </span>
+                                        {%endfor%}
+                                    {%endfor%}
+                                {% endif %}
+>>>>>>> a97f2eb46a0effd034c1febe0d0daa07ba6fdf62
 
         @media (max-width: 400px) {
             html {
