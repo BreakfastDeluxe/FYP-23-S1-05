@@ -3,7 +3,6 @@ from django.core.files import File
 from .models import *
 from .views import *
 from .validators import *
-from .img_keyword import *
 from django.test.client import RequestFactory
 
 # Create your tests here.

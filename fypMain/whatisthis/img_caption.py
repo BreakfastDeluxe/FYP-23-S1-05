@@ -168,17 +168,23 @@ def transform_image(image_bytes):
     image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
     return my_transforms(image).unsqueeze(0)
 
-def inference(image_bytes):
-    """For given image bytes, output the captions and probilities using the EncoderCNN and DecoderRNN"""
+def inference(image_bytes): #1.
+    """For given image bytes, output the captions and probilities using the EncoderCNN and DecoderRNN
+    1. input parameter: image file in byte-data
+    2. call transform method to convert image-bytes required format,  return as tensor (using recommended params for Resnet512 pretrained model)
+    3. take tensor and pass to encoder i.e. CNN(Resnet152), outputs FC(fully connected layer) as a tensor describing the features in the image
+    4. pass to decoder 1.e. RNN(LSTM natural language processor), output word IDs
+    5. convert IDs to words to generate captions, return caption:confidence pairs
+    """
     # Choose Device
     
     # Prepare an image
-    image = transform_image(image_bytes).to(device)
+    image = transform_image(image_bytes).to(device) #2.
 
     # Generate an caption from the image
     with torch.no_grad():
-        feature = encoder(image)
-        sampled_ids = decoder.beam_search(feature, BEAM_SIZE, END_ID)
+        feature = encoder(image) #3. 
+        sampled_ids = decoder.beam_search(feature, BEAM_SIZE, END_ID)#4.
     res=[]
     # Convert word_ids to words
     for i, (sampled_id, prob) in enumerate(sampled_ids):
