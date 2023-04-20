@@ -92,7 +92,7 @@ class acc_pass(UpdateView):
 #displays current log-in user info, allows user to edit username, email, password
 #redirect back to menu upon success
 @login_required
-@confirm_password
+
 def user(request):
         if request.method == 'POST':
             user_form = UpdateUserForm(request.POST, instance=request.user)
