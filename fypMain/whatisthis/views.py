@@ -10,7 +10,7 @@ from .forms import UpdateUserForm
 from django.contrib.auth.views import PasswordChangeView
 from django.views.generic.edit import UpdateView
 from .forms import ConfirmPasswordForm
-from fypMain.decorators import confirm_password
+from .decorators import confirm_password
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from .forms import *
@@ -76,7 +76,7 @@ class SignUp(CreateView):
 #displays current log-in user info, allows user to edit username, email, password
 #redirect back to menu upon success
 @login_required
-@confirm_password
+#@confirm_password
 def user(request):
 #   if user is not None:
 #        return redirect('pin')
@@ -354,3 +354,16 @@ def rate_caption(image_id, option):
             image.rating = -1
     image.save()
     return 0
+
+from django.views.generic.edit import UpdateView
+from .forms import ConfirmPasswordForm
+
+class ConfirmPasswordView(UpdateView):
+    form_class = ConfirmPasswordForm
+    template_name = 'confirm_password.html'
+
+    def get_object(self):
+        return self.request.user
+
+    def get_success_url(self):
+        return self.request.get_full_path()
