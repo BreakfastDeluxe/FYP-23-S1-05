@@ -71,7 +71,7 @@ class ConfirmPasswordForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('confirm_password', )
+        fields = ('confirm_password',)
 
     def clean(self):
         cleaned_data = super(ConfirmPasswordForm, self).clean()
@@ -81,10 +81,10 @@ class ConfirmPasswordForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super(ConfirmPasswordForm, self).save(commit)
-        user.last_login = timezone.now()
         if commit:
             user.save()
         return user
+
 class CreateTaskForm(forms.ModelForm):
     task_keyword = forms.CharField(max_length=100,
                                required=True,

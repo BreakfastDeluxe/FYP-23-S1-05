@@ -14,6 +14,10 @@ from .decorators import confirm_password
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from .forms import *
+from django.views.generic.edit import UpdateView
+from .forms import ConfirmPasswordForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, authenticate
 
 import cv2
 import argparse
@@ -72,12 +76,46 @@ class SignUp(CreateView):
     success_url = reverse_lazy("login")
     template_name = "signup.html"
 
+class task_pass(UpdateView):
+    form_class = ConfirmPasswordForm
+    template_name = 'confirm_password.html'
+    
+    def get_object(self):
+        return self.request.user
+
+    def get_success_url(self):
+        return redirect('task')
+
+class acc_pass(UpdateView):
+    form_class = ConfirmPasswordForm
+    template_name = 'confirm_password.html'
+    
+    def get_object(self):
+        return self.request.user
+
+    def get_success_url(self):
+        return redirect('user')
+    
+#view for user account management
+#displays current log-in user info, allows user to edit username, email, password
+#redirect back to menu upon success
 #view for user account management
 #displays current log-in user info, allows user to edit username, email, password
 #redirect back to menu upon success
 @login_required
 #@confirm_password
 def user(request):
+        if request.method == 'POST':
+            user_form = UpdateUserForm(request.POST, instance=request.user)
+            Pin_Form = PinForm(request.POST, instance=request.user.customuser)
+            if user_form.is_valid():
+                user_form.save()
+                Pin_Form.save()
+                messages.success(request, 'Your profile is updated successfully')
+                return redirect(to='menu')
+            else:
+                Pin_Form = PinForm(instance=request.user.customuser)
+                user_form = UpdateUserForm(instance=request.user)
 #   if user is not None:
 #        return redirect('pin')
 #   else: 
