@@ -8,8 +8,7 @@ from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import UpdateUserForm
 from django.contrib.auth.views import PasswordChangeView
-from django.views.generic.edit import UpdateView
-from .forms import ConfirmPasswordForm
+
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from .forms import *
@@ -89,8 +88,28 @@ class acc_pass(UpdateView):
 #view for user account management
 #displays current log-in user info, allows user to edit username, email, password
 #redirect back to menu upon success
+#view for user account management
+#displays current log-in user info, allows user to edit username, email, password
+#redirect back to menu upon success
 @login_required
+@confirm_password
 def user(request):
+        if request.method == 'POST':
+            user_form = UpdateUserForm(request.POST, instance=request.user)
+            Pin_Form = PinForm(request.POST, instance=request.user.customuser)
+            if user_form.is_valid():
+                user_form.save()
+                Pin_Form.save()
+                messages.success(request, 'Your profile is updated successfully')
+                return redirect(to='menu')
+            else:
+                Pin_Form = PinForm(instance=request.user.customuser)
+                user_form = UpdateUserForm(instance=request.user)
+#   if user is not None:
+#        return redirect('pin')
+#   else: 
+#        Exception('Access Denied')
+#
         if request.method == 'POST':
             user_form = UpdateUserForm(request.POST, instance=request.user)
             Pin_Form = PinForm(request.POST, instance=request.user.customuser)
