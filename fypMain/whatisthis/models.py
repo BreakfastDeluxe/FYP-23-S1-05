@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
-
+from .validators import *
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -11,30 +13,35 @@ class Image(models.Model):
     #get the current logged in user's id and associate it with this uploaded image (set the ownership)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     #save the image to server
-    upload_Image = models.ImageField(upload_to='images/')
+    upload_Image = models.ImageField(upload_to='images/', validators=[validate_file_size])
     #setup blank field for storing caption generation later
     caption = models.CharField(max_length = 255, blank=True, null=True)
     #setup blank field for storing keyword generation later
     keywords = models.CharField(max_length = 255, blank=True, null=True)
+    rating = models.IntegerField(default=0)
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Task(models.Model):
+    #get the current logged in user's id and associate it with this uploaded image (set the ownership)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    #used to describe the task given to the child
+    #used to score the image taken
+    task_keyword = models.CharField(max_length=255)
+    task_complete = models.BooleanField()
 
-    avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
-    bio = models.TextField()
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+#1-1 relationship, auto created with each user to store score
+#invoke using User.customuser
+class CustomUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE) #1-1 foreign key
+    score = models.IntegerField(default=0) #task system running score
+    pin = models.CharField(max_length=6, default='000000')
 
-    def __str__(self):
-        return self.user.username
-    
-# resizing images
-def save(self, *args, **kwargs):
-    Image.super().save()
+@receiver(post_save, sender=User)#when user is created, create associated customUser
+def create_custom_user(sender, instance, created, **kwargs):
+    if created:
+        CustomUser.objects.create(user=instance)
 
-    img = Image.open(self.avatar.path)
-
-    if img.height > 100 or img.width > 100:
-        new_img = (100, 100)
-        img.thumbnail(new_img)
-        img.save(self.avatar.path)
-    caption = models.CharField(max_length = 255, blank=True, null=True)
-    keywords = models.CharField(max_length = 255, blank=True, null=True)
+@receiver(post_save, sender=User)
+def save_custom_user(sender, instance, **kwargs):
+    instance.customuser.save()

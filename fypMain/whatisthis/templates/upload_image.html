@@ -1,32 +1,820 @@
 <html>
-    <!-- this page is the image upload function for users, display button(upload)
+{% include 'navbar.html' %}
+{% load static %}
+<!-- this page is the image upload function for users, display button(upload)
     this page will include display_image to display back the uploaded image to the user-->
-    <head>
-        <meta charset="UTF-8">
-        <title>Upload_image</title>
-    </head>
-    <body>
-            {% block content %}  
-        <form method="post" enctype="multipart/form-data">  
-            {% csrf_token %}  
-            {{ form.as_p }}  
-            <button type="submit">Upload</button>  
-        </form>  
-        <!-- if an image was uploaded, display it and the blur check result -->
-        {% if image %}  
-            <h3>Succesfully uploaded</h3>  
-            <p><img src="{{ image}}" alt="connect" style="max-height:300px"></p>  
-            {{blur}}
-            <div style="margin-top: 30px; margin-bottom: 50px;" class="center">
-                <audio controls style="width: 60%;">
-                    <source src="{{audio}}" type="audio/ogg">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-            <a class="btn btn-primary" href="menu">Menu</a>
-        {% endif %}  
-    
-    {% endblock content %}  
-    </body>
 
-    </html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload_image</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- fonts -->
+
+
+    <style>
+        body {
+            background-color: #FFE4B8;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-hero {
+            margin-top: 5rem;
+            margin-bottom: 2rem;
+        }
+
+        .introduction-img {
+            margin-top: 5%;
+            width: 20rem;
+            margin: 0 auto;
+            position: absolute;
+            right: 15rem;
+            top: 15rem;
+        }
+
+
+        * .hero {
+            max-width: 100%;
+        }
+
+        .grid-item {
+            display: grid;
+            grid-template-columns: 1fr 0.5fr;
+        }
+
+        .introduction-text {
+            padding-left: 5rem;
+        }
+
+        .introduction-text h2 {
+            font-family: "hellofont-id-langrunti", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 5rem;
+            color: #A5793E;
+        }
+
+        /*apply a different color & font */
+        .introduction-text h2 span {
+            color: #566E3A;
+            font-family: "soleil", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 4rem;
+        }
+
+        .introduction-text p {
+            font-family: "soleil", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            width: 75%;
+            padding-top: 20px;
+            font-size: 1.2rem;
+            overflow: auto;
+            color: #4D4D4D;
+        }
+
+        /**************** BANNER **********************/
+
+        .banner {
+            margin-bottom: 2rem;
+        }
+
+        .banner-item {
+            display: grid;
+            justify-content: center;
+        }
+
+        .banner-container {
+            border-radius: 50px;
+            /*background-color: #95C774;*/
+            background: linear-gradient(to top left, #95C774, #72bd66);
+            border-style: solid;
+            border-color: #5D7A0E;
+            border-width: 3px;
+            padding: 3rem;
+            max-width: 90%;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .star-container svg {
+            width: 6rem;
+            color: #FFD185;
+        }
+
+        .star-container {
+            gap: 20rem;
+            display: flex;
+        }
+
+        .star-container.one {
+            padding-bottom: 1rem;
+        }
+
+        .star-container.two {
+            margin-left: 10rem;
+        }
+
+        .banner-text {
+            text-align: center;
+        }
+
+        .banner-title {
+            font-family: "grenadine-mvb", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            text-transform: uppercase;
+            font-size: 2.5rem;
+        }
+
+        .banner-body {
+            font-family: "soleil", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            max-width: 70%;
+            margin-right: auto;
+            margin-left: auto;
+            font-size: 1.2rem;
+        }
+
+        /**************** BANNER **********************/
+
+        /**************** SCORE BOARD *****************/
+        .task {
+            padding: 2rem 0 3rem 0;
+            align-items: center;
+        }
+
+        .task-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            justify-content: center;
+            margin-right: auto;
+            margin-left: auto;
+            gap: 5rem;
+        }
+
+        .task-text {
+            font-family: "grenadine-mvb", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            justify-content: center;
+            margin-left: 20%;
+            display: grid;
+            background-color: #D9AEE9;
+            border-style: solid;
+            border-width: 3px;
+            border-color: #9765EE;
+            border-radius: 50px;
+            text-align: center;
+            align-items: center;
+            box-shadow: 0px 5px 20px;
+            font-size: 1.8rem;
+            grid-row: span 2;
+        }
+
+        .score-board {
+            border-radius: 50px;
+            background-color: #BD82D2;
+            display: flex;
+            align-items: center;
+            margin-right: 20%;
+            box-shadow: 0px 5px 20px, inset #8519B3 10px 10px 30px;
+            margin-top: 2.5rem;
+            font-size: 2.5rem;
+        }
+
+        .score-title {
+            margin-left: 3rem;
+            font-family: "grenadine-mvb", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        .score-container {
+            display: flex;
+            font-family: "grenadine-mvb", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            background-color: #FFFFFF;
+            border-radius: 50px;
+            margin-left: 10%;
+            height: 100%;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-container svg {
+            width: 20%;
+        }
+
+        .score-point {
+            margin-right: 15%;
+        }
+
+        .form_container {
+            background-color: #C2A071;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1rem;
+            width: 90%;
+            border-radius: 50px;
+
+        }
+
+        .form-item {
+            display: flex;
+            padding-top: 5%;
+            padding-left: 5%;
+            justify-content: center;
+        }
+
+        .display {
+            height: 25rem;
+            width: 40rem;
+            background-color: #ffd18587;
+            border-style: solid;
+            border-width: 10px;
+            border-color: #FFFFFF;
+        }
+
+        .display-container {
+            padding: 0px 10px 0px 10px;
+        }
+
+        /******** Successful message *****/
+        .span {
+            display: grid;
+            justify-content: center;
+            flex-basis: 70%;
+        }
+
+        .successful-msg h4,
+        .audio-item h5 {
+            font-family: "lores-12", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            color: #FFFFFF;
+        }
+
+        /* put the audio item side by side*/
+        .audio-item {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        /******** Successful message *****/
+
+
+        .generate-items {
+            padding: 0 10px 0 10px;
+            max-height: 19rem;
+            text-decoration: none;
+            color: #FFFFFF;
+            display: grid;
+            align-items: center;
+        }
+
+        /* buttons */
+        .upload_btn {
+            border: 3px #707070;
+            background-color: #00A6FF;
+            color: #FFFFFF;
+            border-style: solid;
+            border-radius: 30px;
+            font-family: "lores-12", sans-serif;
+            width: 200px;
+            height: 40px;
+        }
+
+        .caption {
+            font-family: "lores-12", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            border-radius: 20px;
+            background-color: #FFD185;
+            border-color: #FFBA5C;
+            text-align: justify;
+            border-width: 3px;
+        }
+
+        .display-container {
+            text-align: center;
+        }
+
+        .display-form p,
+        .generate-items {
+            font-family: "soleil", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            color: #FFFFFF;
+        }
+
+        /******** Rating system *********/
+        .rating-container {
+            position: relative;
+            bottom: 15rem;
+            margin-left: 0;
+            width: 90%;
+        }
+
+        .rating-item button {
+            all: unset;
+            width: 25%;
+        }
+
+        .button-flex {
+            display: flex;
+            gap: 2rem;
+            width: 10rem;
+        }
+
+        .bubble-container {
+            width: 10rem;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .bubble-container svg {
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+        }
+
+        .rating-icon {
+            position: absolute;
+            z-index: 1;
+            padding-top: 0.5rem;
+            top: 2rem;
+            right: 0;
+        }
+
+        .rating-container p,
+        .rating-icon p {
+            font-size: 0.9rem;
+            font-family: "soleil", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+
+        }
+
+
+        /******** Rating system *********/
+
+
+        /* CHANGING UP ELEMENTS ACCORDING TO SCREEN SIZES */
+        @media (max-width: 1040px) {
+            .introduction-text h2 {
+                font-size: 2.5rem;
+            }
+
+            .introduction-text h2 span {
+                font-size: 2rem;
+            }
+
+            .introduction-text p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 910px) {
+            .introduction-img img {
+                width: 40%;
+            }
+        }
+
+        /* Table size */
+        @media (max-width: 770px) {
+
+            .introduction-text {
+                margin-left: -2rem;
+            }
+
+            .introduction-text h2 {
+                font-size: 2rem;
+            }
+
+            .introduction-text p {
+                font-size: 1rem;
+            }
+
+            .introduction-img img {
+                position: relative;
+                top: 20%;
+            }
+
+            .form-item {
+                padding-left: 0;
+            }
+
+            .display-form p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* mobile size */
+        @media only screen and (max-width: 470px) {
+
+            /***************** HERO **************/
+
+            .section-hero {
+                margin: 0;
+            }
+
+            .introduction-text {
+                border-radius: 50px;
+                box-shadow: 10px 10px 6px #A5793E;
+                background-color: #e7c24c66;
+                position: relative;
+                right: 0;
+                padding: 1.5rem;
+                margin-top: 3rem;
+                margin-left: auto;
+                margin-right: auto;
+
+            }
+
+            .introduction-text h2 {
+                font-size: 2rem;
+            }
+
+            .introduction-text h2 span {
+                font-size: 1.5rem;
+            }
+
+            .introduction-text p {
+                font-size: 1rem;
+                width: 90%;
+                padding: 1rem;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .introduction-img img {
+                width: 50%;
+            }
+
+            .introduction-img {
+                transform: translateY(-5.5rem);
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            /***************** END HERO **************/
+
+            .banner-title {
+                font-size: 1.5rem;
+                width: 60%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .grid-item,
+            .form-item {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0;
+            }
+
+            /* center elements */
+            .form-item,
+            .grid-item,
+            .generate-items {
+                max-width: 100%;
+                justify-content: center;
+                text-align: center;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            /*************** FORM CONTAINER ************/
+            .form_container {
+                border-radius: 6rem;
+                box-shadow: 10px 10px 6px #A5793E;
+                max-width: 100%;
+                padding: 0;
+                margin-top: -3rem;
+
+            }
+
+            .display {
+                max-width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #input-img {
+                max-width: 100%;
+            }
+
+            .display-container {
+                margin-top: 5rem;
+                max-width: 100%;
+            }
+
+            /* center the button */
+            .btn-container {
+                left: 0;
+            }
+
+            .display-form p {
+                font-size: 0.75em;
+            }
+
+            .display-form {
+                margin-left: 14%;
+            }
+
+            .form-item {
+                padding-bottom: 5rem;
+            }
+
+            /*************** END FORM CONTAINER ************/
+
+            /*********** GUIDELINES ********************/
+
+            .guidelines-title b {
+                display: none;
+            }
+
+            .guidelines {
+                font-size: 1rem;
+                line-height: 1rem;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    {% block content %}
+
+    <section class="section-hero">
+        <div class="hero">
+            <div class="grid-item">
+                <div class="introduction-text">
+                    <h2>
+                        WHAT IS THIS,<br />
+                        <span>Your <span style="color:#751298;">learning</span> platform</span>
+                    </h2>
+                    <p>
+                        that recognizes objects around you. Powered by AI, it is able to provide a caption based
+                        on the image uploaded by you!<br /><br />
+                        Start by uploading an image from your album & start to see the <br /><span
+                            style="font-size:2rem; text-transform:uppercase">magic happen!</span>
+                    </p>
+                </div>
+                <img src="{% static 'girl.png' %}" class="introduction-img">
+            </div>
+        </div>
+    </section>
+    <div class="banner">
+        <div class="banner-container">
+            <div class="banner-item">
+                <div class="star-container one">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                        <path fill="#FFD185" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 
+                        171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2
+                         12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 
+                         33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 
+                         7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                        <path fill="#FFD185" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 
+                        171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2
+                         12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 
+                         33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 
+                         7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
+                    </svg>
+                </div>
+                <div class="banner-text">
+                    <h2 class="banner-title">
+                        Complete your daily task
+                    </h2>
+                    <p class="banner-body">
+                        Challenge yourself by taking photo of the object & score points by getting it correct.
+                    </p>
+                </div>
+
+                <div class="star-container two">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                        <path fill="#FFD185" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 
+                            171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2
+                             12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 
+                             33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 
+                             7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                        <path fill="#FFD185" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 
+                            171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2
+                             12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 
+                             33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 
+                             7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="task">
+        <div class="task-container">
+            <div class="task-text">
+                <!-- display the current task -->
+                {% if current_task %}
+                {% if current_task.task_complete == 0 %}
+                Take a picture of a(n): <br />{{ current_task.task_keyword}}
+                {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="score-board">
+                <p class="score-title">
+                    Score:
+                </p>
+                <div class="score-container">
+                    <div class="score-point">{{ user.customuser.score}}</div>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 576 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                        <path fill="#FFD185"
+                            d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form_container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-item">
+
+                <!-- if an image was uploaded, display it and the blur check result-->
+                <div class="display-container">
+                    <div class="display">
+                        <img src="{{ image }}" style="max-height: 100%;" id="input-img">
+                    </div><br />
+                    <div class="display-form">
+                        {{ form.as_p }}
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="upload_btn">Upload</button>
+                    </div>
+                    {% if image %}
+                    {{label}}
+                    <!-- Upon submit, display this -->
+                    <span class="successful-msg">
+                        <h4>{% if blur %}{{blur}}
+                            {% else %}
+                            Succesfully uploaded
+                            {% endif %}</h4>
+                        <div class="audio-item">
+                            <h5>Read it to me:</h5><audio controls style="width: 30%;">
+                                <source src="{{audio}}" type="audio/ogg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        {% endif %}
+                        {% if task_completion %}
+                        Congratulations you have completed a task!
+                        {% endif %}
+                    </span>
+                </div>
+
+                <div class="generate-items">
+                    <h3 class="guidelines-title">
+                        <b style="text-transform:uppercase">requirements</b>
+                    </h3>
+                    <p class="guidelines">
+                        Upload a clear photo,<br />
+                        blurry photos will result in inaccurate captions <br /><br />
+
+                        Allowed file types (JPEG, PNG)<br />
+                        Image size < 1mb </p>
+                            <h3>
+                                Description:
+                            </h3>
+                            <textarea class="caption"
+                                style="height:10rem; width: 100%">&nbsp;&nbsp;&nbsp;{{caption}}</textarea>
+
+                            <!-- (inserting it here) success message when a user submits ratings -->
+                            <p id="success-message"
+                                style="display: none; padding: 1rem; position: relative; left: 30%; ">Thank you for
+                                rating
+                                us!</p>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    {% endblock content %}
+
+    <!-- Rating system -->
+    {% if image %}
+    <div class="rating-container" id='rating-system'>
+        <form method="post" id="rating-form" class="rating-form" onsubmit="showMessage()">
+            {% csrf_token %}
+            <div class="rating-item">
+                <div class="rating-icon">
+                    <p>
+                        Help us improve!
+                    </p>
+                    <div class="button-flex">
+                        <button type="submit" id="rating" value='0' onClick="submitVal(this.value)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path fill="#EE6767"
+                                    d="M323.8 34.8c-38.2-10.9-78.1 11.2-89 49.4l-5.7 20c-3.7 13-10.4 25-19.5 35l-51.3 56.4c-8.9 
+                            9.8-8.2 25 1.6 33.9s25 8.2 33.9-1.6l51.3-56.4c14.1-15.5 24.4-34 30.1-54.1l5.7-20c3.6-12.7 16.9-20.1 29.7-16.5s20.1 
+                            16.9 16.5 29.7l-5.7 20c-5.7 19.9-14.7 38.7-26.6 55.5c-5.2 7.3-5.8 16.9-1.7 24.9s12.3 13 21.3 13L448 224c8.8 0 16 7.2 16 16c0 
+                            6.8-4.3 12.7-10.4 15c-7.4 2.8-13 9-14.9 16.7s.1 15.8 5.3 21.7c2.5 2.8 4 6.5 4 10.6c0 7.8-5.6 14.3-13 15.7c-8.2 1.6-15.1 7.3-18 15.1s-1.6 
+                            16.7 3.6 23.3c2.1 2.7 3.4 6.1 3.4 9.9c0 6.7-4.2 12.6-10.2 14.9c-11.5 4.5-17.7 16.9-14.4 28.8c.4 1.3 .6 2.8 .6 4.3c0 8.8-7.2 16-16 16H286.5c-12.6 
+                            0-25-3.7-35.5-10.7l-61.7-41.1c-11-7.4-25.9-4.4-33.3 6.7s-4.4 25.9 6.7 33.3l61.7 41.1c18.4 12.3 40 18.8 62.1 18.8H384c34.7 0 62.9-27.6 64-62c14.6-11.7 24-29.7 24-50c0-4.5-.5-8.8-1.3-13c15.4-11.7 25.3-30.2 25.3-51c0-6.5-1-12.8-2.8-18.7C504.8 273.7 512 257.7 512 240c0-35.3-28.6-64-64-64l-92.3 0c4.7-10.4 8.7-21.2 11.8-32.2l5.7-20c10.9-38.2-11.2-78.1-49.4-89zM32 192c-17.7 0-32 14.3-32 32V448c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32H32z" />
+                            </svg>
+                        </button>
+                        <button type="submit" id="rating" value='1' onClick="submitVal(this.value)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path fill="#EE6767"
+                                    d="M323.8 477.2c-38.2 10.9-78.1-11.2-89-49.4l-5.7-20c-3.7-13-10.4-25-19.5-35l-51.3-56.4c-8.9-9.8-8.2-25 1.6-33.9s25-8.2 33.9 1.6l51.3 56.4c14.1 15.5 24.4 34 30.1 54.1l5.7 20c3.6 12.7 16.9 20.1 29.7 16.5s20.1-16.9 16.5-29.7l-5.7-20c-5.7-19.9-14.7-38.7-26.6-55.5c-5.2-7.3-5.8-16.9-1.7-24.9s12.3-13 21.3-13L448 288c8.8 0 16-7.2 16-16c0-6.8-4.3-12.7-10.4-15c-7.4-2.8-13-9-14.9-16.7s.1-15.8 5.3-21.7c2.5-2.8 
+                        4-6.5 4-10.6c0-7.8-5.6-14.3-13-15.7c-8.2-1.6-15.1-7.3-18-15.2s-1.6-16.7 3.6-23.3c2.1-2.7 3.4-6.1 3.4-9.9c0-6.7-4.2-12.6-10.2-14.9c-11.5-4.5-17.7-16.9-14.4-28.8c.4-1.3 .6-2.8 .6-4.3c0-8.8-7.2-16-16-16H286.5c-12.6 0-25 3.7-35.5 10.7l-61.7 41.1c-11 7.4-25.9 4.4-33.3-6.7s-4.4-25.9 6.7-33.3l61.7-41.1c18.4-12.3 40-18.8 62.1-18.8H384c34.7 0 62.9 27.6 64 62c14.6 
+                        11.7 24 29.7 24 50c0 4.5-.5 8.8-1.3 13c15.4 11.7 25.3 30.2 25.3 51c0 6.5-1 12.8-2.8 18.7C504.8 238.3 512 254.3 512 272c0 35.3-28.6 64-64 64l-92.3 0c4.7 10.4 8.7 21.2 11.8 32.2l5.7 20c10.9 38.2-11.2 78.1-49.4 89zM32 384c-17.7 
+                        0-32-14.3-32-32V128c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H32z" />
+                            </svg>
+                        </button>
+
+                    </div>
+                </div>
+                <div class="bubble-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path fill=" #FFFFFF"
+                            d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z" />
+                    </svg>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+
+        function submitVal(value) {
+            $(document).on('submit', '#rating-form', function (e) {
+                e.preventDefault();
+                var form = $(this).parents('form.rating-form');
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "upload_image" %}',
+                    data:
+                    {
+                        rating: value,
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function () {
+                    }
+                })
+            });
+        }
+
+    </script>
+    {% endif %}
+</body>
+
+</html>
+
+<script>
+    (function (d) {
+        var config = {
+            kitId: 'yks7jmw',
+            scriptTimeout: 3000,
+            async: true
+        },
+            h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+    })(document);
+
+    function showMessage() {
+        var form = document.getElementById('rating-form');
+        form.style.display = 'none';
+        // show the success message
+        document.querySelector('#success-message').style.display = 'grid';
+        form.reset(); // clear the form content
+
+    }
+
+
+</script>

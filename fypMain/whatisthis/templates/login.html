@@ -1,155 +1,285 @@
 {% load static %}
 <html>
-    <!-- this page is the login page for all users, display login form-->
-    <head>
-        <link rel="stylesheet" href="https://use.typekit.net/cyv2luf.css">
-        <link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- button fonts -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-        <title> Login </title>
+<!-- this page is the login page for all users, display login form-->
 
-        <style>
-            * {
-                justify-content: center;
-                margin-left: auto;
-                margin-right: auto;
-            }
-            
-            body {
-                background: url('{% static "background.png" %}');
-                background-size: cover; 
-                background-position: center center;
-                background-repeat: no-repeat;
-            }
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.typekit.net/cyv2luf.css">
+    <link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- button fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title> Login </title>
 
+    <style>
+        * {
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        body {
+            background: url('{% static "bg-img/background1.png" %}');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .user_card {
+            height: 600px;
+            width: 600px;
+            margin-top: auto;
+            margin-bottom: auto;
+            background: #FFD185;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 100px;
+            border-style: solid;
+            border-radius: 30px;
+            border-color: #707070;
+            border-width: 2px;
+            box-shadow: inset 20px 20px rgb(141 82 3 / 13%);
+        }
+
+        #id_username,
+        #id_password {
+            border-style: solid;
+            outline: 3px #707070;
+            border-radius: 30px !important;
+            background: #FFBA5C;
+            width: 250px;
+            height: 45px;
+            font-family: "lores-12", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .mb-3 {
+            padding: 10px;
+        }
+
+        ::placeholder {
+            padding-left: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 1;
+            /* Firefox */
+            text-transform: uppercase;
+        }
+
+
+        #form-title {
+            font-family: "lores-12", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            color: #6A6763;
+            font-size: 45px;
+            text-transform: uppercase;
+            position: relative;
+            letter-spacing: -2px;
+        }
+
+        #form-subtitle {
+            max-width: 350px;
+            text-align: center;
+            font-family: "novecento-sans-wide", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            position: relative;
+            font-size: 18px;
+        }
+
+
+        .btn.login_btn,
+        .btn.login_btn:active {
+            border: 3px #707070;
+            background-color: #00A6FF;
+            width: 250px;
+            border-style: solid;
+            border-radius: 30px;
+            color: white;
+            font-family: "lores-12", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        #form-forget {
+            padding: 10px 0px 0px;
+            margin: 0;
+        }
+
+        #form-forget,
+        #form-account,
+        .form-check-inline {
+            font-family: "futura-pt", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .form-check-inline {
+            padding-right: 6rem;
+        }
+
+
+        .btn.create_btn,
+        .btn.create_btn:active {
+            border-style: solid;
+            background: #707070;
+            font-family: "lores-12", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 15px;
+            width: 200px;
+            color: white;
+        }
+
+        #form-account {
+            max-width: 70%;
+            text-align: center;
+        }
+
+        span {
+            color: #bc0707;
+        }
+
+        @media (max-width: 770px) {
             .user_card {
-                height: 600px; 
-                width: 600px;
-                margin-top: auto;
-                margin-bottom: auto; 
-                background: #FFD185; 
-                position: relative; 
-                display: flex; 
-                justify-content: center;
-                flex-direction: column; 
-                padding: 100px; 
-                border-style: solid;
-                border-radius: 30px;
-                border-color: #707070;
-                border-width: 2px;
-                box-shadow: inset 20px 20px rgb(141 82 3 / 13%);
+                width: 30rem;
+                height: 30rem;
+                padding: 3rem;
             }
-
-            #id_username, #id_password {
-                border-style: solid;
-                outline: 3px #707070;
-                border-radius: 30px!important;
-                background: #FFBA5C;
-                width: 250px;
-                height: 45px;
-                font-family: "lores-12", sans-serif;
-                font-weight: 700;
-                font-style: normal; 
-                font-size: 20px;
-                letter-spacing: -0.5px;
-            }
-
-            .mb-3 {
-                padding: 10px;
-            }
-
-            ::placeholder {
-                padding-left: 10px;
-                margin-left: auto;
-                margin-right: auto;
-                opacity: 1; /* Firefox */
-                text-transform: uppercase;
-            }
-
 
             #form-title {
-                font-family: "lores-12", sans-serif;
-                font-weight: 700;
-                font-style: normal; 
-                color: #6A6763;
-                font-size: 45px;
-                text-transform: uppercase;
-                position: relative; 
-                letter-spacing: -2px;
-            }
-
-            #form-subtitle {
-                max-width: 350px; 
-                text-align: center;
-                font-family: "novecento-sans-wide", sans-serif;
-                font-weight: 400;
-                font-style: normal;
-                position: relative; 
-                font-size: 18px;
-            }
-
-
-            .btn.login_btn, .btn.login_btn:active {
-                border: 3px #707070;
-                background-color: #00A6FF;
-                width: 250px;
-                border-style: solid;
-                border-radius: 30px;
-                color: white;
-                font-family: "lores-12", sans-serif;
-                font-weight: 700;
-                font-style: normal; 
-                font-size: 20px;
-                margin-bottom: 10px;
-            }
-
-            #form-forget {
-                padding: 10px 0px 0px;
+                font-size: 2.5rem;
                 margin: 0;
             }
 
-            #form-forget, #form-account,.form-check-inline {
-                font-family: "futura-pt", sans-serif;
-                font-weight: 400;
-                font-style: normal;
+            #form-subtitle {
+                font-size: 1rem;
             }
 
-
-            .btn.create_btn, .btn.create_btn:active {
-                border-style: solid; 
-                background: #707070;
-                font-family: "lores-12", sans-serif;
-                font-weight: 700;
-                font-style: normal;
-                font-size: 15px;
-                width: 200px;
-                color: white;
+            #id_username,
+            #id_password {
+                width: 13rem;
+                font-size: 1.2rem;
             }
 
+            .mb-3,
+            #form-forget {
+                padding: 0;
+            }
 
+            .btn.login_btn,
+            .btn.login_btn:active {
+                width: 13rem;
+                font-size: 1rem;
+            }
 
-        </style>
-    </head>
+            ::placeholder {
+                font-size: 1rem;
+            }
+
+            .mt-3 {
+                padding: 0;
+            }
+
+            .form-check-inline {
+                padding-right: 4rem;
+            }
+
+            #form-account {
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .btn.create_btn,
+            .btn.create_btn:active {
+                font-size: 0.8rem;
+                width: 10rem;
+            }
+        }
+
+        @media (max-width: 410px) {
+            .user_card {
+                width: 25rem;
+                height: 25rem;
+            }
+
+            #form-title {
+                font-size: 1.5rem;
+            }
+
+            #form-subtitle {
+                font-size: 0.7rem;
+            }
+
+            #id_username,
+            #id_password {
+                width: 10rem;
+                font-size: 1rem;
+                height: 2rem; 
+            }
+
+            .mb-3 {
+                margin-bottom: 0.5rem!important;
+            }
+
+            .form-check-inline {
+                padding-right: 1rem;
+                font-size: 0.8rem;
+            }
+
+            .btn.login_btn,
+            .btn.login_btn:active {
+                width: 8rem;
+                font-size: 0.7rem;
+            }
+
+            p#form-forget, p#form-account {
+                font-size: 0.8rem; 
+                margin: 0;
+            }
+
+            ::placeholder {
+                font-size: 0.8rem;
+            }
+
+            .btn.create_btn,
+            .btn.create_btn:active {
+                font-size: 0.8rem;
+                width: 8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
     <body>
+        <div class="container h-100">
+            <div class="d-flex justify-content-center h-100">
+                <div class="user_card">
+                    <div class="d-flex justify-content-center">
+                        <h3 id="form-title">Welcome Back!</h3>
+                    </div>
 
-        <body>
-            <div class="container h-100">
-                <div class="d-flex justify-content-center h-100">
-                    <div class="user_card">
-                        <div class="d-flex justify-content-center">
-                            <h3 id="form-title">Welcome Back!</h3>
-                        </div>
-
-                        <div class="d-flex justify-content-center">
-                            <h5 id="form-subtitle">Not sure what do?<br/> 
-                                Get a parent/guardian to help! </h5>
-                        </div>
-                        <div class="d-flex justify-content-center form_container">
+                    <div class="d-flex justify-content-center">
+                        <h5 id="form-subtitle">Not sure what do?<br />
+                            Get a parent/guardian to help! </h5>
+                    </div>
+                    <div class="d-flex justify-content-center form_container">
+                        {% csrf_token %}
+                        <form method="POST" action="">
                             {% csrf_token %}
-                            <form method="POST" action="">
-                                {% csrf_token %}
-                                <div class="input-group mb-3">
-                                    {{ form.username }}
-                                </div>
+                            <div class="input-group mb-3">
+                                {{ form.username }}
+                            </div>
 
                                 <div class="input-group mb-2">
                                         {{ form.password }} 
@@ -179,29 +309,30 @@
                                         <p id="form-forget">Forgot your password? <a href="{% url 'password_reset' %}" class="ml-2">Reset here</a></p>
                                     </div>
 
-                                    <div class="d-flex justify-content-center form-link">
-                                        <p id="form-account">Don't have an account?</p>
-                                    </div>
-                                    <div class="d-flex justify-content-center create_container">
-                                        <a href="{% url 'signup' %}" class="btn create_btn">Create Account</a>
-                                    </div>
+                            <div class="d-flex justify-content-center form-link">
+                                <p id="form-account">Don't have an account?</p>
+                            </div>
+                            <div class="d-flex justify-content-center create_container">
+                                <a href="{% url 'signup' %}" class="btn create_btn">Create Account</a>
+                            </div>
 
-                                    
-                            </form>
-                        </div>
-                
+
+                        </form>
                     </div>
+
                 </div>
             </div>
-        </body>
+        </div>
+    </body>
+
 </html>
 
 <script>
     // set placeholder values in input fields 
     // Query input fields 
-    
-    var form_fields = document.getElementsByTagName('input'); 
-    form_fields[1].placeholder = "Username";
-    form_fields[2].placeholder = "Password";
+
+    var form_fields = document.getElementsByTagName('input');
+    form_fields[2].placeholder = "Username";
+    form_fields[3].placeholder = "Password";
 
 </script>
