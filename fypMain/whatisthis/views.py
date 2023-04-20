@@ -64,27 +64,7 @@ class SignUp(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
     template_name = "signup.html"
-
-class task_pass(UpdateView):
-    form_class = ConfirmPasswordForm
-    template_name = 'confirm_password.html'
-    
-    def get_object(self):
-        return self.request.user
-
-    def get_success_url(self):
-        return redirect('task')
-
-class acc_pass(UpdateView):
-    form_class = ConfirmPasswordForm
-    template_name = 'confirm_password.html'
-    
-    def get_object(self):
-        return self.request.user
-
-    def get_success_url(self):
-        return redirect('user')
-    
+   
 #view for user account management
 #displays current log-in user info, allows user to edit username, email, password
 #redirect back to menu upon success
