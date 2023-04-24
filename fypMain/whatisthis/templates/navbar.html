@@ -9,6 +9,43 @@
     <link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- fonts -->
     <link rel="stylesheet" href="https://use.typekit.net/zek8wwu.css"> <!-- fonts -->
 
+    <!--Script -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Font activation
+        (function (d) {
+            var config = {
+                kitId: 'yks7jmw',
+                scriptTimeout: 3000,
+                async: true
+            },
+                h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+        })(document);
+
+        //User clicks on dropdown content, toggle between hiding and showing 
+        function myFunction() {
+            document.getElementById("dropdown").classList.toggle("show");
+        }
+
+        window.onclick = function (event) {
+            if (!event.target.matches('.navbar-dropdown')) {
+
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                        document.querySelector('.navbar-dropdown').style.backgroundColor = '';
+                    }
+                }
+            } else {
+                document.querySelector('.navbar-dropdown').style.backgroundColor = '#FFBA5C';
+            }
+        }
+    </script>
+
     <style>
         .navbar {
             margin: 2rem;
@@ -49,6 +86,23 @@
             white-space: nowrap;
         }
 
+        /* mobile navigation */
+        .btn-mobile-view {
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: none;
+            /*by default is hidden*/
+        }
+
+        .icon-mobile-nav {
+            height: 5rem;
+        }
+
+        .icon-mobile-nav[name="close-outline"] {
+            display: none;
+        }
+
         .dropdown-content {
             position: absolute;
             display: none;
@@ -87,16 +141,45 @@
         }
 
         @media (max-width: 470px) {
-            .nav-list {
-                display: none;
+            nav {
+                width: 100%;
+            }
+
+            .navbar {
+                background-color: #fce8b6;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 30vh;
+                padding: 0;
+                margin: 0;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .dropdown-content {
+                display: block;
+                padding: 0;
+            }
+
+            .navbar-dropdown {
+                padding: 0;
             }
 
             .logo-img {
                 margin: 0;
             }
 
-            nav.navbar {
-                justify-content: center;
+            .btn-mobile-view {
+                display: block;
+            }
+
+            .nav-list {
+                flex-direction: column;
+                gap: 2rem;
             }
         }
     </style>
@@ -118,41 +201,13 @@
             </div>
         </div>
     </div>
+
+    <button class="btn-mobile-view">
+        <ion-icon class="icon-mobile-nav" name="grid-outline"></ion-icon>
+        <ion-icon class="icon-mobile-nav" name="close-outline"></ion-icon>
+    </button>
 </nav>
+
 {% block content %}{% endblock %}
 
 </html>
-
-<script>
-    // Font activation
-    (function (d) {
-        var config = {
-            kitId: 'yks7jmw',
-            scriptTimeout: 3000,
-            async: true
-        },
-            h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
-    })(document);
-
-    //User clicks on dropdown content, toggle between hiding and showing 
-    function myFunction() {
-        document.getElementById("dropdown").classList.toggle("show");
-    }
-
-    window.onclick = function (event) {
-        if (!event.target.matches('.navbar-dropdown')) {
-
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                    document.querySelector('.navbar-dropdown').style.backgroundColor = '';
-                }
-            }
-        } else {
-            document.querySelector('.navbar-dropdown').style.backgroundColor = '#FFBA5C';
-        }
-    }
-</script>
