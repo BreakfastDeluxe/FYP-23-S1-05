@@ -71,16 +71,16 @@ class DisplayViewsTestCase(TestCase):
         self.client.login(username='testuser', password='12345!a')
         response = self.client.get('/user')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'profile.html')
+        self.assertTemplateUsed(response, 'user.html')
     #test gallery & search view
     def test_call_view_load_gallery(self):
-        response = self.client.get('/history', follow=True)
-        self.assertRedirects(response, '/login/?next=/history')
+        response = self.client.get('/gallery', follow=True)
+        self.assertRedirects(response, '/login/?next=/gallery')
         self.client.login(username='testuser', password='12345!a')
-        response = self.client.get('/history')
+        response = self.client.get('/gallery')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'history.html')
-        response = self.client.post('/history', {'search_query' : 'testSearch'})
+        self.assertTemplateUsed(response, 'gallery.html')
+        response = self.client.post('/gallery', {'search_query' : 'testSearch'})
         self.assertEqual(response.status_code, 200)
     #test logout view
     def test_call_view_load_logout(self):
@@ -171,12 +171,13 @@ class KeywordGenerationTestCase(TestCase):
         
     def test_image_keywording(self):
         imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
-        keywords = generate_keywords(imageTest_image_1.upload_Image.url)
+        keywords = generate_caption(imageTest_image_1.upload_Image.url)[1]
         print('Keywords: ' + keywords)
         #check if exists
         self.assertIsNotNone(keywords)
         #check type = str
         self.assertIsInstance(keywords, str)
+
         
 #test the function views.generate_audio(text, file) expect return str
 class AudioGenerationTestCase(TestCase):
@@ -206,7 +207,7 @@ class CaptionGenerationTestCase(TestCase):
     def test_image_captioning(self):
         imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
         file = imageTest_image_1.upload_Image.url
-        caption = generate_caption(file)
+        caption = generate_caption(file)[0]
         print('Generated Caption: '+ caption)
         #check if exists
         self.assertIsNotNone(caption)
@@ -226,11 +227,12 @@ class ValidateFilesizeTestCase(TestCase):
         
 #test the delete_image function        
 class DeleteImageTestCase(TestCase):
+    #create a testing image
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345!a')
         login = self.client.login(username='testuser', password='12345!a')
         Image.objects.create(created_by = self.user, upload_Image = 'images/unitTestImage1.jpg')
-        
+    #delete the image and check if it still exists    
     def test_delete_image(self):
         imageTest_image_1 = Image.objects.get(upload_Image = 'images/unitTestImage1.jpg')
         self.assertIsNotNone(imageTest_image_1)
@@ -242,10 +244,11 @@ class DeleteImageTestCase(TestCase):
         
 #test the Task Model        
 class TaskTestCase(TestCase):
+    #create a task
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345!a')
         self.task = Task.objects.create(task_complete = 0, created_by_id = self.user.id, task_keyword = 'test_keyword')
-    
+    #check if task was created properly
     def testTaskData(self):
         taskTest1 = Task.objects.get(id=1)
         self.assertEquals(taskTest1.task_complete, 0)
@@ -267,9 +270,9 @@ class CompleteTaskTestCase(TestCase):
         request.user = self.user#set the HTTP request user variable to current user
         taskTest1 = Task.objects.get(id=1)
         #false positive test, should not trigger completion
-        self.assertEquals(check_task_completion('different_keyword', request), 0)
+        self.assertEquals(check_task_completion('different_keyword', 'different_keyword', request), 0)
         #positive test, should trigger completion
-        self.assertEquals(check_task_completion('test_keyword', request), 1)
+        self.assertEquals(check_task_completion('test_keyword', 'test_keyword', request), 1)
 
 #test the caption rating system        
 class RateCaptionTestCase(TestCase):
