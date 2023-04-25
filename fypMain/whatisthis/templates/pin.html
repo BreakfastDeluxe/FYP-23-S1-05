@@ -1,0 +1,16 @@
+{%extends 'base.html' %}
+{% block content %}
+
+<form method ="POST">
+    {%csrf_token%}
+    <div>
+    <label for="Pin">PIN:</label>
+        <input class=" form-control" type="text" name="PIN" required>
+    </div>
+    <div>
+
+    <div>
+        <intput class="btn btn-dark btn-lg" type="'submit" value="Confirm">
+    </div>
+</form>
+{% endblock content %}
