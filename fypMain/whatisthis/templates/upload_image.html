@@ -317,7 +317,7 @@
 
         #input-img {
             height: 24rem;
-            width: 100%;
+            max-width: 100%;
         }
 
         .display-container {
@@ -879,8 +879,11 @@
 
                 <!-- if an image was uploaded, display it and the blur check result-->
                 <div class="display-container">
+                    
                     <div class="display">
+                        {% if image %}
                         <img src="{{ image }}" style="max-height: 100%;" id="input-img">
+                        {% endif %}
                     </div><br />
                     <div class="display-form">
                         {{ form.as_p }}
