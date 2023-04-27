@@ -14,6 +14,10 @@
 
 
     <style>
+        html {
+            overflow-x: hidden;
+        }
+
         body {
             background-color: #FFE4B8;
             background-size: cover;
@@ -22,6 +26,7 @@
             width: 90%;
             margin-left: auto;
             margin-right: auto;
+            overflow-x: hidden;
         }
 
         .section-hero {
@@ -380,6 +385,7 @@
             .introduction-img {
                 width: 15rem;
                 right: 10rem;
+                top: 18rem;
             }
 
             .introduction-text h2 {
@@ -393,6 +399,43 @@
             .introduction-text p {
                 font-size: 1rem;
             }
+
+            .display {
+                width: 30rem;
+                height: 20rem;
+            }
+
+            #input-img {
+                height: 100%;
+                width: 29rem;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            p.guidelines {
+                font-size: 1rem;
+            }
+
+            /******** RATING *****/
+            .bubble-container {
+                width: 7rem;
+                top: 5.5rem;
+                right: 0.5rem;
+            }
+
+            .rating-icon {
+                top: 6rem;
+            }
+
+            .rating-icon p {
+                font-size: 0.8rem;
+            }
+
+            .button-flex {
+                width: 7rem;
+            }
         }
 
         @media (max-width: 910px) {
@@ -403,6 +446,9 @@
 
         /* Table size */
         @media (max-width: 770px) {
+            body {
+                width: 100%;
+            }
 
             .introduction-img {
                 width: 13rem;
@@ -431,12 +477,16 @@
                 width: 3rem;
             }
 
-            .banner-title h2 {
+            .banner-title {
                 font-size: 2rem;
             }
 
-            .task-test {
-                font-size: 1.5rem;
+            .star-container svg {
+                width: 2rem;
+            }
+
+            .task-text {
+                font-size: 1.2rem !important;
                 padding: 1rem;
             }
 
@@ -452,6 +502,14 @@
             .display {
                 height: 20rem;
                 width: 20rem;
+                justify-content: center;
+                display: grid;
+                align-items: center;
+            }
+
+            #input-img {
+                height: 100%;
+                width: 19rem;
             }
 
             .generate-items h3 {
@@ -471,6 +529,10 @@
             .successful-msg h4,
             .audio-item h5 {
                 font-size: 1rem;
+            }
+
+            audio {
+                width: 50%;
             }
 
             .rating-container {
@@ -497,6 +559,9 @@
 
         /* mobile size */
         @media only screen and (max-width: 470px) {
+            body {
+                width: 100%;
+            }
 
             /***************** HERO **************/
 
@@ -511,9 +576,9 @@
                 position: relative;
                 right: 0;
                 padding: 1.5rem;
-                margin-top: 3rem;
                 margin-left: auto;
                 margin-right: auto;
+                width: 90%;
 
             }
 
@@ -521,8 +586,9 @@
                 font-size: 2rem;
             }
 
-            .introduction-text h2 span {
-                font-size: 1.5rem;
+            .introduction-text h2 span,
+            .introduction-text p span {
+                font-size: 1.5rem !important;
             }
 
             .introduction-text p {
@@ -533,20 +599,18 @@
                 margin-right: auto;
             }
 
-            .introduction-img img {
-                width: 50%;
-            }
-
             .introduction-img {
-                transform: translateY(15rem);
-                margin-left: auto;
-                margin-right: auto;
+                transform: translateY(5rem);
+                width: 10rem;
+                left: 0;
+                right: 0;
             }
 
             /***************** END HERO **************/
 
             /****************** BANNER *************/
             .banner {
+                margin-top: 7rem;
                 margin-bottom: 0;
             }
 
@@ -588,7 +652,20 @@
             }
 
             /*************** END TASK *****************/
+            /************** END SCORE *************/
+            .score-title {
+                font-size: 1rem;
+            }
 
+            .score-point {
+                font-size: 1rem;
+            }
+
+            .score-container {
+                margin-left: 5%;
+            }
+
+            /************** END SCORE *************/
 
             .grid-item,
             .form-item {
@@ -609,6 +686,10 @@
                 margin-right: 0;
             }
 
+            .form-item {
+                padding-bottom: 8rem;
+            }
+
             /*************** FORM CONTAINER ************/
             .form_container {
                 border-radius: 6rem;
@@ -622,13 +703,10 @@
             .display {
                 max-width: 100%;
                 display: flex;
-                align-items: center;
-                justify-content: center;
+                margin-left: auto;
+                margin-right: auto;
             }
 
-            #input-img {
-                max-width: 100%;
-            }
 
             .display-container {
                 margin-top: 5rem;
@@ -649,10 +727,13 @@
             }
 
             .form-item {
-                padding-bottom: 5rem;
+                padding-bottom: 8rem;
             }
 
             /*************** END FORM CONTAINER ************/
+            .caption {
+                height: 5rem;
+            }
 
             /*********** GUIDELINES ********************/
 
@@ -661,8 +742,27 @@
             }
 
             .guidelines {
-                font-size: 1rem;
+                font-size: 0.8rem;
                 line-height: 1rem;
+            }
+
+            /**************RATING ICON *******************/
+            .rating-icon {
+                right: 0.8rem;
+                top: 3rem;
+            }
+
+            .rating-icon p {
+                font-size: 0.6rem;
+            }
+
+            .button-flex {
+                width: 5.5rem;
+            }
+
+            .bubble-container {
+                width: 6rem;
+                top: 2.5rem;
             }
 
         }
@@ -743,9 +843,10 @@
         <div class="task-container">
             <div class="task-text">
                 <!-- display the current task -->
+                Take a picture of a(n):
                 {% if current_task %}
                 {% if current_task.task_complete == 0 %}
-                Take a picture of a(n): <br />{{ current_task.task_keyword}}
+                <br />{{ current_task.task_keyword}}
                 {% endif %}
                 {% endif %}
             </div>
