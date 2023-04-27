@@ -9,13 +9,57 @@
     <link rel="stylesheet" href="https://use.typekit.net/bnb5hdo.css"> <!-- fonts -->
     <link rel="stylesheet" href="https://use.typekit.net/zek8wwu.css"> <!-- fonts -->
 
+    <!--Script -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Font activation
+        (function (d) {
+            var config = {
+                kitId: 'yks7jmw',
+                scriptTimeout: 3000,
+                async: true
+            },
+                h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+        })(document);
+
+        //User clicks on dropdown content, toggle between hiding and showing 
+        function myFunction() {
+            document.getElementById("dropdown").classList.toggle("show");
+        }
+
+        window.onclick = function (event) {
+            if (!event.target.matches('.navbar-dropdown')) {
+
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                        document.querySelector('.navbar-dropdown').style.backgroundColor = '';
+                    }
+                }
+            } else {
+                document.querySelector('.navbar-dropdown').style.backgroundColor = '#FFBA5C';
+            }
+        }
+
+    </script>
+
     <style>
+        .header {
+            display: flex;
+            align-items: center;
+        }
+
         .navbar {
             margin: 2rem;
             font-family: "sofia-pro", sans-serif;
             font-weight: 400;
             font-style: normal;
             font-size: 1.2rem;
+            margin-left: auto;
         }
 
         .logo-img {
@@ -49,12 +93,32 @@
             white-space: nowrap;
         }
 
+        /* mobile navigation */
+        .btn-mobile-view {
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: none;
+            /*by default is hidden*/
+        }
+
+        .icon-mobile-nav {
+            height: 5rem;
+        }
+
+        .icon-mobile-nav[name="close-outline"] {
+            display: none;
+        }
+
         .dropdown-content {
             position: absolute;
             display: none;
             padding-top: 2rem;
             z-index: 1;
+        }
 
+        .dropdown-content .btn {
+            color: #4D4D4D;
         }
 
         a.btn.profile_btn {
@@ -76,83 +140,152 @@
         }*/
 
         @media (max-width: 770px) {
+            body {
+                width: 100%;
+            }
+
             .logo-img {
                 height: 2.5rem;
+                margin: 0;
+                padding-left: 1rem;
             }
 
             a.navbar-brand {
                 font-size: 1rem;
                 margin-right: 1rem;
+                z-index: 9999;
+                /* bring it to the front*/
             }
-        }
 
-        @media (max-width: 470px) {
-            .nav-list {
+            .header {
+                padding: 0 2rem 0 2rem;
+                position: relative;
+            }
+
+            .navbar {
+                width: 100%;
+                background-color: #fff3ce;
+                margin: 0;
+                position: absolute !important;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                transition: all 0.5s ease-in;
+                transform: translateX(100%);
+
+                /* default nav is hidden */
+                opacity: 0;
+                /*make it inaccessible to mouse and keyboard*/
+                pointer-events: none;
+                /* hide from screen readers*/
+                visibility: hidden;
+            }
+
+            .nav-open .navbar {
+                opacity: 1;
+                pointer-events: auto;
+                visibility: visible;
+                transform: translateX(0);
+            }
+
+            .nav-open .icon-mobile-nav[name="close-outline"] {
+                /*close icon appears */
+                display: block;
+                width: 1.5rem;
+            }
+
+            .nav-open .icon-mobile-nav[name="grid-outline"] {
                 display: none;
             }
 
-            .logo-img {
+            .dropdown-container {
+                position: relative;
+                transform: translate(-1rem, -3rem);
                 margin: 0;
             }
 
-            nav.navbar {
-                justify-content: center;
+            .dropdown-content {
+                display: grid;
+                position: relative;
+                padding: 0;
+                margin-top: 3.5rem;
+            }
+
+            .navbar-dropdown {
+                padding: 0;
+                transform: translate(-1rem, -4rem);
+                font-size: 1rem;
+            }
+
+            .btn-mobile-view {
+                display: flex;
+                margin-left: auto;
+                z-index: 1;
+                opacity: 70%;
+
+            }
+
+            a.btn.profile_btn {
+                padding-top: 0;
+            }
+
+            .nav-list {
+                flex-direction: column;
+                gap: 0rem;
+                margin-top: 6rem;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+
+            .icon-mobile-nav[name="grid-outline"] {
+                width: 1.5rem;
+            }
+
+            @media only screen and (max-width: 470px) {
+                .logo-img {
+                    height: 2rem;
+                }
             }
         }
     </style>
 </head>
 <html>
-<nav class="navbar">
-    <a href="{% url 'menu' %}">
+<header class="header nav-open">
+
+    <a href="{% url 'menu' %}" class="menu-nav">
         <img src="{% static 'logo.png' %}" class="logo-img" width="auto" height="50">
     </a>
-    <div class="nav-list">
-        <a class="navbar-brand" href="{% url 'upload_image' %}">Upload</a>
-        <a class="navbar-brand" href="{% url 'gallery' %}">Gallery</a>
-        <!-- Wrap in a dropdown container -->
-        <div class="dropdown-container">
-            <button onclick="myFunction()" class="navbar-dropdown">Hello, {{ user }}</button>
-            <div id="dropdown" class="dropdown-content">
-                <a href="{% url 'user' %}" class="btn profile_btn">Settings</a>
-                <a href="{% url 'logout' %}" class="btn signout_btn">Log out</a>
+    <nav class="navbar">
+        <div class="nav-list">
+            <a class="navbar-brand" href="{% url 'upload_image' %}">Upload</a>
+            <a class="navbar-brand" href="{% url 'gallery' %}">Gallery</a>
+            <!-- Wrap in a dropdown container -->
+            <div class="dropdown-container">
+                <button onclick="myFunction()" class="navbar-dropdown">Hello, {{ user }}</button>
+                <div id="dropdown" class="dropdown-content">
+                    <a href="{% url 'user' %}" class="btn profile_btn">Settings</a>
+                    <a href="{% url 'logout' %}" class="btn signout_btn">Log out</a>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
+
+    <button class="btn-mobile-view">
+        <ion-icon class="icon-mobile-nav" name="grid-outline"></ion-icon>
+        <ion-icon class="icon-mobile-nav" name="close-outline"></ion-icon>
+    </button>
+
+</header>
+
 {% block content %}{% endblock %}
 
 </html>
-
 <script>
-    // Font activation
-    (function (d) {
-        var config = {
-            kitId: 'yks7jmw',
-            scriptTimeout: 3000,
-            async: true
-        },
-            h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
-    })(document);
-
-    //User clicks on dropdown content, toggle between hiding and showing 
-    function myFunction() {
-        document.getElementById("dropdown").classList.toggle("show");
-    }
-
-    window.onclick = function (event) {
-        if (!event.target.matches('.navbar-dropdown')) {
-
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                    document.querySelector('.navbar-dropdown').style.backgroundColor = '';
-                }
-            }
-        } else {
-            document.querySelector('.navbar-dropdown').style.backgroundColor = '#FFBA5C';
-        }
-    }
+    /* toggle between the closing and opening the navigation*/
+    const btnNavEl = document.querySelector(".btn-mobile-view");
+    const headerEl = document.querySelector(".header");
+    btnNavEl.addEventListener('click', function () {
+        headerEl.classList.toggle('nav-open');
+    });
 </script>
