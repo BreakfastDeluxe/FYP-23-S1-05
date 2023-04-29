@@ -37,6 +37,7 @@ urlpatterns = [
     path('delete_image', delete_image, name='delete_image'),#used to invoke image delete by passing image ID
     path('delete_user', delete_user, name='delete_user'),#confirmation page for delete user
     path('tasks', manage_tasks, name = 'tasks'),#view/create tasks
+    path('delete_task', delete_task, name='delete_task'),#used to invoke task delete by passing task ID
     path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),#password reset form
     path('password-reset-confirm/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),

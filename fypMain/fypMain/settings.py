@@ -145,13 +145,14 @@ MEDIA_URL = '/media/'
 
 from dotenv import load_dotenv
 load_dotenv()  # loads the configs from .env
-# email configs
+# email configs for reset password email function
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = str(os.getenv('EMAIL_USER'))
 EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_PASSWORD'))
+# CAPTCHA configs for login security function
 RECAPTCHA_PUBLIC_KEY = str(os.getenv('RECAPTCHA_PUBLIC_KEY'))
 RECAPTCHA_PRIVATE_KEY = str(os.getenv('RECAPTCHA_PRIVATE_KEY'))
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']

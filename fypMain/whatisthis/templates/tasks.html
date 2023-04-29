@@ -26,6 +26,11 @@
             <li>
                 Task: Take a picture of a(n) {{current_task.task_keyword}}</br>
             </li>
+            <form action="{%url 'delete_task' %}" method="POST">
+                {% csrf_token %}
+                <input type='hidden' id='task_id' name='task_id' value={{current_task.id}}>
+                <button class="btn btn-danger btn-sm" type="submit" value="Delete" id="delete_task">Delete Task</button>
+            </form>
             {% endif %}
         {% endif %}
         </ol>

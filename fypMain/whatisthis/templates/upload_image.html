@@ -14,6 +14,10 @@
 
 
     <style>
+        html {
+            overflow-x: hidden;
+        }
+
         body {
             background-color: #FFE4B8;
             background-size: cover;
@@ -22,6 +26,7 @@
             width: 90%;
             margin-left: auto;
             margin-right: auto;
+            overflow-x: hidden;
         }
 
         .section-hero {
@@ -35,7 +40,7 @@
             margin: 0 auto;
             position: absolute;
             right: 15rem;
-            top: 15rem;
+            top: 16rem;
         }
 
 
@@ -56,7 +61,7 @@
             font-family: "hellofont-id-langrunti", sans-serif;
             font-weight: 700;
             font-style: normal;
-            font-size: 5rem;
+            font-size: 5vw;
             color: #A5793E;
         }
 
@@ -66,7 +71,7 @@
             font-family: "soleil", sans-serif;
             font-weight: 700;
             font-style: normal;
-            font-size: 4rem;
+            font-size: 4vw;
         }
 
         .introduction-text p {
@@ -138,7 +143,7 @@
             font-family: "soleil", sans-serif;
             font-weight: 400;
             font-style: normal;
-            max-width: 70%;
+            width: 70%;
             margin-right: auto;
             margin-left: auto;
             font-size: 1.2rem;
@@ -310,6 +315,11 @@
             border-width: 3px;
         }
 
+        #input-img {
+            height: 24rem;
+            max-width: 100%;
+        }
+
         .display-container {
             text-align: center;
         }
@@ -376,6 +386,13 @@
 
         /* CHANGING UP ELEMENTS ACCORDING TO SCREEN SIZES */
         @media (max-width: 1040px) {
+
+            .introduction-img {
+                width: 15rem;
+                right: 10rem;
+                top: 18rem;
+            }
+
             .introduction-text h2 {
                 font-size: 2.5rem;
             }
@@ -387,6 +404,43 @@
             .introduction-text p {
                 font-size: 1rem;
             }
+
+            .display {
+                width: 30rem;
+                height: 20rem;
+            }
+
+            #input-img {
+                height: 100%;
+                width: 29rem;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            p.guidelines {
+                font-size: 1rem;
+            }
+
+            /******** RATING *****/
+            .bubble-container {
+                width: 7rem;
+                top: 5.5rem;
+                right: 0.5rem;
+            }
+
+            .rating-icon {
+                top: 6rem;
+            }
+
+            .rating-icon p {
+                font-size: 0.8rem;
+            }
+
+            .button-flex {
+                width: 7rem;
+            }
         }
 
         @media (max-width: 910px) {
@@ -397,6 +451,15 @@
 
         /* Table size */
         @media (max-width: 770px) {
+            body {
+                width: 100%;
+            }
+
+            .introduction-img {
+                width: 13rem;
+                right: 6rem;
+                top: 22rem;
+            }
 
             .introduction-text {
                 margin-left: -2rem;
@@ -415,17 +478,95 @@
                 top: 20%;
             }
 
-            .form-item {
-                padding-left: 0;
+            .star-container svg {
+                width: 3rem;
             }
 
+            .banner-title {
+                font-size: 2rem;
+            }
+
+            .star-container svg {
+                width: 2rem;
+            }
+
+            .task-text {
+                font-size: 1.2rem !important;
+                padding: 1rem;
+            }
+
+            .score-board {
+                font-size: 1.5rem;
+            }
+
+            .score-title {
+                padding-top: 1rem;
+                margin-left: 1.5rem;
+            }
+
+            .display {
+                height: 20rem;
+                width: 20rem;
+                justify-content: center;
+                display: grid;
+                align-items: center;
+            }
+
+            #input-img {
+                height: 100%;
+                width: 19rem;
+            }
+
+            .generate-items h3 {
+                font-size: 1.2rem;
+            }
+
+            .guidelines p,
             .display-form p {
                 font-size: 0.8rem;
+            }
+
+            .caption {
+                font-size: 0.8rem;
+                height: 6rem;
+            }
+
+            .successful-msg h4,
+            .audio-item h5 {
+                font-size: 1rem;
+            }
+
+            audio {
+                width: 50%;
+            }
+
+            .rating-container {
+                bottom: 11rem;
+            }
+
+            .rating-icon {
+                right: 1rem;
+                padding: 0;
+            }
+
+            .rating-icon p {
+                font-size: 0.7rem;
+            }
+
+            .button-flex {
+                width: 6rem;
+            }
+
+            .bubble-container {
+                width: 7rem;
             }
         }
 
         /* mobile size */
         @media only screen and (max-width: 470px) {
+            body {
+                width: 100%;
+            }
 
             /***************** HERO **************/
 
@@ -440,9 +581,9 @@
                 position: relative;
                 right: 0;
                 padding: 1.5rem;
-                margin-top: 3rem;
                 margin-left: auto;
                 margin-right: auto;
+                width: 90%;
 
             }
 
@@ -450,8 +591,9 @@
                 font-size: 2rem;
             }
 
-            .introduction-text h2 span {
-                font-size: 1.5rem;
+            .introduction-text h2 span,
+            .introduction-text p span {
+                font-size: 1.5rem !important;
             }
 
             .introduction-text p {
@@ -462,24 +604,73 @@
                 margin-right: auto;
             }
 
-            .introduction-img img {
-                width: 50%;
-            }
-
             .introduction-img {
-                transform: translateY(-5.5rem);
-                margin-left: auto;
-                margin-right: auto;
+                transform: translateY(5rem);
+                width: 10rem;
+                left: 0;
+                right: 0;
             }
 
             /***************** END HERO **************/
 
+            /****************** BANNER *************/
+            .banner {
+                margin-top: 7rem;
+                margin-bottom: 0;
+            }
+
             .banner-title {
                 font-size: 1.5rem;
-                width: 60%;
+                width: 80%;
                 margin-left: auto;
                 margin-right: auto;
             }
+
+            .banner-container {
+                margin-top: 5rem;
+            }
+
+            .banner-body {
+                width: 80%;
+            }
+
+            .star-container svg {
+                width: 2rem;
+            }
+
+            .star-container {
+                gap: 8rem;
+                justify-content: center;
+            }
+
+            /******************END BANNER *************/
+
+            /*************** TASK *****************/
+            .task-container {
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .task-text {
+                font-size: 1rem;
+                padding: 1rem;
+            }
+
+            /*************** END TASK *****************/
+            /************** END SCORE *************/
+            .score-title {
+                font-size: 1rem;
+            }
+
+            .score-point {
+                font-size: 1rem;
+            }
+
+            .score-container {
+                margin-left: 5%;
+            }
+
+            /************** END SCORE *************/
 
             .grid-item,
             .form-item {
@@ -500,6 +691,10 @@
                 margin-right: 0;
             }
 
+            .form-item {
+                padding-bottom: 8rem;
+            }
+
             /*************** FORM CONTAINER ************/
             .form_container {
                 border-radius: 6rem;
@@ -513,13 +708,10 @@
             .display {
                 max-width: 100%;
                 display: flex;
-                align-items: center;
-                justify-content: center;
+                margin-left: auto;
+                margin-right: auto;
             }
 
-            #input-img {
-                max-width: 100%;
-            }
 
             .display-container {
                 margin-top: 5rem;
@@ -540,10 +732,13 @@
             }
 
             .form-item {
-                padding-bottom: 5rem;
+                padding-bottom: 8rem;
             }
 
             /*************** END FORM CONTAINER ************/
+            .caption {
+                height: 5rem;
+            }
 
             /*********** GUIDELINES ********************/
 
@@ -552,8 +747,27 @@
             }
 
             .guidelines {
-                font-size: 1rem;
+                font-size: 0.8rem;
                 line-height: 1rem;
+            }
+
+            /**************RATING ICON *******************/
+            .rating-icon {
+                right: 0.8rem;
+                top: 3rem;
+            }
+
+            .rating-icon p {
+                font-size: 0.6rem;
+            }
+
+            .button-flex {
+                width: 5.5rem;
+            }
+
+            .bubble-container {
+                width: 6rem;
+                top: 2.5rem;
             }
 
         }
@@ -634,9 +848,10 @@
         <div class="task-container">
             <div class="task-text">
                 <!-- display the current task -->
+                Take a picture of a(n):
                 {% if current_task %}
                 {% if current_task.task_complete == 0 %}
-                Take a picture of a(n): <br />{{ current_task.task_keyword}}
+                <br />{{ current_task.task_keyword}}
                 {% endif %}
                 {% endif %}
             </div>
@@ -664,8 +879,11 @@
 
                 <!-- if an image was uploaded, display it and the blur check result-->
                 <div class="display-container">
+                    
                     <div class="display">
+                        {% if image %}
                         <img src="{{ image }}" style="max-height: 100%;" id="input-img">
+                        {% endif %}
                     </div><br />
                     <div class="display-form">
                         {{ form.as_p }}

@@ -281,6 +281,13 @@ def manage_tasks(request):
         block_new_task = True  # allow new task to be created
     return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'block_new_task': block_new_task})
 
+def delete_task(request):
+    # when delete button in image selected, delete image and reload gallery
+    task_id = request.POST.get('task_id')
+    task = Task.objects.get(id=task_id)
+    task.delete()
+    return redirect(to='tasks')
+
 # HELPER FUNCTIONS - called by view implementation functions
 
 # openCV2 implementation to determine blur level
