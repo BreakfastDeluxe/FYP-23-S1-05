@@ -425,3 +425,17 @@ class ConfirmPasswordView(UpdateView):
 
     def get_success_url(self):
         return self.request.get_full_path()
+
+
+
+import nltk
+from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+
+def compute_bleu4_score(references, hypotheses):
+    smoothie = SmoothingFunction().method4
+    bleu4_score = 0
+    for ref, hyp in zip(references, hypotheses):
+        ref = [ref.split()]
+        hyp = hyp.split()
+        bleu4_score += sentence_bleu(ref, hyp, smoothing_function=smoothie, weights=(0.25, 0.25, 0.25, 0.25))
+    return bleu4_score / len(references)

@@ -200,3 +200,36 @@ def inference(image_bytes): #1.
         res.append((sentence, math.exp(prob.item()/len(sampled_id))*100))
     return res #returns dict of caption:confidence pairs
         
+
+
+import nltk
+from nltk.translate.bleu_score import SmoothingFunction
+
+def evaluate_bleu4(data_loader, encoder, decoder, device):
+    encoder.eval()
+    decoder.eval()
+    references = []
+    hypotheses = []
+    smoothie = SmoothingFunction().method4
+    
+    with torch.no_grad():
+        for images, captions, lengths in data_loader:
+            images = images.to(device)
+            features = encoder(images)
+            features = features.unsqueeze(1)
+            captions = captions.to(device)
+            targets = captions[:, 1:]
+            captions = captions[:, :-1]
+            lengths = [l - 1 for l in lengths]
+
+            outputs = decoder(features, captions, lengths)
+            outputs = outputs.view(-1, outputs.shape[2])
+            targets = targets.contiguous().view(-1)
+
+            _, predicted = torch.max(outputs, 1)
+
+            references.extend([[data_loader.dataset.vocab.idx2word[idx] for idx in trg if idx not in {0, 1, 2}]] for trg in targets.view(-1, 20))
+            hypotheses.extend([data_loader.dataset.vocab.idx2word[idx.item()] for idx in predicted if idx.item() not in {0, 1, 2}])
+            
+    bleu4_score = nltk.translate.bleu_score.corpus_bleu(references, hypotheses, smoothing_function=smoothie, weights=(0.25, 0.25, 0.25, 0.25))
+    return bleu4_score
