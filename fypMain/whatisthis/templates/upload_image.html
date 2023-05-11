@@ -27,6 +27,7 @@
             margin-left: auto;
             margin-right: auto;
             overflow-x: hidden;
+            margin-bottom: 2rem;
         }
 
         .section-hero {
@@ -124,7 +125,7 @@
         }
 
         .star-container.two {
-            margin-left: 10rem;
+            margin-left: 7rem;
         }
 
         .banner-text {
@@ -491,7 +492,7 @@
             }
 
             .task-text {
-                font-size: 1.2rem !important;
+                font-size: 1.2rem;
                 padding: 1rem;
             }
 
@@ -540,10 +541,6 @@
                 width: 50%;
             }
 
-            .rating-container {
-                bottom: 11rem;
-            }
-
             .rating-icon {
                 right: 1rem;
                 padding: 0;
@@ -557,13 +554,10 @@
                 width: 6rem;
             }
 
-            .bubble-container {
-                width: 7rem;
-            }
         }
 
         /* mobile size */
-        @media only screen and (max-width: 470px) {
+        @media only screen and (max-width: 570px) {
             body {
                 width: 100%;
             }
@@ -693,7 +687,7 @@
             }
 
             .form-item {
-                padding-bottom: 8rem;
+                padding-bottom: 10rem;
             }
 
             /*************** FORM CONTAINER ************/
@@ -769,6 +763,10 @@
             .bubble-container {
                 width: 6.5rem;
                 top: 2.5em;
+            }
+
+            .rating-container {
+                bottom: 12rem;
             }
 
         }
@@ -880,7 +878,7 @@
 
                 <!-- if an image was uploaded, display it and the blur check result-->
                 <div class="display-container">
-                    
+
                     <div class="display">
                         {% if image %}
                         <img src="{{ image }}" style="max-height: 100%;" id="input-img">
