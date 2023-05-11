@@ -12,10 +12,11 @@
     <title> Login </title>
 
     <style>
-        * {
+        .container {
+            display: flex;
             justify-content: center;
-            margin-left: auto;
-            margin-right: auto;
+            align-items: center;
+
         }
 
         body {
@@ -26,16 +27,15 @@
         }
 
         .user_card {
-            height: 600px;
+            height: 45rem;
             width: 600px;
             margin-top: auto;
             margin-bottom: auto;
+            text-align: center;
+            align-items: center;
             background: #FFD185;
             position: relative;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            padding: 100px;
+            padding: 5rem;
             border-style: solid;
             border-radius: 30px;
             border-color: #707070;
@@ -122,10 +122,6 @@
             font-style: normal;
         }
 
-        .form-check-inline {
-            padding-right: 6rem;
-        }
-
 
         .btn.create_btn,
         .btn.create_btn:active {
@@ -140,19 +136,40 @@
         }
 
         #form-account {
-            max-width: 70%;
             text-align: center;
+            margin: 0;
+            line-height: 1.2rem;
         }
 
         span {
             color: #bc0707;
         }
 
+        .input-group {
+            display: block;
+        }
+
+        .form-check-inline {
+            padding-right: 6rem;
+        }
+
+        .g-recaptcha,
+        .form-check-inline {
+            display: flex;
+            justify-content: center;
+        }
+
+
+        .create_container {
+            margin-top: 1rem;
+        }
+
         @media (max-width: 770px) {
             .user_card {
-                width: 30rem;
-                height: 30rem;
+                width: 90%;
+                height: 35rem;
                 padding: 3rem;
+                margin-right: 2rem;
             }
 
             #form-title {
@@ -168,6 +185,19 @@
             #id_password {
                 width: 13rem;
                 font-size: 1.2rem;
+            }
+
+            .mb-2 {
+                margin: 0 !important;
+            }
+
+            .input-captcha {
+                -webkit-transform: scale(0.65);
+            }
+
+            .login_container,
+            .form-check-inline {
+                margin: 0rem;
             }
 
             .mb-3,
@@ -189,13 +219,18 @@
                 padding: 0;
             }
 
+            .input-group {
+                justify-content: center;
+            }
+
             .form-check-inline {
-                padding-right: 4rem;
+                margin-left: 4rem;
             }
 
             #form-account {
                 max-width: 100%;
                 margin: 0;
+                font-size: 0.9rem;
             }
 
             .btn.create_btn,
@@ -203,12 +238,16 @@
                 font-size: 0.8rem;
                 width: 10rem;
             }
+
         }
 
         @media (max-width: 410px) {
+
             .user_card {
-                width: 25rem;
-                height: 25rem;
+                width: 90%;
+                height: 32rem;
+                margin-right: 1rem;
+
             }
 
             #form-title {
@@ -219,30 +258,38 @@
                 font-size: 0.7rem;
             }
 
+            .form_container {
+                width: 100%;
+            }
+
+            .input-group {
+                justify-content: center;
+            }
+
             #id_username,
             #id_password {
                 width: 10rem;
                 font-size: 1rem;
-                height: 2rem; 
+                height: 2rem;
             }
 
             .mb-3 {
-                margin-bottom: 0.5rem!important;
+                margin-bottom: 0.5rem !important;
             }
 
             .form-check-inline {
-                padding-right: 1rem;
                 font-size: 0.8rem;
             }
 
             .btn.login_btn,
             .btn.login_btn:active {
-                width: 8rem;
+                width: 10rem;
                 font-size: 0.7rem;
             }
 
-            p#form-forget, p#form-account {
-                font-size: 0.8rem; 
+            p#form-forget,
+            p#form-account {
+                font-size: 0.8rem;
                 margin: 0;
             }
 
@@ -263,66 +310,65 @@
 
     <body>
         <div class="container h-100">
-            <div class="d-flex justify-content-center h-100">
-                <div class="user_card">
-                    <div class="d-flex justify-content-center">
-                        <h3 id="form-title">Welcome Back!</h3>
-                    </div>
 
-                    <div class="d-flex justify-content-center">
-                        <h5 id="form-subtitle">Not sure what do?<br />
-                            Get a parent/guardian to help! </h5>
-                    </div>
-                    <div class="d-flex justify-content-center form_container">
-                        {% csrf_token %}
-                        <form method="POST" action="">
-                            {% csrf_token %}
-                            <div class="input-group mb-3">
-                                {{ form.username }}
-                            </div>
-
-                            <div class="input-group mb-2">
-                                {{ form.password }}
-                            </div>
-
-                            <div class="input-group mb-2">
-                                {{ form.captcha }} 
-                            </div>
-
-                            <p class="d-flex form-check-inline">
-                                {{ form.remember_me }} Remember Me
-                            </p>
-
-
-                            <div class="d-flex justify-content-center mt-3 login_container">
-                                <input class="btn login_btn" type="submit" value="Login">
-                            </div>
-                            {% if form.errors %}
-                            {% for field, errors in form.errors.items %}
-                            {% for error in errors %}
-                            <span class="d-flex justify-content-center form-link">
-                                <p id="form-account">{{ error }}</p>
-                            </span>
-                            {%endfor%}
-                            {%endfor%}
-                            {% endif %}
-                            <div class="d-flex justify-content-center form-link">
-                                <p id="form-forget">Forgot your password? <a href="{% url 'password_reset' %}"
-                                        class="ml-2">Reset here</a></p>
-                            </div>
-
-                            <div class="d-flex justify-content-center form-link">
-                                <p id="form-account">Don't have an account?</p>
-                            </div>
-                            <div class="d-flex justify-content-center create_container">
-                                <a href="{% url 'signup' %}" class="btn create_btn">Create Account</a>
-                            </div>
-
-
-                        </form>
-                    </div>
-
+            <div class="user_card">
+                <div class="d-flex justify-content-center">
+                    <h3 id="form-title">Welcome Back!</h3>
                 </div>
+
+                <div class="d-flex justify-content-center">
+                    <h5 id="form-subtitle">Not sure what do?<br />
+                        Get a parent/guardian to help! </h5>
+                </div>
+                <div class="d-flex justify-content-center form_container">
+                    {% csrf_token %}
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            {{ form.username }}
+                        </div>
+
+                        <div class="input-group mb-2">
+                            {{ form.password }}
+                        </div>
+
+                        <div class="input-captcha mb-2">
+                            {{ form.captcha }}
+                        </div>
+
+                        <p class="d-flex form-check-inline">
+                            {{ form.remember_me }} Remember Me
+                        </p>
+
+
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <input class="btn login_btn" type="submit" value="Login">
+                        </div>
+                        {% if form.errors %}
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                        <span class="d-flex justify-content-center form-link">
+                            <p id="form-account">{{ error }}</p>
+                        </span>
+                        {%endfor%}
+                        {%endfor%}
+                        {% endif %}
+                        <div class="d-flex justify-content-center form-link">
+                            <p id="form-forget">Forgot your password? <a href="{% url 'password_reset' %}"
+                                    class="ml-2">Reset here</a></p>
+                        </div>
+
+                        <div class="d-flex justify-content-center form-link">
+                            <p id="form-account">Don't have an account?</p>
+                        </div>
+                        <div class="d-flex justify-content-center create_container">
+                            <a href="{% url 'signup' %}" class="btn create_btn">Create Account</a>
+                        </div>
+
+
+                    </form>
+                </div>
+
             </div>
         </div>
     </body>

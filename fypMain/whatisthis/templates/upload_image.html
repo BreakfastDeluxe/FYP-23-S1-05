@@ -27,6 +27,7 @@
             margin-left: auto;
             margin-right: auto;
             overflow-x: hidden;
+            margin-bottom: 2rem;
         }
 
         .section-hero {
@@ -124,7 +125,7 @@
         }
 
         .star-container.two {
-            margin-left: 10rem;
+            margin-left: 7rem;
         }
 
         .banner-text {
@@ -491,7 +492,7 @@
             }
 
             .task-text {
-                font-size: 1.2rem !important;
+                font-size: 1.2rem;
                 padding: 1rem;
             }
 
@@ -501,7 +502,7 @@
 
             .score-title {
                 padding-top: 1rem;
-                margin-left: 1.5rem;
+                margin-left: 1rem;
             }
 
             .display {
@@ -540,10 +541,6 @@
                 width: 50%;
             }
 
-            .rating-container {
-                bottom: 11rem;
-            }
-
             .rating-icon {
                 right: 1rem;
                 padding: 0;
@@ -557,13 +554,14 @@
                 width: 6rem;
             }
 
-            .bubble-container {
-                width: 7rem;
+            p#succes-message {
+                left: 10%;
             }
+
         }
 
         /* mobile size */
-        @media only screen and (max-width: 470px) {
+        @media only screen and (max-width: 570px) {
             body {
                 width: 100%;
             }
@@ -605,17 +603,18 @@
             }
 
             .introduction-img {
-                transform: translateY(5rem);
+                transform: translateY(-24rem);
                 width: 10rem;
                 left: 0;
                 right: 0;
+                position: relative;
             }
 
             /***************** END HERO **************/
 
             /****************** BANNER *************/
             .banner {
-                margin-top: 7rem;
+                margin-top: -6rem;
                 margin-bottom: 0;
             }
 
@@ -657,7 +656,7 @@
             }
 
             /*************** END TASK *****************/
-            /************** END SCORE *************/
+            /************** SCORE *************/
             .score-title {
                 font-size: 1rem;
             }
@@ -668,6 +667,10 @@
 
             .score-container {
                 margin-left: 5%;
+            }
+
+            .score-container svg {
+                width: 30%;
             }
 
             /************** END SCORE *************/
@@ -692,7 +695,7 @@
             }
 
             .form-item {
-                padding-bottom: 8rem;
+                padding-bottom: 10rem;
             }
 
             /*************** FORM CONTAINER ************/
@@ -766,8 +769,12 @@
             }
 
             .bubble-container {
-                width: 6rem;
-                top: 2.5rem;
+                width: 6.5rem;
+                top: 2.5em;
+            }
+
+            .rating-container {
+                bottom: 11rem;
             }
 
         }
@@ -879,7 +886,7 @@
 
                 <!-- if an image was uploaded, display it and the blur check result-->
                 <div class="display-container">
-                    
+
                     <div class="display">
                         {% if image %}
                         <img src="{{ image }}" style="max-height: 100%;" id="input-img">
